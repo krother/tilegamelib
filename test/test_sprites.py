@@ -10,11 +10,12 @@ __author__="Kristian Rother"
 __email__ ="krother@rubor.de"
 
 
-from tilegamelib.screen import Frame
-from tilegamelib.sprites import Sprite, AnimationSequence, SpriteList
+from tilegamelib.vector import Vector, UP, DOWN, LEFT, RIGHT, UPLEFT, UPRIGHT, DOWNLEFT, DOWNRIGHT
+from tilegamelib.frame import Frame
+from tilegamelib.sprites import Sprite, SpriteList
 from test_settings import showdoc, SHORT_DELAY, TEST_GAME_CONTEXT
 from unittest import TestCase, main
-import numpy as np
+from pygame import Rect
 import pygame
 import time
 
@@ -23,66 +24,61 @@ class SpriteTests(TestCase):
 
     def setUp(self):
         self.factory = TEST_GAME_CONTEXT.tile_factory
-        self.frame = Frame(TEST_GAME_CONTEXT, (40,50), (160,160))
-        self.sprite = Sprite(self.frame, self.factory.get('g'), speed=2)
+        self.tile = self.factory.get('g')
+        self.frame = Frame(TEST_GAME_CONTEXT.screen, Rect(40,50, 160,160))
+        self.sprite = Sprite(self.frame, self.tile, Vector(1,1), speed=2)
 
     def test_sprite_pos(self):
-        sprite = Sprite(self.frame, self.factory.get('g'), pos=(4,3))
-        self.assertEqual(sprite.pos[0], 4)
-        self.assertEqual(sprite.pos[1], 3)
+        """Sprite has a position."""
+        sprite = Sprite(self.frame, self.factory.get('g'), pos=Vector(4,3))
+        self.assertEqual(sprite.pos.x, 4)
+        self.assertEqual(sprite.pos.y, 3)
+
+    def move(self):
+        """Moves sprite until movement terminates."""
+        while self.sprite.is_moving():
+            self.sprite.move()
+            self.frame.clear()
+            self.sprite.draw()
+            pygame.display.update()
+            time.sleep(SHORT_DELAY)
 
     @showdoc
     def test_move_sprite(self):
         """Sprite moves east, then southeast."""
-        self.sprite.add_move(np.array([1,0]))
-        self.sprite.add_move(np.array([1,1]))
-        while self.sprite.is_moving():
-            self.sprite.move()
-            self.frame.clear()
-            self.sprite.draw()
-            pygame.display.update()
-            time.sleep(SHORT_DELAY)
+        self.sprite.add_move(RIGHT)
+        self.sprite.add_move(DOWNRIGHT)
+        self.move()
+        self.assertEqual(self.sprite.pos.x, 3)
+        self.assertEqual(self.sprite.pos.y, 2)
 
     @showdoc
     def test_priority_move_sprite(self):
         """Sprite moves southeast, then east."""
-        self.sprite.add_move(np.array([1,0]))
-        self.sprite.add_priority_move(np.array([1,1]))
-        while self.sprite.is_moving():
-            self.sprite.move()
-            self.frame.clear()
-            self.sprite.draw()
-            pygame.display.update()
-            time.sleep(SHORT_DELAY)
+        self.sprite.add_move(RIGHT)
+        self.sprite.add_move(DOWNRIGHT, True)
+        self.move()
 
-    @showdoc
-    def test_animation(self):
-        """Animation of five colorful blocks"""
-        tiles = [
-            self.factory.get('g'),
-            self.factory.get('b'),
-            self.factory.get('r'),
-            self.factory.get('b'),
-            self.factory.get('g'),
-            ]
-        ani = AnimationSequence(self.frame, tiles, np.array([4,4]), delay=5)
-        while not ani.finished:
-            ani.update()
-            ani.draw()
-            pygame.display.update()
-            time.sleep(SHORT_DELAY)
 
+class SpriteListTests(TestCase):
+
+    def setUp(self):
+        self.factory = TEST_GAME_CONTEXT.tile_factory
+        self.tile = self.factory.get('g')
+        self.frame = Frame(TEST_GAME_CONTEXT.screen, Rect(40,50, 160,160))
+        self.sprite = Sprite(self.frame, self.tile, Vector(1,1), speed=2)
+    
     @showdoc
     def test_sprite_list(self):
         """Two sprites are moving."""
         sprites = SpriteList()
-        s1 = Sprite(self.frame, self.factory.get('g'), pos=np.array([1,0]), speed=2)
-        s2 = Sprite(self.frame, self.factory.get('b'), pos=np.array([1,1]), speed=4)
+        s1 = Sprite(self.frame, self.factory.get('g'), pos=Vector(1,0), speed=2)
+        s2 = Sprite(self.frame, self.factory.get('b'), pos=Vector(1,1), speed=4)
         sprites.append(s1)
         sprites.append(s2)
-        s1.add_move(np.array([1,0]))
-        s1.add_move(np.array([0,1]))
-        s2.add_move(np.array([0,1]))
+        s1.add_move(RIGHT)
+        s1.add_move(DOWN)
+        s2.add_move(DOWN)
         while sprites.is_moving():
             sprites.update()
             self.frame.clear()

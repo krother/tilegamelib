@@ -1,20 +1,12 @@
-#!/usr/bin/env python
-#
-# Copyright 2010 Kristian Rother
-#
-# All rights reserved.
-# Please see the LICENSE file that should have been included
-# as part of this package.
 
-__author__="Kristian Rother"
-__email__ ="krother@rubor.de"
-
-from tilegamelib.screen import Frame
-from tilegamelib.tiled_map import TiledMap, MoveableTiledMap, Move
+from tilegamelib.vector import Vector, UP, DOWN, LEFT, RIGHT, UPLEFT, UPRIGHT, DOWNLEFT, DOWNRIGHT
+from tilegamelib.frame import Frame
+from tilegamelib.move import Move
+from tilegamelib.tiled_map import TiledMap, MoveableTiledMap
 from test_settings import DELAY, SHORT_DELAY, SAMPLE_MAP_FILE, \
     TEST_GAME_CONTEXT, showdoc
 from unittest import TestCase, main
-import numpy as np
+from pygame import Rect
 import pygame
 import time
 
@@ -22,8 +14,8 @@ import time
 class TiledMapTests(TestCase):
 
     def setUp(self):
-        frame = Frame(TEST_GAME_CONTEXT, (90,50), (128,128))
-        self.tm = TiledMap(TEST_GAME_CONTEXT, frame)
+        frame = Frame(TEST_GAME_CONTEXT.screen, Rect(90,50, 128,128))
+        self.tm = TiledMap(frame, TEST_GAME_CONTEXT.tile_factory)
 
     def test_fill_map(self):
         self.tm.fill_map(TEST_MAP)
@@ -39,39 +31,39 @@ class TiledMapTests(TestCase):
 
     def test_win_size(self):
         self.tm.fill_map(TEST_MAP)
-        self.assertEqual(self.tm.win_size[0],4)
-        self.assertEqual(self.tm.win_size[1],4)
+        self.assertEqual(self.tm.win_size.x,4)
+        self.assertEqual(self.tm.win_size.y,4)
 
     def test_is_visible(self):
         self.tm.fill_map(TEST_MAP)
-        self.assertTrue(self.tm.is_visible(np.array([0,0])))
-        self.assertTrue(self.tm.is_visible(np.array([1,1])))
-        self.assertFalse(self.tm.is_visible(np.array([5,1])))
-        self.assertFalse(self.tm.is_visible(np.array([1,5])))
-        self.assertFalse(self.tm.is_visible(np.array([-5,-1])))
+        self.assertTrue(self.tm.is_visible(Vector(0,0)))
+        self.assertTrue(self.tm.is_visible(Vector(1,1)))
+        self.assertFalse(self.tm.is_visible(Vector(5,1)))
+        self.assertFalse(self.tm.is_visible(Vector(1,5)))
+        self.assertFalse(self.tm.is_visible(Vector(-5,-1)))
 
     def test_check_position(self):
         self.tm.fill_map(TEST_MAP)
-        self.assertFalse(self.tm.check_position(np.array([-1,-1])))
-        self.assertFalse(self.tm.check_position(np.array([5,1])))
-        self.assertFalse(self.tm.check_position(np.array([1,5])))
-        self.assertTrue(self.tm.check_position(np.array([0,0])))
-        self.assertTrue(self.tm.check_position(np.array([1,1])))
-        self.assertTrue(self.tm.check_position(np.array([4,4])))
+        self.assertFalse(self.tm.check_position(Vector(-1,-1)))
+        self.assertFalse(self.tm.check_position(Vector(5,1)))
+        self.assertFalse(self.tm.check_position(Vector(1,5)))
+        self.assertTrue(self.tm.check_position(Vector(0,0)))
+        self.assertTrue(self.tm.check_position(Vector(1,1)))
+        self.assertTrue(self.tm.check_position(Vector(4,4)))
 
     def test_check_move(self):
         self.tm.fill_map(TEST_MAP)
-        self.assertFalse(self.tm.check_move(np.array([-1,-1])))
-        self.assertTrue(self.tm.check_move(np.array([1,1])))
-        self.tm.zoom_to(np.array([1,1]))
-        self.assertFalse(self.tm.check_move(np.array([1,1])))
-        self.assertTrue(self.tm.check_move(np.array([-1,-1])))
+        self.assertFalse(self.tm.check_move(Vector(-1,-1)))
+        self.assertTrue(self.tm.check_move(Vector(1,1)))
+        self.tm.zoom_to(Vector(1,1))
+        self.assertFalse(self.tm.check_move(Vector(1,1)))
+        self.assertTrue(self.tm.check_move(Vector(-1,-1)))
 
     def test_zoom_to(self):
         self.tm.fill_map(TEST_MAP)
-        self.tm.zoom_to(np.array([1,1]))
-        self.assertEqual(self.tm.map_pos[0],1)
-        self.assertEqual(self.tm.map_pos[1],1)
+        self.tm.zoom_to(Vector(1, 1))
+        self.assertEqual(self.tm.map_pos.x,1)
+        self.assertEqual(self.tm.map_pos.y,1)
 
     def test_load_map(self):
         self.tm.load_map(SAMPLE_MAP_FILE)
@@ -85,7 +77,7 @@ class TiledMapTests(TestCase):
         self.tm.draw()
         pygame.display.update()
         time.sleep(DELAY)
-        self.tm.zoom_to(np.array([4,4]))
+        self.tm.zoom_to(Vector(4,4))
         self.tm.draw()
         pygame.display.update()
         
@@ -93,11 +85,11 @@ class TiledMapTests(TestCase):
 class MoveableTiledMapTests(TestCase):
 
     def setUp(self):
-        frame = Frame(TEST_GAME_CONTEXT, (90,50), (128,128))
-        self.tm = MoveableTiledMap(TEST_GAME_CONTEXT, frame)
+        frame = Frame(TEST_GAME_CONTEXT.screen, Rect(90,50, 160,160))
+        self.tm = MoveableTiledMap(frame, TEST_GAME_CONTEXT.tile_factory)
 
     def move_tiles(self):
-        while self.tm.are_tiles_moving():
+        while self.tm.is_map_moving():
             self.tm.update()
             self.tm.draw()
             pygame.display.update()
@@ -107,17 +99,29 @@ class MoveableTiledMapTests(TestCase):
     def test_move_map_tile(self):
         """Moves two tiles right and up, then moves one tile back."""
         self.tm.fill_map(TEST_MAP)
-        self.tm.move_tile(Move(np.array([2,2]), np.array([1,0]), 4, 2))
-        self.tm.move_tile(Move(np.array([1,2]), np.array([0,-1]), 1, 1))
+        self.tm.move_tile(Move(Vector(3,1), DOWNLEFT, 3, 2))
+        self.tm.move_tile(Move(Vector(1,2), UP, 1, 1))
         self.move_tiles()
-        # move piece back
-        self.tm.move_tile(Move(np.array([4,2]), np.array([-1,0]), 2, 2))
+        # move one piece back
+        self.tm.move_tile(Move(Vector(0,0), DOWN, 1, 4))
+        self.tm.move_tile(Move(Vector(0,4), UPRIGHT, 3, 2))
         self.move_tiles()
+
+    @showdoc
+    def test_queued_moves(self):
+        """Two 2+1 moves across the map shown."""
+        self.tm.fill_map(TEST_MAP)
+        self.tm.add_queued_moveset(
+                [Move(Vector(0,0), DOWN, 3, 2),
+                 Move(Vector(2,1), UPLEFT, 1, 4)])
+        self.tm.add_queued_moveset([Move(Vector(3,3), LEFT, 2, 1)])
+        self.move_tiles()
+
 
 
 TEST_MAP = """g...g
 .rrr.
-.bgb.
+.pgb.
 .rrr.
 g...g"""
 
