@@ -1,0 +1,57 @@
+
+# screen
+SCREEN_RESOLUTION = Vector(800,550)
+SCREEN_BG_IMAGE = 'data/background.png'
+
+# tile factory
+TILE_SIZE = Vector(32, 32)
+TILE_SETS = [('data/bg.xpm','data/bg.spec'), ('data/fruit.xpm','data/fruit.spec')]
+
+# main delay in milliseconds
+GAME_DELAY = 20 
+
+# key delays
+KEY_REPEAT = {274:5, 115:5}
+DEFAULT_KEY_REPEAT = 80
+
+GAME_KEY_REPEAT = { 273:1, 274:1, 275:1, 276:1}
+
+BACKGROUND_IMAGE = 'data/background.png'
+TITLE_IMAGE = 'data/title.png'
+BOX_IMAGE = 'data/frame_box.png'
+
+
+FRUITS = ['f.banana','f.orange','f.melon','f.pineapple','f.winogrona','f.diamond','f.cherry','f.paprika']
+
+# animations
+EXPLOSION = ['b.explo_1','b.explo_2','b.explo_3','b.explo_4','b.explo_5','b.explo_6']
+
+# movement keymaps                   
+PLR1_MOVES = { 119:'up', 115:'down', 100:'right', 97:'left'}  # w.s.d.a.
+PLR2_MOVES = { K_UP:'up', K_DOWN:'down', K_RIGHT:'right', K_LEFT:'left', K_ESCAPE:'quit'}  # cursor keys
+
+# title screen
+TITLE_IMAGE = 'data/title.png'
+TITLE_RECT = Rect(0,0, 750,550)
+MENU_KEY_REPEAT = {274:20, 115:20}
+MENU_RECT = Rect(550, 380, 800, 550) 
+
+# game over box
+GAME_OVER_IMAGE = 'test_data/test_tile.png'
+GAME_OVER_RECT = Rect(200, 150, 400, 100)
+GAME_OVER_OFFSET = Vector(120, 30)
+GAME_OVER_SHORT_OFFSET = Vector(50, 30)
+GAME_OVER_RECT = Rect(200, 150, 400, 100)
+GAME_OVER_COLOR = (255, 255, 255, 0)
+GAME_OVER_DELAY = 1000
+GAME_OVER_SOUND = {}
+
+# pause box
+PAUSE_IMAGE = 'test_data/test_tile.png'
+PAUSE_BOX_RECT = Rect(200, 150, 400, 100)
+
+# high score window
+HIGHSCORE_RECT = Rect(200, 100, 800,550)
+HIGHSCORE_TEXTPOS = Vector(0, 0)
+HIGHSCORE_FILE = 'snake_scores.txt'
+HIGHSCORE_IMAGE = 'data/background.png'
