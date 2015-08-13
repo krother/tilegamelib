@@ -1,32 +1,23 @@
-#!/usr/bin/env python
-#
-# Copyright 2010 Kristian Rother
-#
-# All rights reserved.
-# Please see the LICENSE file that should have been included
-# as part of this package.
 
-__author__="Kristian Rother"
-__email__ ="krother@rubor.de"
-
-
-"""
-Controllers for dialog functions.
-"""
-
-from interfaces import Drawable
-import numpy as np
+from vector import Vector
+from frame import Frame
+from tiled_map import TiledMap
+from pygame import Rect, image
 import pygame
+import time
 
-class TextBox(Drawable):
+
+class TextBox(object):
     """Displays a box with text."""
-    def __init__(self, frame, text, x_offset=0, y_offset=0, font=None, color=None):
+    def __init__(self, frame, text, offset=None, font=None, color=None):
         """Initializes the TextBox."""
         self.frame = frame
         self.text = text
         self.font = font
         self.color = color
-        self.pos = np.array([x_offset,y_offset])
+        self.pos = offset
+        if offset == None:
+            self.pos = Vector(0,0)
 
     def draw(self):
         """Draws the Box."""
@@ -34,23 +25,23 @@ class TextBox(Drawable):
         self.frame.print_text(self.text, self.pos, self.font, self.color)
 
 
-class ImageBox(Drawable):
+class ImageBox(object):
     """
     Displays a box with an image.
     """
     def __init__(self, frame, image_fn=None):
         """Initializes the ImageBox."""
         self.frame = frame
-        self.image = pygame.image.load(image_fn).convert()
+        self.image = image.load(image_fn).convert()
 
     def draw(self):
         """Draws the Box."""
         self.frame.clear()
-        self.frame.blit(self.image, self.frame.box, \
-            pygame.Rect(0,0,self.frame.size[0],self.frame.size[1]))
+        self.frame.blit(self.image, self.frame.rect, \
+            Rect(0,0,self.frame.size.x,self.frame.size.y))
 
 
-class DictBox(Drawable):
+class DictBox(object):
     """
     Text window displaying scores etc. taken from a data dictionary
     """    
@@ -68,14 +59,15 @@ class DictBox(Drawable):
             labels = self.data.keys()
             labels.sort()
         for i,lab in enumerate(labels):
-            pos = np.array([50, 50+20*i])
+            pos = Vector(0, 20*i)
             self.frame.print_text('%s : %s'%(lab, str(self.data[lab])),pos)
+
 
 class FpsBox(TextBox):
     """Displays FPS rate"""    
-    def __init__(self,screen,pos):
-        super.__init__(self,screen,pos,array(50,20))
-        self.fps = 0.0
+    def __init__(self, screen):
+        frame = Frame(screen, Rect(10, 10, 80,15))
+        TextBox.__init__(self, frame,'fps:',font=frame.settings.DEMIBOLD_SMALL,color=frame.settings.BLUE)
         self.lasttime = time.time()
 
     def update(self):
@@ -87,10 +79,5 @@ class FpsBox(TextBox):
         diff = now-self.lasttime
         self.lasttime = now
         if diff>0:
-            self['fps'] = 1.0/diff
-
-    def draw(self):
-        """Draws some values from the dictionary."""
-        self.clear()
-        self.print_text('%3.1f fps'%self['fps'],self.font,BLUE,self.pos+20)
+            self.text = 'fps: %3.1f'%(1.0/diff)
         

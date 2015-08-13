@@ -1,105 +1,64 @@
-#!/usr/bin/env python
-#
-# Copyright 2010 Kristian Rother
-#
-# All rights reserved.
-# Please see the LICENSE file that should have been included
-# as part of this package.
 
-__author__="Kristian Rother"
-__email__ ="krother@rubor.de"
+from vector import Vector
+from event_listener import EventListener
+from pygame import K_ESCAPE, K_UP, K_DOWN, K_RETURN, K_SPACE, K_LEFT, K_RIGHT
+from settings import BLUE, WHITE
+
+VERTICAL_MOVES = [K_ESCAPE, K_UP, K_DOWN, K_RETURN, K_SPACE]
+HORIZONTAL_MOVES = [K_ESCAPE, K_LEFT, K_RIGHT, K_RETURN, K_SPACE]
 
 
-from events import EventListener
-from interfaces import Drawable, Commandable
-
-class MenuListener(EventListener):
-    """Abstract superclass for menu listeners."""
-    def is_active(self):
-        """Determines when the menu is finished."""
-        if self.commandable.result == None:
-            return True
-
-class HorizontalMenuListener(MenuListener):
-
-    def __init__(self, commandable, commands):
-        MenuListener.__init__(self, commandable)
-        self.set_command_map(commands)
-        self.rename_command('left','prev')
-        self.rename_command('right','next')
-
-class VerticalMenuListener(MenuListener):
-
-    def __init__(self, commandable, commands):
-        MenuListener.__init__(self, commandable)
-        self.set_command_map(commands)
-        self.rename_command('up','prev')
-        self.rename_command('down','next')
-    
-
-class MenuBox(Drawable, Commandable):
+class MenuBox:
     """
     Abstract superclass for menus on the screen.
     This class manages selecting menu entries and stores
     a selected option in the result field.
     """
-    def __init__(self, frame, menu, egen, moves, horizontal=True):
+    def __init__(self, frame, menu, egen, moves):
         """
         Creates a game Menu box.
         frame - Frame instance
-        menu   - list of (label, result_value) tuples.
+        menu   - list of (label, callback) tuples.
+        egen - EventGenerator object
         """
         self.frame = frame
         self.menu = menu
-        self.highlight = 0
+        self.active = 0
         self.result = None
-        self.horizontal = horizontal
         self.egen = egen
-        self.listener = self._get_listener(moves)
+        self.listener = self.get_listener(moves)
         self.egen.add_listener(self.listener)
 
-    def destroy(self):
-        self.egen.remove_listener(self.listener)
-
-    def _get_listener(self, moves):
-        """Returns a MenuListener instance."""
-        if self.horizontal:
-            return HorizontalMenuListener(self,moves)
-        else:
-            return VerticalMenuListener(self,moves)
-            
-    def set_menu(self, menu):
-        """applies a new list of menu entries."""
-        self.menu = menu
-
-    def handle_command(self, command):
-        """Handles selecting things in the menu."""
-        if command == 'prev':
-            self.choose_previous()
-        elif command == 'next':
-            self.choose_next()
-        elif command == 'select':
-            self.select()
-
-    def choose_previous(self):
-        self.highlight -= 1
-        if self.highlight < 0:
-            self.highlight = len(self.menu)-1
-
-    def choose_next(self):
-        self.highlight += 1
-        if self.highlight == len(self.menu):
-            self.highlight = 0
-
+    def get_listener(self, moves):
+        callbacks = [self.deactivate, self.prev_item, self.next_item, self.select, self.select]
+        keymap = dict(zip(moves, callbacks))
+        return EventListener(keymap=keymap)
+    
     def select(self):
-        self.result = self.menu[self.highlight][1]
+        """Handles selecting things in the menu."""
+        callback = self.menu[self.active][1]
+        callback()
+             
+    def prev_item(self):
+        self.active -= 1
+        if self.active < 0:
+            self.active = len(self.menu)-1
+
+    def next_item(self):
+        self.active += 1
+        if self.active == len(self.menu):
+            self.active = 0
+
+    def deactivate(self):
+        self.egen.remove_listener(self.listener)
 
 
 class TileMenuBox(MenuBox):
 
     def __init__(self, factory, frame, menu, egen, moves, horizontal=True, cursor='#'):
         menu = self.create_tiles(menu, factory)
-        MenuBox.__init__(self, frame, menu, egen, moves, horizontal)
+        MenuBox.__init__(self, frame, menu, egen, moves)
+        self.horizontal = horizontal
         self.cursor = factory.get(cursor)
 
     def create_tiles(self, menu, factory):
@@ -113,11 +72,11 @@ class TileMenuBox(MenuBox):
         """Draws the menu and background image."""
         i = 0
         for tile, value in self.menu:
-            x = self.horizontal and i*tile.size[0] or 0
-            y = not self.horizontal and i*tile.size[1] or 0
-            tile.draw(self.frame, (x,y))
-            if self.highlight==i:
-                self.draw_cursor((x,y))
+            x = self.horizontal and i*tile.size.x or 0
+            y = not self.horizontal and i*tile.size.y or 0
+            tile.draw(self.frame, Vector(x,y))
+            if self.active==i:
+                self.draw_cursor(Vector(x,y))
             i += 1
 
     def draw_cursor(self, pos):
@@ -126,11 +85,19 @@ class TileMenuBox(MenuBox):
 
 class TextMenuBox(MenuBox):
 
+    def __init__(self, frame, menu, egen, moves, color=BLUE, highlight=WHITE):
+        MenuBox.__init__(self, frame, menu, egen, moves)
+        self.color = color
+        self.highlight = highlight
+        
     def draw(self):
         """Draws the menu and background image."""
         i = 0
         for text, value in self.menu:
-            pos = (0,i * 30)
-            color = i==self.highlight and self.frame.settings.WHITE or self.frame.settings.BLUE
-            self.frame.print_text(text, pos, color=color)
+            pos = Vector(0, i*30)
+            if i == self.active:
+                col = self.highlight
+            else:
+                col = self.color
+            self.frame.print_text(text, pos, color=col)
             i += 1

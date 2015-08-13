@@ -1,0 +1,74 @@
+
+from pygame import K_ESCAPE, K_RETURN, K_DELETE
+
+class EventListener:
+    """
+    Manages callback functions for handling events.
+    """
+    def __init__(self, keymap=None, leftclick=None, rightclick=None):
+        self.keymap = keymap or {}
+        self.onleft = leftclick
+        self.onright = rightclick
+        self.terminated = False
+        
+    def leftclick(self, pos):
+        """Called each time the left mouse button is clicked."""
+        if self.onleft:
+            return self.onleft(pos)
+
+    def rightclick(self, pos):
+        """Called each time the right mouse button is clicked."""
+        if self.onright:
+            return self.onright(pos)
+        
+    def handle_key(self, key):
+        """Called each time a key event needs to be handled."""
+        func = self.keymap.get(key)
+        if func:
+            func()
+            return True
+        return None
+
+    def terminate(self):
+        """Instructs the event loop to deactivate the listener"""
+        self.terminated = True
+    
+
+class AnyKeyListener(EventListener):
+    """
+    Responds to any key.
+    """
+    def __init__(self, callback):
+        EventListener.__init__(self)
+        self.callback = callback
+        
+    def handle_key(self, key):
+        self.callback()
+        self.terminate()
+        return True
+
+
+class TextEnteringListener(EventListener):
+    """
+    Collects text from keyboard until enter is pressed.
+    """
+    def __init__(self, entered, finished, upper=True):
+        EventListener.__init__(self)
+        self.text = ''
+        self.entered = entered
+        self.finished = finished
+        self.upper = upper
+
+    def handle_key(self, key):
+        """Name entering."""
+        if key == K_RETURN:
+            self.finished(self.text)
+            self.terminate()
+        elif key == K_DELETE:
+            self.text = self.text[:-1]
+            self.entered(self.text)
+        elif 64 < key < 200:
+            self.text += chr(key)
+            if self.upper:
+                self.text = self.text.upper()
+            self.entered(self.text)

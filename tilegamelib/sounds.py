@@ -1,14 +1,3 @@
-#!/usr/bin/env python
-#
-# Copyright 2010 Kristian Rother
-#
-# All rights reserved.
-# Please see the LICENSE file that should have been included
-# as part of this package.
-
-__author__="Kristian Rother"
-__email__ ="krother@rubor.de"
-
 
 import pygame
 import pygame.mixer
@@ -38,7 +27,6 @@ class MusicPlayer:
         if not MUSIC[0].get_queue():
             # reinitialize timer
             if STARTED_TIME[0] == 0:
-                #print 'TIMER STARTED'
                 STARTED_TIME[0] = time.time()
             # check timer and generate warning
             sound = MUSIC[0].get_sound()
@@ -47,9 +35,7 @@ class MusicPlayer:
             else:
                 length = 0
             passed = time.time()-STARTED_TIME[0]
-            #print length, passed
             if length - passed <= warn_before:
-                #print 'MUSIC CLOSE TO END'
                 return CLOSE_TO_END
         return STILL_PLAYING
         
@@ -67,9 +53,7 @@ class MusicPlayer:
         STARTED_TIME[0] = 0
 
     def next_music(self,filename):
-        # only one track in queue at a time!
         if MUSIC[0].get_queue(): return
-        #print 'NEW TRACK IN QUEUE',filename
         sound = pygame.mixer.Sound(filename)
         MUSIC[0].queue(sound)
         STARTED_TIME[0] = 0
@@ -86,7 +70,6 @@ class EffectPlayer:
         self.settings = settings
 
 def play_effect(name):
-    #print 'playing',name
     soundfile = 'sounds\\'+name+'.wav'
     if not os.access(soundfile,os.F_OK):
         print 'file not found',soundfile

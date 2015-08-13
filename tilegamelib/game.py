@@ -1,103 +1,95 @@
-#!/usr/bin/env python
-#
-# Copyright 2010 Kristian Rother
-#
-# All rights reserved.
-# Please see the LICENSE file that should have been included
-# as part of this package.
 
-__author__="Kristian Rother"
-__email__ ="krother@rubor.de"
+from title_screen import TitleScreen
+from menu import VERTICAL_MOVES
 
+'''
+Game States define flow between title, highscore etc.
+'''
 
-from pygame.locals import *
-from interfaces import Drawable, Updateable, Modal, Commandable
-from game_paused import GamePausedBox
-from events import EventListener
-from screen import GameElement
+class GameState:
 
-class GameListener(EventListener):
-    
-    def is_active(self):
-        if self.commandable.is_game_over():
-            return False
-        return True
-    
-class Game(Drawable, Updateable, Commandable, Modal, GameElement):
-    """Toplevel in-game class managing players."""
-    def __init__(self, game_factory):
-        GameElement.__init__(self, game_factory)
+    def __init__(self, game_factory, **kwargs):
+        self.gf = game_factory
+        self.events = self.gf.event_generator
+        self.create(**kwargs)
+        self.gf.screen.clear()
 
-        self.listener = GameListener(self)
-        self.listener.set_command_map({
-            self.settings.EXIT_KEY:'quit',
-            self.settings.PAUSE_KEY:'pause',
-            })
-        self.events.add_listener(self.listener)
-        self.players = []
-        self.highscore = 0
-        self.game_over_text = 'Game Over'
-
-    def new_game(self):
-        """Starts a game with the set number of players."""
-        self.create_players()
-        self.set_player_keys()
-        self.draw()
-
-    def create_players(self):
+    def create(self, **kwargs):
         pass
-
-    def terminate(self):
-        scores = [p.score for p in self.players]
-        if len(scores) == 0:
-            self.highscore = 0
-        else:
-            self.highscore = max(scores)
-        self.game_over_text = 'Game Over'
-        self.players = []
-
-    def handle_command(self, cmd):
-        if cmd == 'quit':
-            self.terminate()
-            self.events.remove_listener(self.listener)
-        elif cmd == 'pause':
-            self.pause_game()
+    
+    def run(self):
+        self.events.add_callback(self)
+        self.events.event_loop()
+        for elis in self.events.listeners:
+            self.events.remove_listener(elis)
+        self.events.remove_callback(self)
 
     def update(self):
-        for p in self.players:
-            p.update()
-        self.draw()
+        pygame.display.update()
 
-    def draw(self):
-        for p in self.players:
-            p.draw()
+    def get_next_state(self):
+        return GameState(self.gf)
 
-    def set_player_keys(self):
-        """Maps arrow keys to player instances."""
-        keys = [self.settings.PLR2_MOVES, \
-            self.settings.PLR1_MOVES]
-        players = self.players[:]
-        players.reverse()
-        for player, moves in zip(players, keys):
-            elis = EventListener(player)
-            elis.set_command_map(moves)
-            self.events.add_listener(elis)
+#---------------------
 
-    def pause_game(self):
-        pause = GamePausedBox(self, 'Game paused - press any key')
+class TitleScreenState(GameState):
+
+    def create(self):
+        # self.settings.KEY_REPEAT = self.settings.MENU_KEY_REPEAT
+        self.title = TitleScreen(self.gf.screen, self.events, self.gf.data['TITLE_RECT'], self.gf.data['TITLE_IMAGE'], [], self.gf.data['MENU_RECT'], VERTICAL_MOVES)
+        title.run()
+        self.selected = None
+        
+    def get_next_state(self):
+        return self.selected
+
+
+class GamePausedState(GameState):
+
+    def create(self, paused_state):
+        self.paused_state = paused_state
+        frame = Frame(self.screen, self.data['PAUSE_BOX_RECT'])
+        pause = GamePausedBox(frame, self.data['PAUSE_IMAGE'], 'Game paused - press any key', self.event_generator)
         pause.activate()
 
-    def is_game_over(self):
-        """Returns whether the game is running"""
-        if self.players == []:
-            return True
-        for p in self.players:
-            if p.game_over:
-                return True
+    def get_next_state(self):
+        return self.paused_state
 
-    def activate(self):
-        """Manages the entire game."""
-        self.events.add_updateable(self)
-        self.events.event_loop()
-        self.events.remove_updateable(self)
 
+class GameOverState(GameState):
+
+    def create(self, text, final_score):
+        """Displays the game over box for some time."""
+        self.final_score = final_score
+        frame = Frame(self.screen, self.data['GAME_OVER_RECT'])
+        game_over = GameOverBox(frame, self.data['GAME_OVER_IMAGE'], text, \
+                    self.data['GAME_OVER_DELAY'], self.data['GAME_OVER_OFFSET'], \
+                    self.data['GAME_OVER_COLOR'], DEMIBOLD_BIG)
+        game_over.activate()
+
+    def get_next_state(self):
+        return HighscoreState(self.gf, self.final_score)
+
+
+class HighscoreState(GameState):
+
+    def create(self, new_score):
+        """
+        Display high score list and gets a name if the score is high enough.
+        """
+        self.screen.clear()
+        frame = Frame(self.screen, self.data['HIGHSCORE_RECT'])
+        hs = HighscoreList(self.data['HIGHSCORE_FILE'])
+        hs = HighscoreBox(frame, self.event_generator, hs, self.data['HIGHSCORE_IMAGE'], self.data['HIGHSCORE_TEXTPOS'])
+        hs.enter_score(new_score)
+        hs.activate()
+
+    def get_next_state(self):
+        return TitleScreenState(self.gf)
+
+
+def run_game(self, initial_state):
+    state = initial_state
+    while state:
+        state.run()
+        state = state.get_next_state()
