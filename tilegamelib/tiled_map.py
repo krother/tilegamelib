@@ -12,7 +12,7 @@ class TiledMap:
         self.tile_factory = tile_factory
         self.offset = Vector(0, 0)
         self.map_pos = Vector(0, 0)
-        self.map_size = Vector(0, 0)
+        self.size = Vector(0, 0)
         self.map = []
         self.mapsurf = None
         
@@ -24,7 +24,7 @@ class TiledMap:
     @property
     def map_size_px(self):
         """size of the map in pixels (x,y)."""
-        return self.map_size * self.tile_factory.tile_size.x
+        return self.size * self.tile_factory.tile_size.x
     
     @property
     def win_size(self):
@@ -50,8 +50,8 @@ class TiledMap:
 
     def check_position(self, pos):
         """Checks if the given position is on the map."""
-        if 0 <= pos.x < self.map_size.x and\
-           0 <= pos.y < self.map_size.y:
+        if 0 <= pos.x < self.size.x and\
+           0 <= pos.y < self.size.y:
             return True
 
     def at(self, pos):
@@ -65,8 +65,8 @@ class TiledMap:
         the given numpy 2D vector.
         """
         newpos = self.map_pos + vector
-        if 0 <= newpos.x <= self.map_size.x-self.win_size.x and\
-           0 <= newpos.y <= self.map_size.y-self.win_size.y:
+        if 0 <= newpos.x <= self.size.x-self.win_size.x and\
+           0 <= newpos.y <= self.size.y-self.win_size.y:
             return True
 
     def zoom_to(self, pos):
@@ -88,14 +88,14 @@ class TiledMap:
         """Creates a 2D map with tiles from a multiline string."""
         rows = data.replace('\r', '').strip().split('\n')
         self.fill_map(len(rows[0]), len(rows), '.')
-        for x in range(self.map_size.x):
-            for y in range(self.map_size.y):
+        for x in range(self.size.x):
+            for y in range(self.size.y):
                 self.map[x][y] = rows[y][x]
         self.cache_map()
 
     def fill_map(self, xsize, ysize, char):
         """Creates an empty map."""
-        self.map_size = Vector(xsize, ysize)
+        self.size = Vector(xsize, ysize)
         self.map = [[char for y in range(ysize)] for x in range(xsize)]
 
     def draw(self):
@@ -115,8 +115,8 @@ class TiledMap:
     def cache_map(self):
         """Creates a static bitmap for a 2D map that is faster."""
         self.mapsurf = pygame.Surface(tuple(self.map_size_px))
-        for x in range(self.map_size.x):
-            for y in range(self.map_size.y):
+        for x in range(self.size.x):
+            for y in range(self.size.y):
                 tile = self.get_tile(Vector(x, y))
                 pos = Vector(tile.size.x*x, tile.size.y*y)
                 tile.draw(self.mapsurf,pos)

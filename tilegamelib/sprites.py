@@ -38,9 +38,10 @@ class Sprite:
 
     def get_next_move(self):
         """Pull next move from the queue"""
-        self.direction = self.path.pop(0)
-        start_vector = self.pos * self.size.x
-        self._move = Move(self.frame, self.tile, start_vector, self.direction*self.speed, steps=self.size.x//self.speed)
+        if self.path:
+            self.direction = self.path.pop(0)
+            start_vector = self.pos * self.size.x
+            self._move = Move(self.frame, self.tile, start_vector, self.direction*self.speed, steps=self.size.x//self.speed)
 
     @property
     def finished(self):
