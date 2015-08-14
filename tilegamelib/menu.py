@@ -38,6 +38,7 @@ class MenuBox:
         """Handles selecting things in the menu."""
         callback = self.menu[self.active][1]
         callback()
+        self.deactivate()
              
     def prev_item(self):
         self.active -= 1

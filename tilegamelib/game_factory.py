@@ -1,22 +1,19 @@
 
-
 from screen import Screen
 from frame import Frame
 from tiles import TileFactory
 from events import EventGenerator, QUIT_EVENT
 from menu import VERTICAL_MOVES
-
 from title_screen import TitleScreen
 from game_paused import GamePausedBox
 from game_over import GameOverBox
 from highscores import HighscoreBox, HighscoreList
-
 from vector import Vector
 from sounds import MusicPlayer, EffectPlayer
 from settings import read_settings, DEMIBOLD_BIG
-
 import pygame
 from pygame.rect import Rect
+
 
 class GameFactory:
     '''

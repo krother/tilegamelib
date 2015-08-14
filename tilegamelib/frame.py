@@ -1,7 +1,10 @@
 
 from vector import Vector
 from pygame import Rect
+import pygame
 
+pygame.font.init()
+DEMIBOLD_BIG = pygame.font.Font('data/LucidaSansDemiBold.ttf', 20)
 DEFAULT_COLOR = GREEN = (128, 255, 128, 0)
 
 class Frame:
@@ -35,7 +38,7 @@ class Frame:
         destrect = self.get_dest_rect(rect)
         self.screen.blit(bitmap, destrect, sourcerect)
 
-    def print_text(self, text, pos, font=None, color=DEFAULT_COLOR):
+    def print_text(self, text, pos, font=DEMIBOLD_BIG, color=DEFAULT_COLOR):
         """Writes text on the screen."""
         font = font or self.font
         color = color or self.color

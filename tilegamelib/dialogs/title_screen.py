@@ -1,8 +1,10 @@
 
-from frame import Frame
-from basic_boxes import ImageBox
-from menu import TextMenuBox
+from tilegamelib.frame import Frame
+from tilegamelib.basic_boxes import ImageBox
+from tilegamelib.menu import TextMenuBox
+from tilegamelib.events import EventGenerator
 import pygame
+
 
 class TitleScreen:
     """Shows title image and menu."""
@@ -24,14 +26,14 @@ class TitleScreen:
         self.screen.clear()
         self.menu.draw()
         self.events.event_loop()
-        self.menu.deactivate()
+        #self.menu.deactivate()
         self.events.remove_callback(self)
 
 
-def show_title_screen():
+def show_title_screen(screen, rect, image, menu, menu_rect, moves):
     # self.settings.KEY_REPEAT = self.settings.MENU_KEY_REPEAT
-    self.title = TitleScreen(self.gf.screen, self.events, \
-        self.gf.data['TITLE_RECT'], self.gf.data['TITLE_IMAGE'], \
-        [], self.gf.data['MENU_RECT'], VERTICAL_MOVES)
+    events = EventGenerator()
+    title = TitleScreen(screen, events, rect, image, menu, menu_rect, moves)
     title.run()
-    
+    screen.clear()
+    pygame.display.update()

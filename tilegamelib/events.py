@@ -130,10 +130,3 @@ class EventGenerator:
                 callback.update()
             self.cleanup_listeners()
             pygame.time.delay(self.game_delay)
-
-    def run_dialog(callback, listener):
-        self.add_listener(listener)
-        self.add_callback(callback)
-        self.event_loop()
-        self.remove_listener(listener)
-        self.remove_callback(callback)

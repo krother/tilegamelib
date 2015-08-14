@@ -1,9 +1,15 @@
 
-from basic_boxes import ImageBox
+from tilegamelib.basic_boxes import ImageBox
+from tilegamelib.frame import Frame
+from tilegamelib.events import EventGenerator
 from tilegamelib.vector import Vector
-from event_listener import TextEnteringListener, AnyKeyListener
+from tilegamelib.event_listener import TextEnteringListener, AnyKeyListener
 import pygame
-from settings import DEMIBOLD_BIG, BLUE
+
+
+pygame.font.init()
+DEMIBOLD_BIG = pygame.font.Font('data/LucidaSansDemiBold.ttf', 20)
+BLUE    = (128, 128, 255, 0)
 
 
 class HighscoreList:
@@ -117,13 +123,17 @@ class HighscoreBox:
         self.egen.remove_callback(self)
 
 
-def display_highscores(new_score):
+def show_highscores(new_score, screen, rect, filename, image, textpos):
     """
     Display high score list and gets a name if the score is high enough.
     """
-    self.screen.clear()
-    frame = Frame(self.screen, self.data['HIGHSCORE_RECT'])
-    hs = HighscoreList(self.data['HIGHSCORE_FILE'])
-    hs = HighscoreBox(frame, self.event_generator, hs, self.data['HIGHSCORE_IMAGE'], self.data['HIGHSCORE_TEXTPOS'])
+    screen.clear()
+    frame = Frame(screen, rect)
+    events = EventGenerator()
+    hs = HighscoreList(filename)
+    hs = HighscoreBox(frame, events, hs, image, textpos)
     hs.enter_score(new_score)
     hs.activate()
+    screen.clear()
+    pygame.display.update()
+
