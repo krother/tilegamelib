@@ -1,141 +1,291 @@
 #! /usr/bin/python
 
-from tilegamelib.vector import UP, DOWN, LEFT, RIGHT
 from tilegamelib.frame import Frame
-from tilegamelib.game import Game, GameApp
-from tilegamelib.sprites import Sprite, SpriteList
-from tilegamelib.tiled_map import MoveableTiledMap
-from tilegamelib.basic_boxes import DictBox, LifeDisplay
-from pac_settings import PacSettings
-from pac_levels import LEVELS
-from pac_sprites import Pac, Ghost
+from tilegamelib.sprites import Sprite
+from tilegamelib.tile_factory import TileFactory
+from tilegamelib.tiled_map import TiledMap
+from tilegamelib.basic_boxes import DictBox
+from tilegamelib.bar_display import BarDisplay
+from tilegamelib.events import EventGenerator
+from tilegamelib.event_listener import EventListener
+from tilegamelib.sprites import Sprite
+from tilegamelib.game import Game
+from tilegamelib.vector import Vector, UP, DOWN, LEFT, RIGHT
+from pygame import Rect, K_LEFT, K_RIGHT, K_UP, K_DOWN, K_ESCAPE
 import random
 import pygame
+import time
 
 ONE_PLAYER_START_DELAY = 10
 
 
+LEVEL = """####################
+#.****************e#
+#*#*#####**#####*#*#
+#*#******cc******#*#
+#*#*#####**#####*#*#
+#******************#
+#*##*###*f**###*##*#
+#*##*###*f**###*##*#
+#******************#
+#*#*###**##**##*##*#
+#e****************e#
+####################"""
+
+PAC_START = Vector(1, 1)
+GHOST_POSITIONS = [Vector(18, 1),
+                   Vector(18, 10),
+                   Vector(1, 10)]
+
+PAC_TILES = {
+    UP: 'b.pac_up',
+    DOWN: 'b.pac_down',
+    LEFT: 'b.pac_left',
+    RIGHT: 'b.pac_right'
+    }
+
+GHOST_TILE = 'b.ghost'
+
+
 class PacLevel:
-    
-    def __init__(self, frame, factory, pac_player):
-        self.map = MoveableTiledMap(frame, factory)
-        frame = Frame(self, Rect(10, 425, 100,32))
-        self.sprites = SpriteList()
-        self.level = None
-        self.collided = False
-        self.player = pac_player
-        self.mode = None
 
-    @property
-    def ghosts(self):
-        return self.sprites[1:]
+    def __init__(self, data, tmap):
+        self.tmap = tmap
+        self.tmap.set_map(str(data))
+        self.tmap.cache_map()
+        self.dots_left = data.count("*")
 
-    def create_ghosts(self):
-        for gp in self.level.ghost_positions:
-            ghost = Ghost(self.context, gp, self.map)
-            self.sprites.append(ghost)
+    def at(self, pos):
+        return self.tmap.at(pos)
 
-    def check_collision(self):
-        if self.player.collision(self.ghosts):
-            self.mode = self.update_finish_move
-            self.collided = True
+    def remove_dot(self, pos):
+        tile = self.at(pos)
+        if tile != '.':
+            self.tmap.set_tile(pos, '.')
+            self.tmap.cache_map()
+            if tile == '*':
+                self.dots_left -= 1
 
-    def update_die(self):
-        """finish movements"""
-        if not self.sprites.is_moving():
-            self.draw()
-            pygame.display.update()
-            time.sleep(1)
-            if self.pac.lives == 0:
-                self.game_over = True
-            else:
-                self.master.reset_level()
-                
-    def update_level_complete(self):
-        """finish movements"""
-        if not self.sprites.is_moving():
-            self.draw()
-            pygame.display.update()
-            time.sleep(1)
-            self.master.level_complete()
-
-    def update_ingame(self):
-        self.check_collision()
-        if not self.collided:
-            for ghost in self.ghosts:
-                ghost.keep_moving()
-        self.check_collision()
-        if self.pac.dots_eaten == self.dots_total:
-            self.mode = self.update_level_complete
-        
-    def update(self):
-        """Main game loop. Links to logic functions."""
-        self.map.update()
-        self.sprites.update()
-        if self.mode:
-            self.mode()
-        
     def draw(self):
-        """Draws the 2D map and sprites."""
-        self.map.draw()
-        self.sprites.draw()
-            
+        self.tmap.draw()
+    
+
+class Ghost:
+
+    def __init__(self, frame, tile_factory, pos, level):
+        tile = tile_factory.get(GHOST_TILE)
+        self.sprite = Sprite(frame, tile, pos, speed=2)
+        self.level = level
+        self.direction = None
+        self.set_random_direction()
+
+    def get_possible_moves(self):
+        result = []
+        directions = [LEFT, RIGHT, UP, DOWN]
+        for vector in directions:
+            if vector * -1 != self.direction:
+                newpos = self.sprite.pos + vector
+                tile = self.level.at(newpos)
+                if tile != '#':
+                    result.append(vector)
+        if not result:
+            result =[self.direction * -1]
+        return result
+
+    def set_random_direction(self):
+        moves = self.get_possible_moves()
+        i = random.randint(0, len(moves)-1)
+        self.direction = moves[i]
+        
+    def move(self):
+        if self.sprite.finished: 
+            self.set_random_direction()
+            self.sprite.add_move(self.direction)
+        else:
+            self.sprite.move()
+
+    def update(self):
+        self.move()
+
+    def draw(self):
+        if self.sprite.finished:
+            self.sprite.draw()
+
+
+class Pac:
+        
+    def __init__(self, frame, tile_factory, pos, level):
+        self.level = level
+        self.tile_factory = tile_factory
+        tile = tile_factory.get('b.pac_right')
+        self.sprite = Sprite(frame, tile, pos, speed=4)
+        self.eaten = None
+        self.score = 0
+
+    def set_direction(self, direction):
+        self.sprite.tile = self.tile_factory.get(PAC_TILES[direction])
+
+    def move(self, direction):
+        if not self.sprite.finished:
+            return
+        newpos = self.sprite.pos + direction
+        self.set_direction(direction)
+        tile = self.level.at(newpos)
+        if tile != '#':
+            self.sprite.add_move(direction, when_finished=self.try_eating)
+
+    def try_eating(self):
+        tile = self.level.at(self.sprite.pos)
+        if tile != '.':
+            self.level.remove_dot(self.sprite.pos)
+            if tile == '*':
+                self.score += 100
+            else:
+                self.score += 1000
+            self.eaten = tile
+
+    def update(self):
+        """Try eating dots and fruit"""
+        if not self.sprite.finished:
+            self.sprite.move()
+
+    def draw(self):
+        self.sprite.draw()
+
+    def collision(self, sprites):
+        for sprite in sprites:
+            if self.sprite.pos == sprite.sprite.pos:
+                return True
+
+    def left(self):
+        self.move(LEFT)
+
+    def right(self):
+        self.move(RIGHT)
+        
+    def up(self):
+        self.move(UP)
+
+    def down(self):
+        self.move(DOWN)
+
 
 class PacGame:
 
-    def __init__(self):
+    def __init__(self, screen):
+        self.screen = screen
+        self.frame = Frame(self.screen, Rect(10, 10, 640, 512))
+        self.tile_factory = TileFactory('data/tiles.conf')
+
+        self.level = None
+        self.pac = None
+        self.ghosts = []
         self.status_box = None
+        self.events = None
 
-    def start_level(self, level):
-        self.level = level
-        self.map.fill_map(level)
-        self.reset_level()
-
-    def reset_level(self):
-        self.sprites = SpriteList()
-        self.lives.draw()
+        self.create_level()
         self.create_pac()
         self.create_ghosts()
-        self.mode = self.update_ingame
+        self.create_status_box()
+        frame = Frame(self.screen, Rect(660, 220, 200, 200))
+        self.lives = BarDisplay(frame, self.tile_factory, 3, 'p')
 
-    @property
-    def level(self):
-        return self.status_box.data['level']
+        self.collided = False
+        self.mode = None
+        self.update_mode = self.update_ingame
 
-    def level_complete(self):
-        self.status_box.data['level'] += 1
-        if self.level > len(LEVELS):
-            self.game_over_text = 'All levels complete!'
-            self.terminate()
-        else:
-            self.players[0].start_level(LEVELS[self.level-1])
-        
-    def terminate(self):
-        if self.players:
-            self.highscore = self.players[0].score
-        Game.terminate(self)
+    def create_level(self):
+        tmap = TiledMap(self.frame, self.tile_factory)
+        self.level = PacLevel(LEVEL, tmap)
 
-    def draw(self):
-        Game.draw(self)
-        self.status_box.draw()
+    def create_pac(self):
+        start_pos = Vector(5, 5)
+        self.pac = Pac(self.frame, self.tile_factory, PAC_START, self.level)
+        self.pac.set_direction(RIGHT)
 
-    def create_players(self):
-        frame = Frame(self, np.array([660,20]), np.array([200,200]))
+    def create_ghosts(self):
+        self.ghosts = []
+        for pos in GHOST_POSITIONS:
+            self.ghosts.append(Ghost(self.frame, self.tile_factory, pos, self.level))
+
+    def reset_level(self):
+        self.pac.sprite.pos = PAC_START
+        self.create_ghosts()
+
+    def create_status_box(self):
+        frame = Frame(self.screen, Rect(660, 20, 200, 200))
         data = {
             'score': 0,
             'level':1,
             }
         self.status_box = DictBox(frame, data)
-        frame = Frame(self, np.array([10, 10]), np.array([640,512]))
-        self.players.append(PacBox(frame, self))
-        self.players[0].start_level(LEVELS[self.level-1])
 
-    def main(self):
-        pass
+    def check_collision(self):
+        if self.pac.collision(self.ghosts):
+            self.update_mode = self.update_die
+            self.collided = True
 
+    def update_die(self):
+        """finish movements"""
+        if self.pac.sprite.finished:
+            time.sleep(1)
+            self.lives.decrease()
+            if self.lives.value == 0:
+                self.exit()
+            else:
+                self.reset_level()
+                self.update_mode = self.update_ingame
+                
+    def update_level_complete(self):
+        """finish movement"""
+        if self.pac.sprite.finished:
+            time.sleep(1)
+            self.exit()
+        
+    def update_ingame(self):
+        self.check_collision()
+        if self.pac.eaten:
+            self.status_box.data['score'] = self.pac.score
+            self.pac.eaten = None
+            self.score = self.pac.score
+        if self.level.dots_left == 0:
+            self.update_mode = self.update_level_complete
+        
+
+    def update(self):
+        self.update_mode()
+        self.level.draw()
+        self.pac.update()
+        self.pac.draw()
+        for g in self.ghosts:
+            g.update()
+            g.draw()
+        self.status_box.draw()
+        pygame.display.update()
+        self.check_collision()
+        time.sleep(0.005)
+
+    def exit(self):
+        self.events.exit_signalled()
+
+    def get_listener(self):
+        listener = EventListener(keymap = {
+            K_LEFT: self.pac.left,
+            K_RIGHT: self.pac.right,
+            K_UP: self.pac.up,
+            K_DOWN: self.pac.down,
+            K_ESCAPE: self.exit
+            })
+        return listener
+
+    def run(self):
+        self.mode = self.update_ingame
+        self.events = EventGenerator()
+        self.events.add_listener(self.get_listener())
+        self.events.add_callback(self)
+        self.events.event_loop()
 
 
 if __name__ == '__main__':
-    pac = PacGame()
-    pac.main()
-
+    game = Game('data/pac.conf', PacGame)
+    game.run()
