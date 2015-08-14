@@ -1,14 +1,3 @@
-#!/usr/bin/env python
-#
-# Copyright 2010 Kristian Rother
-#
-# All rights reserved.
-# Please see the LICENSE file that should have been included
-# as part of this package.
-
-__author__="Kristian Rother"
-__email__ ="krother@rubor.de"
-
 
 from basic_boxes import ImageBox
 from tilegamelib.vector import Vector
@@ -128,3 +117,13 @@ class HighscoreBox:
         self.egen.remove_callback(self)
 
 
+def display_highscores(new_score):
+    """
+    Display high score list and gets a name if the score is high enough.
+    """
+    self.screen.clear()
+    frame = Frame(self.screen, self.data['HIGHSCORE_RECT'])
+    hs = HighscoreList(self.data['HIGHSCORE_FILE'])
+    hs = HighscoreBox(frame, self.event_generator, hs, self.data['HIGHSCORE_IMAGE'], self.data['HIGHSCORE_TEXTPOS'])
+    hs.enter_score(new_score)
+    hs.activate()

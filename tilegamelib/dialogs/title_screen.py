@@ -27,3 +27,11 @@ class TitleScreen:
         self.menu.deactivate()
         self.events.remove_callback(self)
 
+
+def show_title_screen():
+    # self.settings.KEY_REPEAT = self.settings.MENU_KEY_REPEAT
+    self.title = TitleScreen(self.gf.screen, self.events, \
+        self.gf.data['TITLE_RECT'], self.gf.data['TITLE_IMAGE'], \
+        [], self.gf.data['MENU_RECT'], VERTICAL_MOVES)
+    title.run()
+    

@@ -1,14 +1,3 @@
-#!/usr/bin/env python
-#
-# Copyright 2010 Kristian Rother
-#
-# All rights reserved.
-# Please see the LICENSE file that should have been included
-# as part of this package.
-
-__author__="Kristian Rother"
-__email__ ="krother@rubor.de"
-
 
 from basic_boxes import ImageBox, TextBox
 from events import EventGenerator
@@ -43,3 +32,9 @@ class GamePausedBox:
         pygame.display.update()
         self.egen.event_loop()
 
+
+def pause_game(paused_state):
+    self.paused_state = paused_state
+    frame = Frame(self.screen, self.data['PAUSE_BOX_RECT'])
+    pause = GamePausedBox(frame, self.data['PAUSE_IMAGE'], 'Game paused - press any key', self.event_generator)
+    pause.activate()
