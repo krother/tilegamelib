@@ -1,15 +1,4 @@
 
-import numpy as np
-
-class PacLevel:
-
-    def __init__(self, level, pac_pos, ghost_positions):
-        self.level = level
-        self.pac_start_pos = pac_pos
-        self.ghost_start_positions = ghost_positions
-        self.dots_total = 0
-        self.dots_left = level.level.count("a")
-
 LEVELS = [
     PacLevel("""####################
 #.aaaaaaaaaaaaaaaae#
