@@ -30,7 +30,8 @@ MOVE_OK = 1
 MOVE_CRASH = 2
 HEAD_SPEED = 4
 
-TILE_SYNONYMS = [('#','b.wall'),('.','b.empty'),
+TILE_SYNONYMS = [
+                ('#','b.wall'),('.','b.empty'),
                 ('a','f.banana'),('b','f.orange'),
                 ('c','f.melon'),('d','f.pineapple'),
                 ('e','f.winogrona'),('f','f.cherry'),

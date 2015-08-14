@@ -7,12 +7,10 @@ from tilegamelib.vector import Vector, UP, DOWN, LEFT, RIGHT
 from tilegamelib.map_move import MapMove
 from tilegamelib.move import Move, wait_for_move
 from tilegamelib.move_group import MoveGroup
-from tilegamelib.menu import VERTICAL_MOVES
 from tilegamelib.sprites import Sprite
 from tilegamelib.events import EventGenerator
 from tilegamelib.event_listener import EventListener
-from tilegamelib.dialogs.title_screen import show_title_screen
-from tilegamelib.dialogs.highscores import show_highscores
+from tilegamelib.game import Game
 from pygame import Rect
 from random import randint
 from pygame import K_RETURN, K_SPACE, K_LEFT, K_RIGHT, K_UP, K_DOWN, K_ESCAPE
@@ -94,42 +92,7 @@ class CollectFruit:
         self.events.event_loop()
 
 
-class Game:
-
-    def __init__(self):
-        self.screen = Screen(Vector(800, 550), 'data/background.png')
-        self._exit = False
-
-    def play(self):
-        game = CollectFruit(self.screen)
-        game.run()
-        score = game.score
-        show_highscores(game.score, self.screen, \
-                rect = Rect(200, 100, 800,550),
-                filename = 'data/fruit_scores.txt',
-                image = 'data/background.png',
-                textpos = Vector(0, 0),
-                )
-
-    def exit(self):
-        self._exit = True
-
-    def run(self):
-        while not self._exit:
-            print self._exit
-            show_title_screen(self.screen, \
-                Rect(0,0, 750,550),
-                'data/title.png',
-                [
-                    ('play', self.play), 
-                    ('exit', self.exit)
-                ],
-                Rect(550, 380, 800, 550),
-                VERTICAL_MOVES,
-                )
-
-
 if __name__ == '__main__':
-    game = Game()
+    game = Game('data/collect_fruit.conf', CollectFruit)
     game.run()
 
