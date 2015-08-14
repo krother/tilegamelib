@@ -28,20 +28,25 @@ class Sprite:
         self._move = None
         self.direction = None
         self.speed = speed
+        self.callback = None
 
-    def add_move(self, direction, priority=False):
+    def add_move(self, direction, priority=False, when_finished=None):
         """Adds a move to the movement queue."""
         if priority:
-            self.path = [direction] + self.path
+            self.path = [(direction, when_finished)] + self.path
         else:
-            self.path.append(direction)
+            self.path.append((direction, when_finished))
 
     def get_next_move(self):
         """Pull next move from the queue"""
         if self.path:
-            self.direction = self.path.pop(0)
+            self.direction, when_finished = self.path.pop(0)
+            self.callback = when_finished
             start_vector = self.pos * self.size.x
-            self._move = Move(self.frame, self.tile, start_vector, self.direction*self.speed, steps=self.size.x//self.speed)
+            self._move = Move(self.frame, self.tile, start_vector, \
+                self.direction*self.speed, \
+                steps=self.size.x // self.speed, \
+                when_finished=self.finalize_move)
 
     @property
     def finished(self):
@@ -55,10 +60,14 @@ class Sprite:
             self.get_next_move()
         if self._move:
             self._move.move()
-            if self._move.finished:
-                self.pos += self.direction
-                self._move = None
-                self.direction = None
+
+    def finalize_move(self):
+        self.pos += self.direction
+        self._move = None
+        self.direction = None
+        if self.callback:
+            self.callback()
+            self.callback = None
     
     def draw(self):
         """Draw the sprite on the screen."""

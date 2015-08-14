@@ -12,7 +12,7 @@ class Move(object):
     """
     Moves a tile over a certain amount of steps in one direction.
     """
-    def __init__(self, frame, tile, start_vector=None, direction=None, steps=0):
+    def __init__(self, frame, tile, start_vector=None, direction=None, steps=0, when_finished=None):
         self.frame = frame
         self.tile = tile
         self.start_vector = start_vector or Vector(0, 0)
@@ -20,6 +20,7 @@ class Move(object):
         self.direction = direction or RIGHT
         self.current_vector = None
         self.finished = False
+        self.callback = when_finished
 
     def update_current_vector(self):
         if self.current_vector is None:
@@ -30,8 +31,10 @@ class Move(object):
         if self.steps > 0:
             self.update_current_vector()
             self.steps -= 1
-        else:
+        if self.steps <= 0:
             self.finished = True
+            if self.callback:
+                self.callback()
         self.tile.draw(self.frame, self.current_vector)
 
 def wait_for_move(move, screen=None, draw=None, delay=0.01):
