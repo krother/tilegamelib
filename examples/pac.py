@@ -108,8 +108,7 @@ class Ghost:
         self.move()
 
     def draw(self):
-        if self.sprite.finished:
-            self.sprite.draw()
+        self.sprite.draw()
 
 
 class Pac:

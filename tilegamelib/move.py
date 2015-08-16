@@ -37,6 +37,7 @@ class Move(object):
                 self.callback()
         self.tile.draw(self.frame, self.current_vector)
 
+
 def wait_for_move(move, screen=None, draw=None, delay=0.01):
     while not move.finished:
         if screen:
@@ -44,8 +45,8 @@ def wait_for_move(move, screen=None, draw=None, delay=0.01):
         if draw:
             draw()
         move.move()
-        time.sleep(delay)
         pygame.display.update()
+        time.sleep(delay)
 
 
 if __name__ == '__main__':

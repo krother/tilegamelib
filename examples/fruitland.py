@@ -1,9 +1,5 @@
 
-from tilegamelib.screen import Screen
-from tilegamelib.frame import Frame
-from tilegamelib.tile_factory import TileFactory
-from tilegamelib.tiled_map import TiledMap
-from tilegamelib.vector import Vector
+from tilegamelib import Screen, Frame, TileFactory, TiledMap, Vector
 from pygame import Rect
 import pygame
 import time
