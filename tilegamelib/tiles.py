@@ -1,7 +1,6 @@
 
-from vector import Vector
+from .vector import Vector
 from pygame import Rect, image
-from numpy import array
 
 
 class Tile:

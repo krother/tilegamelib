@@ -1,11 +1,11 @@
 
-from screen import Screen
-from frame import Frame
-from tile_factory import TileFactory
-from tiled_map import TiledMap
-from vector import Vector, UP, DOWN, LEFT, RIGHT
-from map_move import MapMove
-from move import wait_for_move
+from .screen import Screen
+from .frame import Frame
+from .tile_factory import TileFactory
+from .tiled_map import TiledMap
+from .vector import Vector, UP, DOWN, LEFT, RIGHT
+from .map_move import MapMove
+from .move import wait_for_move
 from pygame import Rect
 from random import randint
 import pygame

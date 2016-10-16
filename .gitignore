@@ -20,6 +20,7 @@ __pycache__/*
 *.egg
 .installed.cfg
 *.egg-info
+pygame/*
 
 # Unittest and coverage
 htmlcov/*

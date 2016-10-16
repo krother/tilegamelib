@@ -1,7 +1,7 @@
 
-from vector import Vector
-from frame import Frame
-from tiled_map import TiledMap
+from .vector import Vector
+from .frame import Frame
+from .tiled_map import TiledMap
 from pygame import Rect, image
 import pygame
 import time

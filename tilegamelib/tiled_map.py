@@ -1,5 +1,5 @@
 
-from vector import Vector
+from .vector import Vector
 import pygame
 
 class TiledMap:

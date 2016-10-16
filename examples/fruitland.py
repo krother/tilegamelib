@@ -29,7 +29,7 @@ if __name__ == '__main__':
     tm.set_map(fruitmap)
     tm.draw()
     pygame.display.update()
-    for i in range(0, 132, 2) + range(132, 0, -2):
+    for i in list(range(0, 132, 2)) + list(range(132, 0, -2)):
         tm.offset = Vector(i, i)
         screen.clear()
         tm.draw()

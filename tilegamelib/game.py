@@ -1,5 +1,5 @@
 
-from screen import Screen
+from .screen import Screen
 from pygame import Rect
 from tilegamelib.vector import Vector
 from tilegamelib.dialogs.title_screen import show_title_screen

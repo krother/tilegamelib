@@ -1,11 +1,10 @@
 
-from tilegamelib.screen import Screen
-from tilegamelib.frame import Frame
-from tilegamelib.tile_factory import TileFactory
-from tilegamelib.tiled_map import TiledMap
-from tilegamelib.vector import Vector, UP, DOWN, LEFT, RIGHT
-from tilegamelib.move import Move, wait_for_move
-from vector import Vector
+from .screen import Screen
+from .frame import Frame
+from .tile_factory import TileFactory
+from .tiled_map import TiledMap
+from .vector import Vector, UP, DOWN, LEFT, RIGHT
+from .move import Move, wait_for_move
 from pygame import Rect
 import pygame
 import time

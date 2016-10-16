@@ -11,6 +11,7 @@ from tilegamelib.event_listener import EventListener
 from pygame import Rect
 from random import randint
 from pygame import K_RETURN, K_SPACE, K_LEFT, K_RIGHT, K_UP, K_DOWN, K_ESCAPE
+from collections import Counter
 import pygame
 import time
 
@@ -58,23 +59,16 @@ class SlidingPuzzle:
     def exit(self):
         self.events.exit_signalled()
 
-    def same(self, row):
-        count = {}
-        for char in row:
-            count.setdefault(char, 0)
-            count[char] += 1
-        result = zip(count.values(), count.keys())
-        result.sort()
-        return result[-1][0]
+    def get_same(self, row):
+        counter = Counter(row)
+        return counter.most_common(1)[0][1]
 
     def check_complete(self):
         s = self.tm.get_map()
         rows = s.split('\n')
-        if self.same(rows[1]) == 4 \
-            and self.same(rows[2]) == 4 \
-            and self.same(rows[3]) == 4 \
-            and self.same(rows[4]) == 3:
-            print "Congratulations!"
+        same = [self.get_same(row) for row in rows[1:5]]
+        if sum(same) == 15:
+            print("\nCongratulations!\n")
             self.exit()
 
     def run(self):
@@ -93,6 +87,3 @@ class SlidingPuzzle:
 if __name__ == '__main__':
     puzzle = SlidingPuzzle()
     puzzle.run()
-            
-
-

@@ -1,8 +1,11 @@
 
 from pygame import Rect, image
-from vector import Vector
-from tiles import Tile
+from .vector import Vector
+from .tiles import Tile
+import json
 import os
+
+TILE_SIZE = (32, 32)
 
 
 class NoTileError(Exception): pass
@@ -20,12 +23,11 @@ class TileFactory:
     def parse_config(self, config_filename):
         path, fn = os.path.split(config_filename)
         self.path = path + os.sep
-        conf = open(config_filename).read()
-        exec(conf)
-        self.tile_size = Vector(TILE_SIZE[0], TILE_SIZE[1])
-        for tileset in TILESETS:
+        conf = json.loads(open(config_filename).read())
+        self.tile_size = Vector(conf['tile_size'][0], conf['tile_size'][1])
+        for tileset in conf['tilesets'].values():
             self.load_tiles(tileset)
-        self.add_tile_synonyms(SYNONYMS)
+        self.add_tile_synonyms(conf['synonyms'])
 
     def load_tiles(self, tileset):
         """Loads tile graphics from a file."""

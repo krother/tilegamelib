@@ -13,10 +13,23 @@ Distributed under the conditions of the Python license.
 tilegamelib makes it easier to create pygame-based games that have graphics consisting of small square-shaped tiles (think Sokoban, Pacman, Tetris, Atomix and their countless siblings).
 
 
-## Installation
+## Installation for development
 
-    pip install pygame
-    python setup.py install
+### 1. Setting up virtualenv
+
+    cd tilegamelib/
+    mkvirtualenv tilegamelib
+    setvirtualenvproject ~/.virtualenvs/tilegamelib/ .
+ 
+### 2. Installing pygame
+
+    hg clone https://bitbucket.org/pygame/pygame
+    cd pygame
+    python3 setup.py install --prefix="$HOME/.virtualenvs/tilegamelib"
+
+### 3. Installing tilegamelib
+
+    pip install --editable .
 
 
 ## Testing

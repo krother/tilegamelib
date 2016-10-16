@@ -86,7 +86,7 @@ class Boxes:
     def check_complete(self):
         s = self.tm.get_map()
         if s.count('X') == 4:
-            print "Congratulations!"
+            print("\nCongratulations!\n")
             time.sleep(2)
             self.exit()
 
