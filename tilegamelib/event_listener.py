@@ -1,5 +1,8 @@
 
+from .vector import Vector, UP, DOWN, LEFT, RIGHT
 from pygame import K_ESCAPE, K_RETURN, K_DELETE
+from pygame import K_LEFT, K_RIGHT, K_UP, K_DOWN
+
 
 class EventListener:
     """
@@ -72,3 +75,35 @@ class TextEnteringListener(EventListener):
             if self.upper:
                 self.text = self.text.upper()
             self.entered(self.text)
+
+
+
+ARROWS = [K_LEFT, K_RIGHT, K_UP, K_DOWN]
+
+class FigureMoveListener(EventListener):
+    """Moves a figure according to pressed keys"""
+    def __init__(self, callback, keys=ARROWS):
+        EventListener.__init__(self, keymap = {
+            keys[0]: self.left,
+            keys[1]: self.right,
+            keys[2]: self.up,
+            keys[3]: self.down,
+            })
+        self.callback = callback
+
+    def up(self):
+        self.callback(UP)
+
+    def down(self):
+        self.callback(DOWN)
+
+    def left(self):
+        self.callback(LEFT)
+
+    def right(self):
+        self.callback(RIGHT)
+
+
+class ExitListener(EventListener):
+    def __init__(self, callback):
+        EventListener.__init__(self, keymap = {K_ESCAPE: callback})

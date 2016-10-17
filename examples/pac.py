@@ -1,17 +1,16 @@
 #! /usr/bin/python
 
-from tilegamelib.frame import Frame
+from tilegamelib import Screen, Frame, Vector, TileFactory, TiledMap
+from tilegamelib import EventGenerator, ExitListener, FigureMoveListener
 from tilegamelib.sprites import Sprite
-from tilegamelib.tile_factory import TileFactory
-from tilegamelib.tiled_map import TiledMap
 from tilegamelib.basic_boxes import DictBox
 from tilegamelib.bar_display import BarDisplay
 from tilegamelib.events import EventGenerator
-from tilegamelib.event_listener import EventListener
 from tilegamelib.sprites import Sprite
 from tilegamelib.game import Game
-from tilegamelib.vector import Vector, UP, DOWN, LEFT, RIGHT
-from pygame import Rect, K_LEFT, K_RIGHT, K_UP, K_DOWN, K_ESCAPE
+from tilegamelib.draw_timer import draw_timer
+from tilegamelib.vector import UP, DOWN, LEFT, RIGHT
+from pygame import Rect
 import random
 import pygame
 import time
@@ -156,18 +155,6 @@ class Pac:
             if self.sprite.pos == sprite.sprite.pos:
                 return True
 
-    def left(self):
-        self.move(LEFT)
-
-    def right(self):
-        self.move(RIGHT)
-        
-    def up(self):
-        self.move(UP)
-
-    def down(self):
-        self.move(DOWN)
-
 
 class PacGame:
 
@@ -250,8 +237,7 @@ class PacGame:
         if self.level.dots_left == 0:
             self.update_mode = self.update_level_complete
         
-
-    def update(self):
+    def draw(self):
         self.update_mode()
         self.level.draw()
         self.pac.update()
@@ -264,25 +250,13 @@ class PacGame:
         self.check_collision()
         time.sleep(0.005)
 
-    def exit(self):
-        self.events.exit_signalled()
-
-    def get_listener(self):
-        listener = EventListener(keymap = {
-            K_LEFT: self.pac.left,
-            K_RIGHT: self.pac.right,
-            K_UP: self.pac.up,
-            K_DOWN: self.pac.down,
-            K_ESCAPE: self.exit
-            })
-        return listener
-
     def run(self):
         self.mode = self.update_ingame
         self.events = EventGenerator()
-        self.events.add_listener(self.get_listener())
-        self.events.add_callback(self)
-        self.events.event_loop()
+        self.events.add_listener(FigureMoveListener(self.pac.move))
+        self.events.add_listener(ExitListener(self.events.exit_signalled))
+        with draw_timer(self, self.events):
+            self.events.event_loop()
 
 
 if __name__ == '__main__':

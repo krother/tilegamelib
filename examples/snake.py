@@ -1,17 +1,14 @@
 #! /usr/bin/python
 
+from tilegamelib import Screen, Frame, Vector, TileFactory, TiledMap
+from tilegamelib import EventGenerator, ExitListener, FigureMoveListener
 from tilegamelib.vector import Vector, UP, DOWN, LEFT, RIGHT
-from tilegamelib.frame import Frame
 from tilegamelib.game import Game
 from tilegamelib.sprites import Sprite
 from tilegamelib.basic_boxes import DictBox
-from tilegamelib.tile_factory import TileFactory
-from tilegamelib.tiled_map import TiledMap
-from tilegamelib.events import EventGenerator
-from tilegamelib.event_listener import EventListener
-from tilegamelib.draw_timer import DrawTimer
+from tilegamelib.draw_timer import draw_timer
 from pygame.locals import USEREVENT
-from pygame import Rect, K_LEFT, K_RIGHT, K_UP, K_DOWN, K_ESCAPE
+from pygame import Rect
 import random
 import time
 import pygame
@@ -151,18 +148,6 @@ class SnakeSprite:
             if len(self.tail) > 0:
                 self.past_directions = [self.direction] + self.past_directions[:-1]
 
-    def left(self):
-        self.set_direction(LEFT)
-
-    def right(self):
-        self.set_direction(RIGHT)
-        
-    def up(self):
-        self.set_direction(UP)
-
-    def down(self):
-        self.set_direction(DOWN)
-        
 
 class SnakeGame:
 
@@ -232,29 +217,13 @@ class SnakeGame:
         self.status_box.draw()
         pygame.display.update()
 
-
-    def exit(self):
-        self.events.exit_signalled()
-
-    def get_listener(self):
-        listener = EventListener(keymap = {
-            K_LEFT: self.snake.left,
-            K_RIGHT: self.snake.right,
-            K_UP: self.snake.up,
-            K_DOWN: self.snake.down,
-            K_ESCAPE: self.exit
-            })
-        return listener
-
     def run(self):
         self.events = EventGenerator()
-        self.events.add_listener(self.get_listener())
-        #self.events.add_callback(self)
-        draw_timer = DrawTimer(self.events)
-        draw_timer.callbacks.append(self)
-        draw_timer.start_timer()
-        self.events.event_loop()
-        draw_timer.stop_timer()
+
+        self.events.add_listener(FigureMoveListener(self.snake.set_direction))
+        self.events.add_listener(ExitListener(self.events.exit_signalled))
+        with draw_timer(self, self.events):
+            self.events.event_loop()
 
 if __name__ == '__main__':
     game = Game('data/snake.conf', SnakeGame)

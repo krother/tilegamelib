@@ -1,13 +1,21 @@
 
 from pygame.locals import USEREVENT
 import pygame
+from contextlib import contextmanager
+
+@contextmanager
+def draw_timer(callback, event_generator, delay=20, draw_event=USEREVENT):
+    dt = DrawTimer(callback, event_generator, delay, draw_event)
+    dt.start_timer()
+    yield
+    dt.stop_timer()
 
 
 class DrawTimer:
 
-    def __init__(self, event_generator, delay=20, draw_event=USEREVENT):
+    def __init__(self, callback, event_generator, delay=20, draw_event=USEREVENT):
         self.egen = event_generator
-        self.callbacks = []
+        self.callbacks = [callback]
         self.draw_event = draw_event
         self.delay = delay
 

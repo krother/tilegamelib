@@ -1,15 +1,13 @@
 #! /usr/bin/python
 
-from tilegamelib.vector import Vector, UP, DOWN, LEFT, RIGHT
-from tilegamelib.frame import Frame
+from tilegamelib import Screen, Frame, Vector, TileFactory, TiledMap
+from tilegamelib import EventGenerator, ExitListener, FigureMoveListener
 from tilegamelib.game import Game
 from tilegamelib.sprites import Sprite
 from tilegamelib.basic_boxes import DictBox
-from tilegamelib.tile_factory import TileFactory
-from tilegamelib.tiled_map import TiledMap
-from tilegamelib.events import EventGenerator
-from tilegamelib.event_listener import EventListener
-from pygame import Rect, K_LEFT, K_RIGHT, K_UP, K_DOWN, K_ESCAPE
+from tilegamelib.vector import DOWN, UP, LEFT, RIGHT
+from tilegamelib.draw_timer import draw_timer
+from pygame import Rect
 import random
 import time
 import pygame
@@ -90,8 +88,7 @@ class SpaceshipSprite:
     def draw(self):
         if self.is_moving():
             self.sprite.move()
-        else:
-            self.sprite.draw()
+        self.sprite.draw()
             
     @property
     def position(self):
@@ -105,18 +102,6 @@ class SpaceshipSprite:
             self.crashed = True
         elif tile == "@":
             self.finished = True
-        
-    def left(self):
-        self.set_direction(LEFT)
-
-    def right(self):
-        self.set_direction(RIGHT)
-        
-    def up(self):
-        self.set_direction(UP)
-
-    def down(self):
-        self.set_direction(DOWN)
         
 
 class SpaceRaceGame:
@@ -175,7 +160,7 @@ class SpaceRaceGame:
             self.update_mode = self.update_finish_moves
             self.score = 1000;
 
-    def update(self):
+    def draw(self):
         self.update_mode()
         self.level.draw()
         self.spaceship.draw()
@@ -183,24 +168,12 @@ class SpaceRaceGame:
         pygame.display.update()
         time.sleep(0.01)
 
-    def exit(self):
-        self.events.exit_signalled()
-
-    def get_listener(self):
-        listener = EventListener(keymap = {
-            K_LEFT: self.spaceship.left,
-            K_RIGHT: self.spaceship.right,
-            K_UP: self.spaceship.up,
-            K_DOWN: self.spaceship.down,
-            K_ESCAPE: self.exit
-            })
-        return listener
-
     def run(self):
         self.events = EventGenerator()
-        self.events.add_listener(self.get_listener())
-        self.events.add_callback(self)
-        self.events.event_loop()
+        self.events.add_listener(FigureMoveListener(self.spaceship.set_direction))
+        self.events.add_listener(ExitListener(self.events.exit_signalled))
+        with draw_timer(self, self.events):
+            self.events.event_loop()
 
 if __name__ == '__main__':
     game = Game('data/snake.conf', SpaceRaceGame)
