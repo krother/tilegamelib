@@ -35,6 +35,8 @@ class Move(object):
             self.finished = True
             if self.callback:
                 self.callback()
+
+    def draw(self):
         self.tile.draw(self.frame, self.current_vector)
 
 

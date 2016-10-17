@@ -56,7 +56,7 @@ class DictBox(object):
         if self.labels:
             labels = self.labels
         else:
-            labels = self.data.keys()
+            labels = list(self.data.keys())
             labels.sort()
         for i,lab in enumerate(labels):
             pos = Vector(0, 20*i)

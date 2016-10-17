@@ -26,6 +26,7 @@ class EventGenerator:
         self.last_mouse_event = None
         self.listeners = []
         self.callbacks = []
+        self.user_events = {}
         self.event_queue = []
         
     def add_listener(self, listener):
@@ -117,6 +118,8 @@ class EventGenerator:
             self.key_released(event)
         elif event.type == QUIT:
             self.exit_signalled(event)
+        elif event.type in self.user_events:
+            self.user_events[event.type]()
 
     def event_loop(self):
         """

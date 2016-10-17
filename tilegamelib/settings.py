@@ -1,7 +1,7 @@
 
+from .vector import Vector
 import pygame.font
 from pygame.rect import Rect
-from vector import Vector
 from pygame import K_RETURN, K_SPACE, K_LEFT, K_RIGHT, K_UP, K_DOWN, K_ESCAPE
 
 # fonts

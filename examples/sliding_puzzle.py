@@ -16,9 +16,9 @@ import pygame
 import time
 
 PUZZLEMAP = """######
-#abcd#
-#dcba#
-#abcd#
+#abce#
+#ecba#
+#abce#
 #acb.#
 ######"""
 

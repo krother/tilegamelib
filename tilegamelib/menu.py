@@ -2,7 +2,7 @@
 from .vector import Vector
 from .event_listener import EventListener
 from pygame import K_ESCAPE, K_UP, K_DOWN, K_RETURN, K_SPACE, K_LEFT, K_RIGHT
-from settings import BLUE, WHITE
+from .settings import BLUE, WHITE
 
 VERTICAL_MOVES = [K_ESCAPE, K_UP, K_DOWN, K_RETURN, K_SPACE]
 HORIZONTAL_MOVES = [K_ESCAPE, K_LEFT, K_RIGHT, K_RETURN, K_SPACE]

@@ -74,6 +74,8 @@ class Sprite:
             pos = self.pos * self.size.x
             destrect = Rect(pos.x,pos.y,self.size.x,self.size.y)
             self.tile.draw(self.frame, destrect)
+        else:
+            self._move.draw()
     
 
 if __name__ == '__main__':

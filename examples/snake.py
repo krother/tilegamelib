@@ -9,12 +9,15 @@ from tilegamelib.tile_factory import TileFactory
 from tilegamelib.tiled_map import TiledMap
 from tilegamelib.events import EventGenerator
 from tilegamelib.event_listener import EventListener
+from tilegamelib.draw_timer import DrawTimer
+from pygame.locals import USEREVENT
 from pygame import Rect, K_LEFT, K_RIGHT, K_UP, K_DOWN, K_ESCAPE
 import random
 import time
 import pygame
 
 MOVE_DELAY = 15
+
 
 LEVEL = """####################
 #..................#
@@ -111,12 +114,13 @@ class SnakeSprite:
         self.head.tile = self.tile_factory.get(headtile)
          
     def draw(self):
+        for s in self.sprites:
+            s.draw()
+
+    def move(self):
         if self.is_moving():
             for s in self.sprites:
                 s.move()
-        else:
-            for s in self.sprites:
-                s.draw()
             
     @property
     def positions(self):
@@ -179,7 +183,6 @@ class SnakeGame:
         self.update_mode = self.update_ingame
         self.move_delay = MOVE_DELAY
         self.delay = MOVE_DELAY
-        # KEY_REPEAT = GAME_KEY_REPEAT
 
     def create_snake(self):
         start_pos = Vector(5, 5)
@@ -220,11 +223,15 @@ class SnakeGame:
 
     def update(self):
         self.update_mode()
+        self.snake.move()
+
+    def draw(self):
+        self.update()
         self.level.draw()
         self.snake.draw()
         self.status_box.draw()
         pygame.display.update()
-        time.sleep(0.01)
+
 
     def exit(self):
         self.events.exit_signalled()
@@ -242,8 +249,12 @@ class SnakeGame:
     def run(self):
         self.events = EventGenerator()
         self.events.add_listener(self.get_listener())
-        self.events.add_callback(self)
+        #self.events.add_callback(self)
+        draw_timer = DrawTimer(self.events)
+        draw_timer.callbacks.append(self)
+        draw_timer.start_timer()
         self.events.event_loop()
+        draw_timer.stop_timer()
 
 if __name__ == '__main__':
     game = Game('data/snake.conf', SnakeGame)

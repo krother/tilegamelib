@@ -33,7 +33,7 @@ class CollectFruit:
         self.frame = Frame(self.screen, Rect(64, 64, 320, 320))
         tile_factory = TileFactory('data/tiles.conf')
         self.tm = TiledMap(self.frame, tile_factory)
-        self.player = Sprite(self.frame, tile_factory.get('b.tail'), Vector(4, 1), speed=2)
+        self.player = Sprite(self.frame, tile_factory.get('b.pac_right'), Vector(4, 1), speed=2)
         self.tm.set_map(FRUITMAP)
         self.draw()
         self.events = None

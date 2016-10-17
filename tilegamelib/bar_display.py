@@ -1,5 +1,5 @@
 
-from tiled_map import TiledMap
+from .tiled_map import TiledMap
 from tilegamelib.screen import Screen
 from tilegamelib.frame import Frame
 from tilegamelib.tile_factory import TileFactory
