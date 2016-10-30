@@ -53,7 +53,7 @@ class CollectFruit:
         field = self.tm.at(self.player.pos)
         if field == '*':
             time.sleep(1)
-            self.exit()
+            self.events.exit_signalled()
         elif field in 'abcdefgh':
             self.score += 100
             self.tm.set_tile(self.player.pos, '.')

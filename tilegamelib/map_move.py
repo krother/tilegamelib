@@ -34,6 +34,9 @@ class MapMove:
         self._move.move()
         if self._move.finished:
             self.finish_move()
+
+    def draw(self):
+        self._move.draw()
     
     def finish_move(self):
         self.map.set_tile(self.end_pos, self.tile_char)

@@ -44,19 +44,19 @@ def wait_for_move(move, screen=None, draw=None, delay=0.01):
     while not move.finished:
         if screen:
             screen.clear()
+        move.move()
         if draw:
             draw()
-        move.move()
+        move.draw()
         pygame.display.update()
         time.sleep(delay)
 
 
 if __name__ == '__main__':
-    screen = Screen(Vector(800,520), '../examples/data/background.png')
+    screen = Screen(Vector(800, 520), '../examples/data/background.png')
     frame = Frame(screen, Rect(64, 64, 320, 320))
     tile_factory = TileFactory('../examples/data/tiles.conf')
     pac = tile_factory.get('b.pac_right')
-    move = Move(frame, pac, Vector(50, 50), RIGHT*2, 200)
+    move = Move(frame, pac, Vector(50, 50), RIGHT * 2, 200)
     wait_for_move(move, screen)
     time.sleep(1)
-
