@@ -28,7 +28,7 @@ class EventGenerator:
         self.callbacks = []
         self.user_events = {}
         self.event_queue = []
-        
+
     def add_listener(self, listener):
         if listener not in self.listeners:
             self.listeners.append(listener)
@@ -51,7 +51,7 @@ class EventGenerator:
 
     def add_scripted_event(self, event):
         self.event_queue.append(event)
-        
+
     def add_scripted_keys(self, keys):
         """Queues a list of key events."""
         for key in keys:
@@ -67,7 +67,7 @@ class EventGenerator:
         elif event.button == 3:
             for l in self.listeners:
                 l.rightclick(event.pos)
-    
+
     def mousebutton_released(self, event):
         """Called each time a mouse button is released."""
         pass
@@ -105,7 +105,11 @@ class EventGenerator:
         else:
             pygame.event.pump()
             return pygame.event.get()
-    
+
+    def empty_event_queue(self):
+        while self.get_events() != []:
+            pass
+
     def handle_event(self, event):
         """Gets events resulting from user actions and identifies them."""
         if event.type == MOUSEBUTTONDOWN:

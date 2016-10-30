@@ -41,7 +41,7 @@ PAC_TILES = {
     DOWN: 'b.pac_down',
     LEFT: 'b.pac_left',
     RIGHT: 'b.pac_right'
-    }
+}
 
 GHOST_TILE = 'b.ghost'
 
@@ -67,7 +67,7 @@ class PacLevel:
 
     def draw(self):
         self.tmap.draw()
-    
+
 
 class Ghost:
 
@@ -88,16 +88,16 @@ class Ghost:
                 if tile != '#':
                     result.append(vector)
         if not result:
-            result =[self.direction * -1]
+            result = [self.direction * (-1)]
         return result
 
     def set_random_direction(self):
         moves = self.get_possible_moves()
-        i = random.randint(0, len(moves)-1)
+        i = random.randint(0, len(moves) - 1)
         self.direction = moves[i]
-        
+
     def move(self):
-        if self.sprite.finished: 
+        if self.sprite.finished:
             self.set_random_direction()
             self.sprite.add_move(self.direction)
         else:
@@ -119,12 +119,14 @@ class Pac:
         self.sprite = Sprite(frame, tile, pos, speed=4)
         self.eaten = None
         self.score = 0
+        self.buffered_move = None
 
     def set_direction(self, direction):
         self.sprite.tile = self.tile_factory.get(PAC_TILES[direction])
 
     def move(self, direction):
         if not self.sprite.finished:
+            self.buffered_move = direction
             return
         newpos = self.sprite.pos + direction
         self.set_direction(direction)
@@ -144,6 +146,9 @@ class Pac:
 
     def update(self):
         """Try eating dots and fruit"""
+        if self.sprite.finished and self.buffered_move:
+            self.move(self.buffered_move)
+            self.buffered_move = None
         if not self.sprite.finished:
             self.sprite.move()
 
@@ -154,6 +159,10 @@ class Pac:
         for sprite in sprites:
             if self.sprite.pos == sprite.sprite.pos:
                 return True
+
+    def die(self):
+        self.buffered_move = None
+        self.sprite.path = []
 
 
 class PacGame:
@@ -209,6 +218,7 @@ class PacGame:
     def check_collision(self):
         if self.pac.collision(self.ghosts):
             self.update_mode = self.update_die
+            self.pac.die()
             self.collided = True
 
     def update_die(self):
@@ -217,17 +227,18 @@ class PacGame:
             time.sleep(1)
             self.lives.decrease()
             if self.lives.value == 0:
-                self.exit()
+                self.events.exit_signalled()
             else:
                 self.reset_level()
+                self.events.empty_event_queue()
                 self.update_mode = self.update_ingame
-                
+
     def update_level_complete(self):
         """finish movement"""
         if self.pac.sprite.finished:
             time.sleep(1)
-            self.exit()
-        
+            self.events.exit_signalled()
+
     def update_ingame(self):
         self.check_collision()
         if self.pac.eaten:
@@ -236,7 +247,7 @@ class PacGame:
             self.score = self.pac.score
         if self.level.dots_left == 0:
             self.update_mode = self.update_level_complete
-        
+
     def draw(self):
         self.update_mode()
         self.level.draw()

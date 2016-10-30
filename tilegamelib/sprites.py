@@ -19,11 +19,11 @@ class Sprite:
         self.frame = frame
         self.tile = tile
         self.size = self.tile.size
-        self.pos = pos # position in tiles not pixels
-        if pos == None:
-            self.pos = Vector(0,0)
-        
-        self.path = [] # Queue of moves
+        self.pos = pos  # position in tiles not pixels
+        if pos is None:
+            self.pos = Vector(0, 0)
+
+        self.path = []  # Queue of moves
         self._move = None
         self.direction = None
         self.speed = speed
@@ -43,7 +43,7 @@ class Sprite:
             self.callback = when_finished
             start_vector = self.pos * self.size.x
             self._move = Move(self.frame, self.tile, start_vector, \
-                self.direction*self.speed, \
+                self.direction * self.speed, \
                 steps=self.size.x // self.speed, \
                 when_finished=self.finalize_move)
 
@@ -67,7 +67,7 @@ class Sprite:
         if self.callback:
             self.callback()
             self.callback = None
-    
+
     def draw(self):
         """Draw the sprite on the screen."""
         if not self._move:
@@ -76,7 +76,7 @@ class Sprite:
             self.tile.draw(self.frame, destrect)
         else:
             self._move.draw()
-    
+
 
 if __name__ == '__main__':
     screen = Screen(Vector(800,550), '../examples/data/background.png')
