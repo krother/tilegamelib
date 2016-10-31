@@ -1,4 +1,20 @@
 
+VANISH_CATEGORIES = {
+    (1, 1, 4): 'quadruple',
+    (1, 1, 5): 'quintuple',
+    (1, 1, 6): 'sextuple',
+    (1, 1, 7): 'septuple',
+    (1, 2, 4): 'double_quadruple',
+    (1, 2, 5): 'double_quintuple',
+    (1, 2, 6): 'double_sextuple',
+    (2, 1, 4): '2nd_quadruple',
+    (2, 1, 5): '2nd_quintuple',
+    (2, 1, 6): '2nd_sextuple',
+    (3, 1, 4): '3rd_quadruple',
+    (3, 1, 5): '3rd_quintuple',
+}
+
+
 class FruitMultiplets:
     """Sets of fruits that vanish"""
     def __init__(self):
@@ -20,21 +36,19 @@ class FruitMultiplets:
     def __len__(self):
         return len(self.multiplets)
 
+
 class MultipletCounter:
 
     def __init__(self):
-        self.bonus_exponent = 0
+        self.n_vanish = 0
         self._score = 0
         self._last_multi = None
 
     def count(self, multiplets):
         if len(multiplets) > 0:
-            self.bonus_exponent += 1
+            self.n_vanish += 1
+            self._score += len(multiplets) * sum([len(m) for m in multiplets.multiplets]) ** self.n_vanish * 10
             self._last_multi = multiplets
-            return None
-        else:
-            category = self.get_category(multiplets)
-            return category
 
     def pull_score(self):
         score = self._score
@@ -43,28 +57,16 @@ class MultipletCounter:
 
     def reset(self):
         self._last_multi = None
-        self.bonus_exponent = 0
+        self.n_vanish = 0
 
     def get_category(self):
         """
         Sophisticated method by Borris M. for
         determining the kind of fruit vanish reaction
         """
-        if not self._last_multi:
-            return
-        else:
-            n_vanish = self.bonus_exponent + 1
+        if self._last_multi:
             multiplets = self._last_multi.multiplets
-            self._score = len(multiplets) * sum([len(m) for m in multiplets]) ** self.bonus_exponent * 10
-            if n_vanish <= 3:
-                if len(multiplets) == 1 and len(multiplets[0]) <= 6:
-                    category = 'vanish%i' % len(multiplets[0])
-                if len(multiplets) == 2:
-                    category = 'vanish%i_double' % (n_vanish)
-                elif len(multiplets) == 3:
-                    category = 'vanish%i_triple' % (n_vanish)
-                print(category)
-                return category
-            category = 'vanish_mega'
-            print(category)
+            vanish_type = (self.n_vanish, len(multiplets), len(multiplets[0]))
+            category = VANISH_CATEGORIES.get(vanish_type, 'mega_vanish')
+            print(category, vanish_type)
             return category

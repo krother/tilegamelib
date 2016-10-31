@@ -31,19 +31,21 @@ class FrutrisLevel:
                 return False
         return True
 
-    def trace_multiplets(self, pos, trace, char):
+    def trace_multiplets(self, pos, trace, char, taboo):
         """Recursively looks for quartets of identical bricks."""
         if not self.is_pos_in_box(pos) \
+            or pos in taboo \
             or self.tmap.at(pos) != char or pos in trace:
             return
         trace.add(pos)
-        self.trace_multiplets(pos + LEFT, trace, char)
-        self.trace_multiplets(pos + RIGHT, trace, char)
-        self.trace_multiplets(pos + DOWN, trace, char)
+        self.trace_multiplets(pos + LEFT, trace, char, taboo)
+        self.trace_multiplets(pos + RIGHT, trace, char, taboo)
+        self.trace_multiplets(pos + DOWN, trace, char, taboo)
 
     def find_multiplets(self):
         """Returns a list of multiplet positions"""
         multiplets = FruitMultiplets()
+        taboo = []
         for x in range(1, self.tmap.size.x - 1):
             for y in range(self.tmap.size.y):
                 pos = Vector(x, y)
@@ -51,8 +53,10 @@ class FrutrisLevel:
                     continue
                 found = set()
                 char = self.tmap.at(pos)
-                self.trace_multiplets(pos, found, char)
-                multiplets.add_multiplet(found)
+                self.trace_multiplets(pos, found, char, taboo)
+                if len(found) >= 4:
+                    multiplets.add_multiplet(found)
+                    taboo.extend(found)
         return multiplets
 
     def get_dropped_bricks(self):

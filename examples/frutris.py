@@ -3,7 +3,7 @@
 from tilegamelib import Frame, TileFactory
 from tilegamelib import EventGenerator, ExitListener, FigureMoveListener
 from tilegamelib.vector import UP, DOWN, LEFT, RIGHT
-#from tilegamelib.sounds import play_effect, MusicPlayer, CLOSE_TO_END
+from tilegamelib.sounds import play_effect, MusicPlayer, CLOSE_TO_END
 from tilegamelib.game import Game
 from tilegamelib.basic_boxes import DictBox
 from tilegamelib.draw_timer import draw_timer
@@ -22,6 +22,7 @@ TWO_PLAYER_DELAY = 10
 LEVEL_COUNTER_INIT = 5000
 LEVEL_DROP_COUNTER_DECREASE = 5
 LEVEL = open('data/emptybox.map').read()
+MAX_FRUIT = 4 # 5
 
 def play_effect(*args): pass
 
@@ -51,8 +52,8 @@ class FrutrisBox:
 
     def insert_random_fruit_pair(self):
         blocks = 'abcefg'
-        first = blocks[randint(0, 5)]
-        second = blocks[randint(0, 5)]
+        first = blocks[randint(0, MAX_FRUIT)]
+        second = blocks[randint(0, MAX_FRUIT)]
         self.insert_fruit_pair(first, second)
 
     @property
@@ -149,6 +150,7 @@ class FrutrisGame:
         self.level_counter = 1
         play_effect('frutris')
         self.screen = screen
+        screen.clear()
         self.frame = Frame(self.screen, Rect(10, 10, 640, 512))
         self.tile_factory = TileFactory('data/tiles.conf')
         self.events = None
@@ -174,7 +176,6 @@ class FrutrisGame:
         self.data['score'] += self.frutris_box.counter.pull_score()
         self.frutris_box.draw()
         self.status_box.draw()
-        #pygame.display.update()
         if self.frutris_box.game_over:
             self.events.exit_signalled()
 

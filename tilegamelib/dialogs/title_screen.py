@@ -24,6 +24,7 @@ class TitleScreen:
     def run(self):
         """Shows the title menu."""
         self.screen.clear()
+        self.title.draw()
         self.menu.draw()
         self.events.event_loop()
         #self.menu.deactivate()
