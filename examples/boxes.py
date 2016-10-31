@@ -68,7 +68,7 @@ class Boxes:
         if s.count('X') == 4:
             print("\nCongratulations!\n")
             time.sleep(2)
-            self.exit()
+            self.events.exit_signalled()
 
     def run(self):
         self.events = EventGenerator()

@@ -1,8 +1,8 @@
 
-from screen import Screen
-from frame import Frame
-from tile_factory import TileFactory
-from vector import Vector
+from .screen import Screen
+from .frame import Frame
+from .tile_factory import TileFactory
+from .vector import Vector
 from pygame import Rect
 import pygame
 import time
@@ -16,7 +16,7 @@ class AnimatedTile:
         self.tiles = list(tiles)
         self.tile_factory = tile_factory
         self.frame = frame
-        self.pos = pos*32
+        self.pos = pos * 32
         self.tile = None
         self.delay_max = delay
         self.delay = 0

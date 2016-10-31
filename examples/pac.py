@@ -1,11 +1,10 @@
 #! /usr/bin/python
 
-from tilegamelib import Screen, Frame, Vector, TileFactory, TiledMap
+from tilegamelib import Frame, Vector, TileFactory, TiledMap
 from tilegamelib import EventGenerator, ExitListener, FigureMoveListener
 from tilegamelib.sprites import Sprite
 from tilegamelib.basic_boxes import DictBox
 from tilegamelib.bar_display import BarDisplay
-from tilegamelib.events import EventGenerator
 from tilegamelib.sprites import Sprite
 from tilegamelib.game import Game
 from tilegamelib.draw_timer import draw_timer

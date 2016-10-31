@@ -8,7 +8,7 @@ import pygame
 import time
 
 
-class Move(object):
+class Move:
     """
     Moves a tile over a certain amount of steps in one direction.
     """
@@ -18,18 +18,13 @@ class Move(object):
         self.start_vector = start_vector or Vector(0, 0)
         self.steps = steps
         self.direction = direction or RIGHT
-        self.current_vector = None
+        self.current_vector = start_vector
         self.finished = False
         self.callback = when_finished
 
-    def update_current_vector(self):
-        if self.current_vector is None:
-            self.current_vector = self.start_vector
-        self.current_vector += self.direction
-
     def move(self):
         if self.steps > 0:
-            self.update_current_vector()
+            self.current_vector += self.direction
             self.steps -= 1
         if self.steps <= 0:
             self.finished = True

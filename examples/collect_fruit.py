@@ -43,7 +43,7 @@ class CollectFruit:
     def move(self, direction):
         nearpos = self.player.pos + direction
         near = self.tm.at(nearpos)
-        if near == '#': 
+        if near == '#':
             return
         self.player.add_move(direction)
         wait_for_move(self.player, self.screen, self.draw, 0.01)
