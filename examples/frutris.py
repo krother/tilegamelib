@@ -16,8 +16,8 @@ from random import randint
 import time
 
 
-DROP_DELAY = 70
-ONE_PLAYER_START_DELAY = 10
+DROP_DELAY = 50
+ONE_PLAYER_START_DELAY = 7
 TWO_PLAYER_DELAY = 10
 LEVEL_COUNTER_INIT = 5000
 LEVEL_DROP_COUNTER_DECREASE = 5
@@ -32,7 +32,7 @@ class FrutrisBox:
         self.frame = frame
         self.tile_factory = tile_factory
         self.level = FrutrisLevel(frame, tile_factory, level)
-        self.moving_blocks = None  # Never empty
+        self.moving_blocks = None
         self.insert_random_fruit_pair()
         self.drop_delay = DROP_DELAY
         self.drop_counter = self.drop_delay
@@ -79,9 +79,9 @@ class FrutrisBox:
             play_effect('fruit_drop_after_vanish')
             self.update_mode = self.update_remove
         else:
-            self.insert_new_block()
+            self.all_moves_finished()
 
-    def moving_finished(self):
+    def all_moves_finished(self):
         """All explosions and drops finished."""
         play_effect(self.counter.get_category())
         self.counter.reset()
@@ -115,7 +115,7 @@ class FrutrisBox:
             # play_effect('fruit_drop_after_vanish')
             self.update_mode = self.update_autodrop
         else:
-            self.moving_finished()
+            self.all_moves_finished()
 
     def draw(self):
         if self.moving_blocks.finished:
@@ -153,25 +153,28 @@ class FrutrisGame:
         self.tile_factory = TileFactory('data/tiles.conf')
         self.events = None
         self.frutris_box = FrutrisBox(self.frame, self.tile_factory, LEVEL)
-        self.status_box = self.create_status_box()
-        #frame = Frame(self.screen, Rect(660, 220, 200, 200))
-        self.score = 0
-        #self.music_counter = 50
-        #self.current_music = ('a', 1)
-
-    def create_status_box(self):
-        frame = Frame(self.screen, Rect(660, 20, 200, 200))
-        data = {
+        # frame = Frame(self.screen, Rect(660, 220, 200, 200))
+        self.data = {
             'score': 0,
             'level': 1,
         }
-        return DictBox(frame, data)
+        self.status_box = self.create_status_box()
+        # self.music_counter = 50
+        # self.current_music = ('a', 1)
+
+    @property
+    def score(self):
+        return self.data['score']
+
+    def create_status_box(self):
+        frame = Frame(self.screen, Rect(660, 20, 200, 200))
+        return DictBox(frame, self.data)
 
     def draw(self):
+        self.data['score'] += self.frutris_box.counter.pull_score()
         self.frutris_box.draw()
         self.status_box.draw()
-        pygame.display.update()
-        time.sleep(0.005)
+        #pygame.display.update()
         if self.frutris_box.game_over:
             self.events.exit_signalled()
 
