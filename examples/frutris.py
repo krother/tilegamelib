@@ -22,10 +22,7 @@ TWO_PLAYER_DELAY = 10
 LEVEL_COUNTER_INIT = 5000
 LEVEL_DROP_COUNTER_DECREASE = 5
 LEVEL = open('data/emptybox.map').read()
-MAX_FRUIT = 4 # 5
-
-def play_effect(*args): pass
-
+MAX_FRUIT = 5
 
 
 class FrutrisBox:
@@ -84,7 +81,7 @@ class FrutrisBox:
 
     def all_moves_finished(self):
         """All explosions and drops finished."""
-        play_effect(self.counter.get_category())
+        # play_effect(self.counter.get_category())
         self.counter.reset()
         if self.level.box_overflow():
             self.game_over = True
@@ -161,8 +158,35 @@ class FrutrisGame:
             'level': 1,
         }
         self.status_box = self.create_status_box()
-        # self.music_counter = 50
-        # self.current_music = ('a', 1)
+
+        # Music
+        self.music_counter = 50 # periodically check for expiring track
+        self.current_music = ('a', 1)
+        self.music = MusicPlayer()
+        self.music.play_music('/home/krother/projects/frutris/frutris/music/a1.ogg')
+
+
+    def choose_next_music(self):
+        MUSIC = '/home/krother/projects/frutris/frutris/music/{}{}.ogg'
+        LETTERS = 'aaaabbbbcccccccc'
+        letter, number = self.current_music
+        number = 3 - number
+        stack_size = self.frutris_box.level.get_stack_size()
+        letter = LETTERS[stack_size]
+        #if len(self.players) >= 1:
+        #    stack_size = self.players[0].get_stack_size()
+        self.current_music = (letter, number)
+        next_track = MUSIC.format(letter, number)
+        print('NEXT TRACK: ', next_track)
+        return next_track
+
+    def update_music(self):
+        self.music_counter -= 1
+        if self.music_counter == 0:
+            self.music_counter = 50
+            if self.music.check_music_status() == CLOSE_TO_END:
+                next_track = self.choose_next_music()
+                self.music.next_music(next_track)
 
     @property
     def score(self):
@@ -178,6 +202,7 @@ class FrutrisGame:
         self.status_box.draw()
         if self.frutris_box.game_over:
             self.events.exit_signalled()
+        self.update_music()
 
     def run(self):
         self.events = EventGenerator()

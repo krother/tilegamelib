@@ -1,24 +1,3 @@
-    def choose_next_music(self):
-        letter, number = self.current_music
-        number = 3 - number
-        if len(self.players) >= 1:
-            stack_size = self.players[0].get_stack_size()
-            if stack_size <= 4:
-                letter = 'a'
-            elif stack_size <= 8:
-                letter = 'b'
-            else:
-                letter = 'c'
-        self.current_music = (letter, number)
-        return 'music/%s%i.wav' % (letter, number)
-
-    def update_music(self):
-        return
-        self.music_counter -= 1
-        if self.music_counter == 0:
-            self.music_counter = 50
-            if check_music_status() == CLOSE_TO_END:
-                next_music(self.choose_next_music())
 
     def new_game(self):
         play_music('music/a1.wav')
