@@ -21,7 +21,7 @@ class StarScape:
         rsrc = Rect(0, 0, 800, 600)
         for i in range(3):
             rdest = Rect(self.offsets[i] - 800, 0, 800, 600)
-            frame.blit(self.stars[i], rsrc, rdest)
+            self.frame.blit(self.stars[i], rsrc, rdest)
             rdest = Rect(self.offsets[i], 0, 800, 600)
             self.frame.blit(self.stars[i], rsrc, rdest)
 
