@@ -7,6 +7,7 @@ from tilegamelib.sprites import Sprite
 from tilegamelib.vector import LEFT, UP, DOWN
 from tilegamelib.basic_boxes import DictBox
 from tilegamelib.draw_timer import draw_timer
+from starscape import StarScape
 from pygame import Rect
 import random
 import time
@@ -15,26 +16,12 @@ import pygame
 MOVE_DELAY = 50
 SHIP_SPEED = 4
 
-LEVEL = """####################
-....................
-....................
-....................
-....................
-....................
-....................
-....................
-....................
-....................
-....................
-####################"""
-
 
 class SpaceMine:
 
-    def __init__(self, level, tile_factory, pos):
-        self.level = level
+    def __init__(self, frame, tile_factory, pos):
         tile = tile_factory.get('+')
-        self.sprite = Sprite(level.tmap.frame, tile, pos)
+        self.sprite = Sprite(frame, tile, pos)
         [self.sprite.add_move(LEFT) for x in range(10)]
 
     def draw(self):
@@ -43,21 +30,17 @@ class SpaceMine:
 
 class SpaceshipLevel:
 
-    def __init__(self, data, tmap):
-        self.tmap = tmap
-        self.tmap.set_map(str(data))
-        self.tmap.cache_map()
+    def __init__(self, frame, tile_factory):
+        self.frame = frame
+        self.tile_factory = tile_factory
         self.mines = [self.create_mine() for x in range(4)]
         self.max_mines = 60
         self.max_add_mines = 4
 
-    def at(self, pos):
-        return self.tmap.at(pos)
-
     def create_mine(self):
-        x = 21
-        y = random.randint(1, self.tmap.size.y - 2)
-        mine = SpaceMine(self, self.tmap.tile_factory, Vector(x, y))
+        x = 25
+        y = random.randint(1, 20)
+        mine = SpaceMine(self.frame, self.tile_factory, Vector(x, y))
         for i in range(x + 1):
             mine.sprite.add_move(LEFT)
         return mine
@@ -65,8 +48,6 @@ class SpaceshipLevel:
     def draw(self):
         for mine in self.mines:
             mine.sprite.move()
-
-        self.tmap.draw()
 
         for mine in self.mines:
             mine.draw()
@@ -100,9 +81,9 @@ class SpaceshipSprite:
             self.direction = direction
             self.sprite.add_move(self.direction)
             newpos = self.sprite.pos + self.direction
-            tile = self.level.at(newpos)
-            if tile in ('#', '+'):
-                self.crashed = True
+            #tile = self.level.at(newpos)
+            #if tile in ('#', '+'):
+            #    self.crashed = True
 
     def draw(self):
         if self.is_moving():
@@ -123,12 +104,14 @@ class SpaceRaceGame:
         self.screen = screen
         self.tile_factory = TileFactory('data/tiles.conf')
 
+        self.starscape = None
         self.level = None
         self.spaceship = None
         self.status_box = None
         self.events = None
         self.score = 0
 
+        self.create_starscape()
         self.create_level()
         self.create_status_box()
 
@@ -136,10 +119,13 @@ class SpaceRaceGame:
         self.move_delay = MOVE_DELAY
         self.delay = MOVE_DELAY
 
+    def create_starscape(self):
+        frame = Frame(self.screen, Rect(0, 0, 800, 600))
+        self.starscape = StarScape(frame)
+
     def create_level(self):
         frame = Frame(self.screen, Rect(10, 10, 640, 512))
-        tmap = TiledMap(frame, self.tile_factory)
-        self.level = SpaceshipLevel(LEVEL, tmap)
+        self.level = SpaceshipLevel(frame, self.tile_factory)
         self.spaceship = SpaceshipSprite(frame, self.tile_factory, Vector(1, 1), self.level)
 
     def create_status_box(self):
@@ -167,11 +153,13 @@ class SpaceRaceGame:
 
     def draw(self):
         self.update_mode()
+        self.screen.clear()
+        self.starscape.draw()
         self.level.draw()
         self.spaceship.draw()
         self.status_box.draw()
         pygame.display.update()
-        #time.sleep(0.01)
+        self.starscape.scroll()
 
     def run(self):
         self.events = EventGenerator()
