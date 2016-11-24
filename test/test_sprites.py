@@ -1,19 +1,10 @@
 #!/usr/bin/env python
-#
-# Copyright 2010 Kristian Rother
-#
-# All rights reserved.
-# Please see the LICENSE file that should have been included
-# as part of this package.
-
-__author__="Kristian Rother"
-__email__ ="krother@rubor.de"
-
 
 from tilegamelib.vector import Vector, UP, DOWN, LEFT, RIGHT, UPLEFT, UPRIGHT, DOWNLEFT, DOWNRIGHT
 from tilegamelib.frame import Frame
-from tilegamelib.sprites import Sprite, SpriteList
-from test_settings import showdoc, SHORT_DELAY, TEST_GAME_CONTEXT
+from tilegamelib.sprites import Sprite
+from tilegamelib.sprite_list import SpriteList
+from util import showdoc, SHORT_DELAY, TEST_GAME_CONTEXT
 from unittest import TestCase, main
 from pygame import Rect
 import pygame
@@ -25,12 +16,12 @@ class SpriteTests(TestCase):
     def setUp(self):
         self.factory = TEST_GAME_CONTEXT.tile_factory
         self.tile = self.factory.get('g')
-        self.frame = Frame(TEST_GAME_CONTEXT.screen, Rect(40,50, 160,160))
-        self.sprite = Sprite(self.frame, self.tile, Vector(1,1), speed=2)
+        self.frame = Frame(TEST_GAME_CONTEXT.screen, Rect(40, 50, 160, 160))
+        self.sprite = Sprite(self.frame, self.tile, Vector(1, 1), speed=2)
 
     def test_sprite_pos(self):
         """Sprite has a position."""
-        sprite = Sprite(self.frame, self.factory.get('g'), pos=Vector(4,3))
+        sprite = Sprite(self.frame, self.factory.get('g'), pos=Vector(4, 3))
         self.assertEqual(sprite.pos.x, 4)
         self.assertEqual(sprite.pos.y, 3)
 

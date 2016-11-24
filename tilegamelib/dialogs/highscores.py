@@ -5,11 +5,7 @@ from tilegamelib.events import EventGenerator
 from tilegamelib.vector import Vector
 from tilegamelib.event_listener import TextEnteringListener, AnyKeyListener
 import pygame
-
-
-pygame.font.init()
-DEMIBOLD_BIG = pygame.font.Font('data/LucidaSansDemiBold.ttf', 20)
-BLUE    = (128, 128, 255, 0)
+from tilegamelib.util import DEMIBOLD_BIG, BLUE
 
 
 class HighscoreList:

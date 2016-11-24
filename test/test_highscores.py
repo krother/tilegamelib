@@ -2,9 +2,9 @@
 from unittest import TestCase, main
 from tilegamelib.frame import Frame
 from tilegamelib.events import EventGenerator, QUIT_EVENT
-from tilegamelib.highscores import HighscoreBox, HighscoreList
-from test_settings import TestSettings, showdoc, TEST_GAME_CONTEXT, \
-     HIGHSCORE_RECT, HIGHSCORE_TEXT_POS, HIGHSCORE_FILE, HIGHSCORE_IMAGE
+from tilegamelib.dialogs.highscores import HighscoreBox, HighscoreList
+from util import showdoc, TEST_GAME_CONTEXT
+from test_data import HIGHSCORE_RECT, HIGHSCORE_TEXT_POS, HIGHSCORE_FILE, HIGHSCORE_IMAGE
 from pygame import K_RETURN, K_SPACE, K_LEFT, K_RIGHT, K_UP, K_DOWN,\
         K_ESCAPE
 import os
@@ -29,13 +29,14 @@ class HighscoreTests(TestCase):
     def test_highscores(self):
         """Enters something into the highscore list."""
         hl = HighscoreList(HIGHSCORE_FILE)
-        events = EventGenerator(TestSettings)        
+        events = EventGenerator()        
         events.add_scripted_keys(['B', 'C', chr(K_RETURN), chr(K_RETURN)])
         events.add_scripted_event(QUIT_EVENT)
         TEST_GAME_CONTEXT.screen.clear()
         frame = Frame(TEST_GAME_CONTEXT.screen, HIGHSCORE_RECT)
         hs = HighscoreBox(frame, events, hl, HIGHSCORE_IMAGE, HIGHSCORE_TEXT_POS)
         hs.enter_score(333)
+        self.assertEqual(hl.scores[0],(333,'BC'))
         hs.activate()
 
 if __name__ == '__main__':

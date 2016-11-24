@@ -1,19 +1,9 @@
 #!/usr/bin/env python
-#
-# Copyright 2010 Kristian Rother
-#
-# All rights reserved.
-# Please see the LICENSE file that should have been included
-# as part of this package.
-
-__author__="Kristian Rother"
-__email__ ="krother@rubor.de"
-
 
 from tilegamelib.frame import Frame
 from tilegamelib.menu import MenuBox, TextMenuBox, TileMenuBox, VERTICAL_MOVES
 from tilegamelib.events import EventGenerator, QUIT_EVENT
-from test_settings import TestSettings,showdoc,DELAY,SHORT_DELAY, TEST_GAME_CONTEXT
+from util import showdoc, DELAY, SHORT_DELAY, TEST_GAME_CONTEXT
 from unittest import TestCase, main
 from pygame import Rect
 from pygame.event import Event
@@ -21,27 +11,28 @@ from pygame.locals import KEYDOWN
 import pygame
 import time
 
+
 class MenuTests(TestCase):
 
     def setUp(self):
         self.result = None
-        self.frame = Frame(TEST_GAME_CONTEXT.screen, Rect(100,100, 260,260))
-        self.egen = EventGenerator(TestSettings)
+        self.frame = Frame(TEST_GAME_CONTEXT.screen, Rect(100, 100, 260, 260))
+        self.egen = EventGenerator()
 
     def select_one(self):
         self.result = 'one'
-        
+
     def select_two(self):
         self.result = 'two'
-        
+
     def select_three(self):
         self.result = 'three'
-        
+
     def draw_menu(self, menu):
         menu.draw()
         pygame.display.update()
         time.sleep(SHORT_DELAY)
-        
+
     def run_menu(self, menu):
         """Execute some standard operations on the menu and display them."""
         self.draw_menu(menu)
@@ -57,8 +48,6 @@ class MenuTests(TestCase):
         time.sleep(DELAY)
 
 
-
-
 class TextMenuTests(MenuTests):
 
     def setUp(self):
@@ -67,8 +56,8 @@ class TextMenuTests(MenuTests):
            ('first', self.select_one),
            ('second', self.select_two),
            ('third', self.select_three),
-           ]
-            
+        ]
+
     def test_menu(self):
         """menu mechanics work."""
         events = [
@@ -81,12 +70,12 @@ class TextMenuTests(MenuTests):
             Event(KEYDOWN,{'key':13}),
             Event(KEYDOWN,{'key':274}),
             QUIT_EVENT,
-            ]
+        ]
         for evt in events:
             self.egen.add_scripted_event(evt)
         menu = MenuBox(self.frame, self.menu, self.egen, VERTICAL_MOVES)
-        self.assertEqual(len(self.egen.listeners),1)
-        self.assertEqual(self.result,None)
+        self.assertEqual(len(self.egen.listeners), 1)
+        self.assertEqual(self.result, None)
         self.egen.event_loop()
         self.assertEqual(self.result, 'three')
 
@@ -102,9 +91,9 @@ class TileMenuTests(MenuTests):
     def setUp(self):
         MenuTests.setUp(self)
         self.menu = [
-           ('r', self.select_one),
-           ('g', self.select_two),
-           ('b', self.select_three),
+           ('#', self.select_one),
+           ('*', self.select_two),
+           ('.', self.select_three),
            ]
         
     @showdoc

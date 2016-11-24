@@ -2,6 +2,7 @@
 from .vector import Vector
 import pygame
 
+
 class TiledMap:
     """
     A map consisting of 2D-tiles. The map can be scrolled
@@ -15,7 +16,7 @@ class TiledMap:
         self.size = Vector(0, 0)
         self.map = []
         self.mapsurf = None
-        
+
     @property
     def win_size_px(self):
         """size of the map window in pixels (x,y)."""
@@ -25,7 +26,7 @@ class TiledMap:
     def map_size_px(self):
         """size of the map in pixels (x,y)."""
         return self.size * self.tile_factory.tile_size.x
-    
+
     @property
     def win_size(self):
         """size of the window in tiles."""
@@ -43,10 +44,10 @@ class TiledMap:
         Returns boolean.
         """
         if pos.x >= self.map_pos.x \
-           and pos.y >= self.map_pos.y \
-           and pos.x <= self.map_pos.x + self.win_size.x \
-           and pos.y <= self.map_pos.y + self.win_size.y:
-               return True
+            and pos.y >= self.map_pos.y \
+            and pos.x <= self.map_pos.x + self.win_size.x \
+            and pos.y <= self.map_pos.y + self.win_size.y:
+                return True
 
     def check_position(self, pos):
         """Checks if the given position is on the map."""
@@ -79,7 +80,7 @@ class TiledMap:
 
     def __str__(self):
         return self.get_map()
-    
+
     def get_map(self):
         rows = '\n'.join(''.join(row) for row in zip(*self.map))
         return rows
@@ -118,6 +119,5 @@ class TiledMap:
         for x in range(self.size.x):
             for y in range(self.size.y):
                 tile = self.get_tile(Vector(x, y))
-                pos = Vector(tile.size.x*x, tile.size.y*y)
-                tile.draw(self.mapsurf,pos)
-    
+                pos = Vector(tile.size.x * x, tile.size.y * y)
+                tile.draw(self.mapsurf, pos)

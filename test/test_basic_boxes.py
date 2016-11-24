@@ -1,21 +1,13 @@
 #!/usr/bin/env python
-#
-# Copyright 2010 Kristian Rother
-#
-# All rights reserved.
-# Please see the LICENSE file that should have been included
-# as part of this package.
-
-__author__="Kristian Rother"
-__email__ ="krother@rubor.de"
 
 from tilegamelib.frame import Frame
-from tilegamelib.basic_boxes import TextBox, ImageBox, DictBox, LifeDisplay
-from test_settings import showdoc, TEST_GAME_CONTEXT, SHORT_DELAY
+from tilegamelib.basic_boxes import TextBox, ImageBox, DictBox
+from util import showdoc, TEST_GAME_CONTEXT, SHORT_DELAY
 from unittest import TestCase, main
 from pygame import Rect
 import pygame
 import time
+
 
 class BasicBoxTests(TestCase):
 
@@ -47,17 +39,17 @@ class BasicBoxTests(TestCase):
         db = DictBox(self.frame, dict_data)
         db.draw()
         pygame.display.update()
-        
-    @showdoc
-    def test_life_display(self):
-        """Display image with decreasing lives."""
-        factory = TEST_GAME_CONTEXT.tile_factory
-        lifes = LifeDisplay(self.frame, factory, 10, 'g')
-        for i in range(10):
-            lifes.draw()
-            pygame.display.update()
-            lifes.lose_one()
-            time.sleep(SHORT_DELAY)
+
+    # @showdoc
+    # def test_life_display(self):
+    #     """Display image with decreasing lives."""
+    #     factory = TEST_GAME_CONTEXT.tile_factory
+    #     lifes = LifeDisplay(self.frame, factory, 10, 'g')
+    #     for i in range(10):
+    #         lifes.draw()
+    #         pygame.display.update()
+    #         lifes.lose_one()
+    #         time.sleep(SHORT_DELAY)
 
 
 if __name__ == "__main__":

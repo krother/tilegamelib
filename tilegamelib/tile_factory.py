@@ -10,6 +10,7 @@ TILE_SIZE = (32, 32)
 
 class NoTileError(Exception): pass
 
+
 class TileFactory:
     """
     Manages a set of tiles.

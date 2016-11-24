@@ -3,6 +3,7 @@ import pygame
 from pygame.locals import *
 from pygame.rect import Rect #numpy import array
 
+
 class Screen:
     """Manages a display."""
     def __init__(self, resolution, background_image):
@@ -15,7 +16,7 @@ class Screen:
         self.display = pygame.display.set_mode(tuple(resolution))
         self.display = pygame.display.get_surface()
         self.background = pygame.image.load(background_image).convert()
-        
+
     def blit(self, bitmap, destrect, sourcerect):
         """Draws something from the given bitmap on the screen."""
         self.display.blit(bitmap, destrect, sourcerect)

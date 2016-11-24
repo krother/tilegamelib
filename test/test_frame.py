@@ -3,9 +3,11 @@ from tilegamelib.screen import Screen
 from tilegamelib.frame import Frame
 from tilegamelib.vector import Vector
 from pygame import Rect, image
-import pygame
-from test_data import RESOLUTION, BACKGROUND_IMAGE, TILE, DEMIBOLD_BIG, CYAN, next_frame
+from test_data import RESOLUTION, BACKGROUND_IMAGE, TILE, DEMIBOLD_BIG
+from util import next_frame, graphictest
 from unittest import TestCase, main
+
+CYAN = (0, 255, 255)
 
 
 class FrameTests(TestCase):
@@ -13,14 +15,14 @@ class FrameTests(TestCase):
     def setUp(self):
         self.screen = Screen(RESOLUTION, BACKGROUND_IMAGE)
         self.frame = Frame(self.screen, Rect(50, 50, 100, 100))
-        
+
     @graphictest
     def test_blit(self):
         """image drawn into frame, then cleared."""
         bitmap = image.load(TILE).convert()
         dest = Rect(32, 16, 32, 32)
         source = Rect(0, 0, 32, 32)
-        self.frame.blit(bitmap, dest, source)        
+        self.frame.blit(bitmap, dest, source)
         next_frame()
         self.frame.clear()
 

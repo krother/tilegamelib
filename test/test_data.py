@@ -1,61 +1,58 @@
 #!/usr/bin/env python
 
-#from tilegamelib.game_factory import GameFactory
-#from tilegamelib.frame import Frame
 from tilegamelib.vector import Vector
 from pygame.rect import Rect
 import pygame
-import time
+import os
 
+BASE_PATH = os.path.split(__file__)[0]
+TEST_DATA_PATH = BASE_PATH + '/test_data/'
+DATA_PATH = BASE_PATH + '/../examples/data/'
 
 KEY_EVENT_QUEUE = [27]
-SAMPLE_MAP_FILE = 'test_data/sample.map'
+SAMPLE_MAP_FILE = TEST_DATA_PATH + 'sample.map'
 
 DELAY = 0.1
 SHORT_DELAY = 0.05
 VERY_SHORT_DELAY = 0.02
 
 RESOLUTION = Vector(800, 600)
-BACKGROUND_IMAGE = 'test_data/background.png'
+TILE_SIZE = Vector(32, 32)
+BACKGROUND_IMAGE = DATA_PATH + 'background.png'
 
-#GAME_FACTORY = GameFactory('test_data/settings.txt')
-TILE = 'test_data/test_tile.png'
-TILE_SET = 'test_data/tiles.xpm'
-TILE_SPECS = 'test_data/tiles.spec'
+TILE = TEST_DATA_PATH + 'test_tile.png'
+TILE_SET = TEST_DATA_PATH + 'tiles.xpm'
+TILE_SPECS = DATA_PATH + 'tiles.conf'
 
-DEMIBOLD_BIG = pygame.font.Font('test_data/LucidaSansDemiBold.ttf', 20)
-DEMIBOLD_SMALL = pygame.font.Font('test_data/LucidaSansDemiBold.ttf', 14)
+pygame.font.init()
+DEMIBOLD_BIG = pygame.font.Font(TEST_DATA_PATH + 'LucidaSansDemiBold.ttf', 20)
+DEMIBOLD_SMALL = pygame.font.Font(TEST_DATA_PATH + 'LucidaSansDemiBold.ttf', 14)
 
-def showdoc(func):
-    """
-    decorator function showing a docstring
-    """
-    def wrap_test(self):
-        """Clear screen, show docstring, run test."""
-        GAME_FACTORY.screen.clear()
-        frame = Frame(GAME_FACTORY.screen, Rect(10, 400, 400, 50))
-        frame.clear()
-        frame.print_text(func.__doc__, Vector(0, 0))
-        pygame.display.update()
-        func(self)
-        time.sleep(DELAY)
+# colors
+WHITE = (255, 255, 255)
 
-    return wrap_test
+# title screen
+TITLE_IMAGE = TEST_DATA_PATH + 'test_tile.png'
+TITLE_RECT = Rect(0, 0, 750, 550)
+MENU_KEY_REPEAT = {274: 20, 115: 20}
+MENU_RECT = Rect(550, 380, 800, 550)
 
-def next_frame():
-    pygame.display.update()
-    time.sleep(DELAY)
+# game over box
+GAME_OVER_IMAGE = TEST_DATA_PATH + 'test_tile.png'
+GAME_OVER_RECT = Rect(200, 150, 400, 100)
+GAME_OVER_OFFSET = Vector(120, 30)
+GAME_OVER_SHORT_OFFSET = Vector(50, 30)
+GAME_OVER_RECT = Rect(200, 150, 400, 100)
+GAME_OVER_COLOR = (255, 255, 255, 0)
+GAME_OVER_DELAY = 1000
+GAME_OVER_SOUND = {}
 
-def graphictest(func):
-    """
-    decorator function updating display and waiting
-    """
-    def wrap_test(self):
-        func(self)
-        next_frame()
+# pause box
+PAUSE_IMAGE = TEST_DATA_PATH + 'test_tile.png'
+PAUSE_BOX_RECT = Rect(200, 150, 400, 100)
 
-    return wrap_test
-
-#for key, value in GAME_FACTORY.data.items():
-#    eval('%s = %s'%(key, value))
-
+# high score window
+HIGHSCORE_RECT = Rect(200, 100, 800,550)
+HIGHSCORE_IMAGE = TEST_DATA_PATH + 'test_tile.png'
+HIGHSCORE_TEXT_POS = Vector(0, 0)
+HIGHSCORE_FILE = TEST_DATA_PATH + 'test_scores.txt'

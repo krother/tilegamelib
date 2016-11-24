@@ -1,6 +1,7 @@
 
-from basic_boxes import ImageBox, TextBox
+from tilegamelib.basic_boxes import ImageBox, TextBox
 import pygame
+
 
 class GameOverBox:
     """Displays a game over box."""

@@ -2,17 +2,19 @@
 from .vector import Vector
 from pygame import Rect
 import pygame
+from .util import BASE_PATH
 
 pygame.font.init()
-DEMIBOLD_BIG = pygame.font.Font('data/LucidaSansDemiBold.ttf', 20)
+DEMIBOLD_BIG = pygame.font.Font(BASE_PATH + '/../examples/data/LucidaSansDemiBold.ttf', 20)
 DEFAULT_COLOR = GREEN = (128, 255, 128, 0)
+
 
 class Frame:
     """
     Rectangular piece of the screen.
-	Manages relative positions of objects.
+    Manages relative positions of objects.
     """
-    def __init__(self, screen, rect, font=None):
+    def __init__(self, screen, rect, font=DEMIBOLD_BIG):
         """
         rect - position and size of the frame in pixels (x, y, x, y)
         """
@@ -23,7 +25,7 @@ class Frame:
     @property
     def pos(self):
         return Vector(self.rect.x, self.rect.y)
-    
+
     @property
     def size(self):
         return Vector(self.rect.width, self.rect.height)

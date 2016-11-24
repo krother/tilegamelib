@@ -1,19 +1,20 @@
 
 from unittest import TestCase, main
 from tilegamelib.screen import Screen
-from test_data import RESOLUTION, BACKGROUND_IMAGE, TILE, graphictest, next_frame
+from test_data import RESOLUTION, BACKGROUND_IMAGE, TILE
+from util import graphictest, next_frame
 import pygame
 
 
 class ScreenTests(TestCase):
-    """ 
+    """
     Tests Screen wrapper.
     """
     def test_attribute(self):
         """Screen has a resolution attribute."""
         screen = Screen(RESOLUTION, BACKGROUND_IMAGE)
         self.assertEqual(screen.resolution, RESOLUTION)
-        
+
     @graphictest
     def test_clear(self):
         """Screen can be cleared."""

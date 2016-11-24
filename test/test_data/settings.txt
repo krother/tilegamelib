@@ -21,28 +21,3 @@ KEY_EVENT_QUEUE = None
 PLR1_MOVES = { 119:'up', 115:'down', 100:'right', 97:'left'}  # w.s.d.a.
 PLR2_MOVES = { K_UP:'up', K_DOWN:'down', K_RIGHT:'right', K_LEFT:'left', K_ESCAPE:'quit'}  # cursor keys
 
-# title screen
-TITLE_IMAGE = 'test_data/test_tile.png'
-TITLE_RECT = Rect(0,0, 750,550)
-MENU_KEY_REPEAT = {274:20, 115:20}
-MENU_RECT = Rect(550, 380, 800, 550) 
-
-# game over box
-GAME_OVER_IMAGE = 'test_data/test_tile.png'
-GAME_OVER_RECT = Rect(200, 150, 400, 100)
-GAME_OVER_OFFSET = Vector(120, 30)
-GAME_OVER_SHORT_OFFSET = Vector(50, 30)
-GAME_OVER_RECT = Rect(200, 150, 400, 100)
-GAME_OVER_COLOR = (255, 255, 255, 0)
-GAME_OVER_DELAY = 1000
-GAME_OVER_SOUND = {}
-
-# pause box
-PAUSE_IMAGE = 'test_data/test_tile.png'
-PAUSE_BOX_RECT = Rect(200, 150, 400, 100)
-
-# high score window
-HIGHSCORE_RECT = Rect(200, 100, 800,550)
-HIGHSCORE_IMAGE = 'test_data/test_tile.png'
-HIGHSCORE_TEXTPOS = Vector(0, 0)
-HIGHSCORE_FILE = 'test_data/test_scores.txt'

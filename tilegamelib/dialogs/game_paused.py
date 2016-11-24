@@ -1,7 +1,7 @@
 
-from basic_boxes import ImageBox, TextBox
-from events import EventGenerator
-from event_listener import AnyKeyListener
+from tilegamelib.basic_boxes import ImageBox, TextBox
+from tilegamelib.events import EventGenerator
+from tilegamelib.event_listener import AnyKeyListener
 import pygame
 
 

@@ -7,9 +7,12 @@ import pygame
 import time
 
 
+DEFAULT_COLOR = (255, 255, 255)
+
+
 class TextBox(object):
     """Displays a box with text."""
-    def __init__(self, frame, text, offset=None, font=None, color=None):
+    def __init__(self, frame, text, offset=None, font=None, color=DEFAULT_COLOR):
         """Initializes the TextBox."""
         self.frame = frame
         self.text = text
@@ -44,7 +47,7 @@ class ImageBox(object):
 class DictBox(object):
     """
     Text window displaying scores etc. taken from a data dictionary
-    """    
+    """
     def __init__(self, frame, data, labels=None):
         self.frame = frame
         self.data = data
@@ -60,7 +63,7 @@ class DictBox(object):
             labels.sort()
         for i,lab in enumerate(labels):
             pos = Vector(0, 20*i)
-            self.frame.print_text('%s : %s'%(lab, str(self.data[lab])),pos)
+            self.frame.print_text('%s : %s' % (lab, str(self.data[lab])) , pos)
 
 
 class FpsBox(TextBox):
