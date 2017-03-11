@@ -21,7 +21,7 @@ if __name__ == '__main__':
 #cc..dd..ee..ff#
 ################"""
 
-    screen = Screen(Vector(800,550), 'data/background.png')
+    screen = Screen(Vector(800, 550), 'data/background.png')
     frame = Frame(screen, Rect(64, 64, 320, 320))
     tile_factory = TileFactory('data/tiles.conf')
     tm = TiledMap(frame, tile_factory)

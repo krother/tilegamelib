@@ -50,7 +50,7 @@ class SpaceshipLevel:
             mine.sprite.move()
 
         for mine in self.mines:
-            mine.draw()
+            pass # mine.draw()
         self.mines = [m for m in self.mines if not mine.sprite.finished]
         if random.randint(1, 30) == 1:
             self.mines.append(self.create_mine())

@@ -3,13 +3,14 @@ from tilegamelib.vector import Vector
 from tilegamelib.screen import Screen
 from tilegamelib.tile_factory import TileFactory
 import pygame
-from pygame.rect import Rect
 from math import sqrt
 import time
 
 VERZOEGERUNG = 0.01
 
+
 class Planet:
+
     def __init__(self, name, x, y, vx, vy, masse):
         self.name = name
         self.x = x
@@ -30,9 +31,9 @@ class Planet:
         if entfernung > 0:
             beschl_x = -planet.masse / (entfernung**3) * self.x
             beschl_y = -planet.masse / (entfernung**3) * self.y
-            self.vx += beschl_x 
+            self.vx += beschl_x
             self.vy += beschl_y
-        
+
     def bewegen(self):
         '''Position veraendern'''
         self.x = self.x + self.vx
@@ -41,8 +42,8 @@ class Planet:
     def zeichnen(self, screen, tiles):
         '''Auf dem Bildschirm anzeigen'''
         tile = tiles.get(self.name.lower())
-        tile.draw(screen, Vector(self.x+300, self.y+200))
-        
+        tile.draw(screen, Vector(self.x + 300, self.y + 200))
+
 
 def simulieren(planeten, screen, tf):
     screen.clear()
@@ -56,6 +57,7 @@ def simulieren(planeten, screen, tf):
     pygame.display.update()
     time.sleep(VERZOEGERUNG)
 
+
 sc = Screen(Vector(600, 400), 'data/background.png')
 tf = TileFactory('data/tiles.conf')
 
@@ -63,8 +65,7 @@ planeten = [
     Planet("Sonne", 0, 0, 0, 0, 300000000),
     Planet("Erde", 0, 100, 2.17601657851805, 0, 1),
     Planet("Venus", 0, 60, -5.91572020809202436808504899092, 0, 1)
-    ]
+]
 
-while 1:
+while True:
     simulieren(planeten, sc, tf)
-    

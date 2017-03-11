@@ -1,11 +1,9 @@
-#! /usr/bin/python
 
 from tilegamelib import Frame, Vector, TileFactory, TiledMap
 from tilegamelib import EventGenerator, ExitListener, FigureMoveListener
 from tilegamelib.sprites import Sprite
 from tilegamelib.basic_boxes import DictBox
 from tilegamelib.bar_display import BarDisplay
-from tilegamelib.sprites import Sprite
 from tilegamelib.game import Game
 from tilegamelib.draw_timer import draw_timer
 from tilegamelib.vector import UP, DOWN, LEFT, RIGHT
@@ -110,7 +108,7 @@ class Ghost:
 
 
 class Pac:
-        
+
     def __init__(self, frame, tile_factory, pos, level):
         self.level = level
         self.tile_factory = tile_factory
@@ -193,14 +191,14 @@ class PacGame:
         self.level = PacLevel(LEVEL, tmap)
 
     def create_pac(self):
-        start_pos = Vector(5, 5)
         self.pac = Pac(self.frame, self.tile_factory, PAC_START, self.level)
         self.pac.set_direction(RIGHT)
 
     def create_ghosts(self):
         self.ghosts = []
         for pos in GHOST_POSITIONS:
-            self.ghosts.append(Ghost(self.frame, self.tile_factory, pos, self.level))
+            self.ghosts.append(Ghost(self.frame, self.tile_factory,
+                               pos, self.level))
 
     def reset_level(self):
         self.pac.sprite.pos = PAC_START
@@ -210,8 +208,8 @@ class PacGame:
         frame = Frame(self.screen, Rect(660, 20, 200, 200))
         data = {
             'score': 0,
-            'level':1,
-            }
+            'level': 1,
+        }
         self.status_box = DictBox(frame, data)
 
     def check_collision(self):

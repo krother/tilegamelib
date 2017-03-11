@@ -2,12 +2,11 @@
 from tilegamelib import Screen, Frame, Vector, TileFactory, TiledMap
 from tilegamelib import EventGenerator, ExitListener, FigureMoveListener
 from tilegamelib.map_move import MapMove
-from tilegamelib.move import Move, wait_for_move
+from tilegamelib.move import wait_for_move
 from tilegamelib.move_group import MoveGroup
 from tilegamelib.sprites import Sprite
 from tilegamelib.draw_timer import draw_timer
 from pygame import Rect
-from random import randint
 import pygame
 import time
 
@@ -20,6 +19,7 @@ BOXMAP = """##########
 #........#
 ##########"""
 
+
 class Boxes:
 
     def __init__(self):
@@ -27,7 +27,8 @@ class Boxes:
         self.frame = Frame(self.screen, Rect(64, 64, 320, 320))
         tile_factory = TileFactory('data/tiles.conf')
         self.tm = TiledMap(self.frame, tile_factory)
-        self.player = Sprite(self.frame, tile_factory.get('b.tail'), Vector(4, 1), speed=2)
+        self.player = Sprite(self.frame, tile_factory.get('b.tail'),
+                             Vector(4, 1), speed=2)
         self.tm.set_map(BOXMAP)
         self.draw()
         self.events = None
@@ -42,9 +43,9 @@ class Boxes:
         farpos = nearpos + direction
         near = self.tm.at(nearpos)
         far = self.tm.at(farpos)
-        if near == '#': 
+        if near == '#':
             return
-        if near in 'xX' and far in '#xX': 
+        if near in 'xX' and far in '#xX':
             return
         else:
             # move possible
@@ -53,9 +54,10 @@ class Boxes:
             moves.add(self.player)
             if near in 'xX':
                 # crate moved
-                floor = near=='x' and '.' or '*'
-                insert = far=='*' and 'X' or 'x'
-                moves.add(MapMove(self.tm, nearpos, direction, 1, floor_tile=floor, insert_tile=insert))
+                floor = '.' if near == 'x' else '*'
+                insert = 'X' if far == '*' else 'x'
+                moves.add(MapMove(self.tm, nearpos, direction, 1,
+                          floor_tile=floor, insert_tile=insert))
 
         wait_for_move(moves, self.screen, self.draw, 0.01)
 
@@ -74,11 +76,10 @@ class Boxes:
         self.events = EventGenerator()
         self.events.add_listener(FigureMoveListener(self.move))
         self.events.add_listener(ExitListener(self.events.exit_signalled))
-        with draw_timer(self, self.events):     
+        with draw_timer(self, self.events):
             self.events.event_loop()
 
 
 if __name__ == '__main__':
     boxes = Boxes()
     boxes.run()
-            
