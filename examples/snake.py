@@ -38,7 +38,9 @@ HEAD_TILES = {
     DOWN: 'b.pac_down',
     LEFT: 'b.pac_left',
     RIGHT: 'b.pac_right'
-    }
+}
+
+EASY = False
 
 
 class SnakeLevel:
@@ -97,7 +99,7 @@ class SnakeSprite:
     def is_moving(self):
         if not self.head.finished:
             return True
-    
+
     def create_head(self, pos):
         tile = self.tile_factory.get('b.pac_right')
         self.head = Sprite(self.frame, tile, pos, HEAD_SPEED)
@@ -109,6 +111,8 @@ class SnakeSprite:
         self.direction = direction
         headtile = HEAD_TILES[direction]
         self.head.tile = self.tile_factory.get(headtile)
+        if EASY:
+            self.move_forward()
          
     def draw(self):
         for s in self.sprites:
@@ -196,7 +200,8 @@ class SnakeGame:
         self.delay -= 1
         if self.delay <=0:
             self.delay = self.move_delay
-            self.snake.move_forward()
+            if not EASY:
+                self.snake.move_forward()
         if self.snake.eaten and not self.snake.is_moving():
             self.level.remove_fruit(self.snake.head.pos)
             self.level.place_random_fruit()

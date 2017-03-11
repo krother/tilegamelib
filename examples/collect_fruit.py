@@ -1,17 +1,14 @@
 
-from tilegamelib import Screen, Frame, Vector, TileFactory, TiledMap
+from tilegamelib import Frame, Vector, TileFactory, TiledMap
 from tilegamelib import EventGenerator, ExitListener, FigureMoveListener
-from tilegamelib.map_move import MapMove
-from tilegamelib.move import Move, wait_for_move
-from tilegamelib.move_group import MoveGroup
 from tilegamelib.sprites import Sprite
 from tilegamelib.draw_timer import draw_timer
+from tilegamelib.move import wait_for_move
 from tilegamelib.game import Game
 from pygame import Rect
-from random import randint
-from pygame import K_RETURN, K_SPACE, K_LEFT, K_RIGHT, K_UP, K_DOWN, K_ESCAPE
 import pygame
 import time
+
 
 FRUITMAP = """##########
 #b.#...aa#
@@ -22,6 +19,7 @@ FRUITMAP = """##########
 #*..b..#g#
 ##########"""
 
+
 class CollectFruit:
 
     def __init__(self, screen):
@@ -29,7 +27,8 @@ class CollectFruit:
         self.frame = Frame(self.screen, Rect(64, 64, 320, 320))
         tile_factory = TileFactory('data/tiles.conf')
         self.tm = TiledMap(self.frame, tile_factory)
-        self.player = Sprite(self.frame, tile_factory.get('b.pac_right'), Vector(4, 1), speed=2)
+        self.player = Sprite(self.frame, tile_factory.get('b.pac_right'),
+                             Vector(4, 1), speed=2)
         self.tm.set_map(FRUITMAP)
         self.draw()
         self.events = None
@@ -71,4 +70,3 @@ class CollectFruit:
 if __name__ == '__main__':
     game = Game('data/collect_fruit.conf', CollectFruit)
     game.run()
-

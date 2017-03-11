@@ -11,16 +11,15 @@ from frutris_level import FrutrisLevel
 from dropping_blocks import Diamond, FruitPair
 from multiplets import MultipletCounter
 from pygame import Rect
-import pygame
 from random import randint
-import time
 
 
-DROP_DELAY = 50
+START_DROP_DELAY = 50
+MIN_DROP_DELAY = 5
+DROP_DELAY_DECREASE_PER_LEVEL = 5
 ONE_PLAYER_START_DELAY = 7
 TWO_PLAYER_DELAY = 10
 LEVEL_COUNTER_INIT = 5000
-LEVEL_DROP_COUNTER_DECREASE = 5
 LEVEL = open('data/emptybox.map').read()
 MAX_FRUIT = 5
 
@@ -32,7 +31,7 @@ class FrutrisBox:
         self.level = FrutrisLevel(frame, tile_factory, level)
         self.moving_blocks = None
         self.insert_random_fruit_pair()
-        self.drop_delay = DROP_DELAY
+        self.drop_delay = START_DROP_DELAY
         self.drop_counter = self.drop_delay
         self._queued_command = None
         self._fast_drop = 0
@@ -40,6 +39,11 @@ class FrutrisBox:
         self.update_mode = self.update_drop
         self.counter = MultipletCounter()
         self.game_over = False
+
+    def make_blocks_drop_faster(self):
+        """Called when level increases"""
+        if self.drop_delay > MIN_DROP_DELAY:
+            self.drop_delay -= DROP_DELAY_DECREASE_PER_LEVEL
 
     def insert_diamond(self, column):
         self.moving_blocks = Diamond(self.frame, self.tile_factory, self.level, 2)
@@ -144,11 +148,12 @@ class FrutrisBox:
 class FrutrisGame:
 
     def __init__(self, screen):
-        self.level_counter = 1
+        self.level_counter = LEVEL_COUNTER_INIT
         play_effect('frutris')
         self.screen = screen
         screen.clear()
-        self.frame = Frame(self.screen, Rect(10, 10, 640, 512))
+        self.frame = Frame(self.screen, Rect(250, 10, 640, 512))
+        #self.frame = Frame(self.screen, Rect(10, 10, 640, 512))
         self.tile_factory = TileFactory('data/tiles.conf')
         self.events = None
         self.frutris_box = FrutrisBox(self.frame, self.tile_factory, LEVEL)
@@ -160,7 +165,7 @@ class FrutrisGame:
         self.status_box = self.create_status_box()
 
         # Music
-        self.music_counter = 50 # periodically check for expiring track
+        self.music_counter = 50  # periodically check for expiring track
         self.current_music = ('a', 1)
         self.music = MusicPlayer()
         self.music.play_music('/home/krother/projects/frutris/frutris/music/a1.ogg')
@@ -188,6 +193,13 @@ class FrutrisGame:
                 next_track = self.choose_next_music()
                 self.music.next_music(next_track)
 
+    def update_level(self):
+        self.level_counter -= 1
+        if self.level_counter == 0:
+            self.data['level'] += 1
+            self.level_counter = LEVEL_COUNTER_INIT
+            self.frutris_box.make_blocks_drop_faster()
+
     @property
     def score(self):
         return self.data['score']
@@ -202,6 +214,7 @@ class FrutrisGame:
         self.status_box.draw()
         if self.frutris_box.game_over:
             self.events.exit_signalled()
+        self.update_level()
         self.update_music()
 
     def run(self):
@@ -212,6 +225,51 @@ class FrutrisGame:
             self.events.event_loop()
 
 
+class OnePlayerGame(FrutrisGame):
+
+    def bla(self):
+        play_effect('menu_select_game_1')
+        play_effect('game_over')
+        play_effect('highscores_normal')
+
+
+class TwoPlayerGame(FrutrisGame):
+
+    def bla(self):
+        self.status_box = StatusBox(self, array([300,100]), array([200,500]))
+        self.status_box['player1_score'] = 0
+        self.status_box['player2_score'] = 0
+        self.players.append(FrutrisBox(self, (50, 0)))
+        self.players.append(FrutrisBox(self, (500, 0)))
+        self.delay = TWO_PLAYER_DELAY
+        play_effect('menu_select_game_2')
+
+    def message(self, sender, msg_type, *params):
+        if msg_type == 'diamond_to_opponent'\
+           and self.mode == 'two player game':
+            opp = self.players[0]==sender and self.players[1] or self.players[0]
+            opp.diamonds_queued += params[0]
+        elif msg_type == 'add_points':
+            field = 'player2_score'
+            if sender == self.players[0]:
+                field = 'player1_score'
+            self.status_box[field] += params[0] * self.status_box.get('level',1)
+
+    def win(self):
+        play_effect('winner_first')
+        play_effect('winner_second')
+                
+class MainGame(Game):
+
+    def one_player_game(self):
+        self.game_class = OnePlayerGame
+        self.play()
+
+    def two_player_game(self):
+        game = TwoPlayerGame(self.screen)
+        game.run()
+
+
 if __name__ == '__main__':
-    game = Game('data/frutris.conf', FrutrisGame)
+    game = MainGame('data/frutris.conf', None)
     game.run()
