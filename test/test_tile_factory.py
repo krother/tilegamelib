@@ -1,7 +1,7 @@
 
 from tilegamelib.tile_factory import TileFactory, NoTileError
 from tilegamelib.tiles import Tile
-from test_data import TILE_SPECS
+from data import TILE_SPECS
 from util import TEST_GAME_CONTEXT, showdoc
 import pytest
 from pygame import Rect

@@ -1,7 +1,7 @@
 
 from tilegamelib.tiles import Tile
 from tilegamelib.vector import Vector
-from test_data import TILE
+from data import TILE
 from util import TEST_GAME_CONTEXT, showdoc
 import pytest
 from pygame import Rect, image

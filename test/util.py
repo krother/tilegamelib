@@ -4,7 +4,7 @@ Helper functions for testing
 
 from tilegamelib import Screen, Frame, TileFactory
 from tilegamelib.basic_boxes import TextBox
-from test_data import RESOLUTION, BACKGROUND_IMAGE, TILE_SPECS
+from data import RESOLUTION, BACKGROUND_IMAGE, TILE_SPECS
 from pygame import Rect
 import pygame
 import time

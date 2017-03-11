@@ -3,7 +3,7 @@ from tilegamelib.screen import Screen
 from tilegamelib.frame import Frame
 from tilegamelib.vector import Vector
 from pygame import Rect, image
-from test_data import RESOLUTION, BACKGROUND_IMAGE, TILE, DEMIBOLD_BIG
+from data import RESOLUTION, BACKGROUND_IMAGE, TILE, DEMIBOLD_BIG
 from util import next_frame, graphictest
 from unittest import TestCase, main
 

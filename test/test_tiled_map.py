@@ -4,7 +4,7 @@ from tilegamelib.frame import Frame
 from tilegamelib.move import Move
 from tilegamelib.tiled_map import TiledMap
 from util import DELAY, SHORT_DELAY, TEST_GAME_CONTEXT, showdoc
-from test_data import SAMPLE_MAP_FILE
+from data import SAMPLE_MAP_FILE
 from unittest import TestCase, main
 from pygame import Rect
 import pygame
