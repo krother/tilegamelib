@@ -1,7 +1,7 @@
 
 # tilegamelib
 
-A Python/pygame library for games based on quadratic tiles.
+A Python/pygame library for games based on square tiles.
 
 (c) 2015 Kristian Rother (krother@academis.eu)
 
@@ -23,6 +23,12 @@ tilegamelib makes it easier to create pygame-based games that have graphics cons
  
 ### 2. Installing pygame
 
+Just try:
+
+    pip install pygame
+
+With older versions of `pip`, you need to install `pygame` manually:
+
     hg clone https://bitbucket.org/pygame/pygame
     cd pygame
     python3 setup.py install --prefix="$HOME/.virtualenvs/tilegamelib"
@@ -32,20 +38,18 @@ tilegamelib makes it easier to create pygame-based games that have graphics cons
     pip install --editable .
 
 
-## Testing
+## 4. Play example Games
+
+Run the programs in the `examples/` directory:
+
+    cd examples/
+    python __main__.py
+
+
+## Running automated Tests
 
     cd test
     python test_all.py
-
-
-
-## How to use it
-
-To get started:
-
-1. Run the examples in `examples/`
-2. Read the code
-3. Try things
 
 
 ## Classes

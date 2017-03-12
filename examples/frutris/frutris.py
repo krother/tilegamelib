@@ -7,9 +7,9 @@ from tilegamelib.sounds import play_effect, MusicPlayer, CLOSE_TO_END
 from tilegamelib.game import Game
 from tilegamelib.basic_boxes import DictBox
 from tilegamelib.draw_timer import draw_timer
-from frutris_level import FrutrisLevel
-from dropping_blocks import Diamond, FruitPair
-from multiplets import MultipletCounter
+from .frutris_level import FrutrisLevel
+from .dropping_blocks import Diamond, FruitPair
+from .multiplets import MultipletCounter
 from pygame import Rect
 from random import randint
 

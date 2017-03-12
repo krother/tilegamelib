@@ -1,13 +1,12 @@
 #! /usr/bin/python
 
-from tilegamelib import Screen, Frame, Vector, TileFactory, TiledMap
+from tilegamelib import Frame, TileFactory, TiledMap
 from tilegamelib import EventGenerator, ExitListener, FigureMoveListener
 from tilegamelib.vector import Vector, UP, DOWN, LEFT, RIGHT
 from tilegamelib.game import Game
 from tilegamelib.sprites import Sprite
 from tilegamelib.basic_boxes import DictBox
 from tilegamelib.draw_timer import draw_timer
-from pygame.locals import USEREVENT
 from pygame import Rect
 import random
 import time
@@ -176,9 +175,10 @@ class SnakeGame:
     def create_snake(self):
         start_pos = Vector(5, 5)
         frame = Frame(self.screen, Rect(10, 10, 640, 512))
-        self.snake = SnakeSprite(frame, self.tile_factory, start_pos, self.level)
+        self.snake = SnakeSprite(frame, self.tile_factory,
+                                 start_pos, self.level)
         self.snake.set_direction(RIGHT)
-        
+
     def create_level(self):
         frame = Frame(self.screen, Rect(10, 10, 640, 512))
         tmap = TiledMap(frame, self.tile_factory)
@@ -187,7 +187,7 @@ class SnakeGame:
 
     def create_status_box(self):
         frame = Frame(self.screen, Rect(660, 20, 200, 200))
-        self.status_box = DictBox(frame, {'score':0})
+        self.status_box = DictBox(frame, {'score': 0})
 
     def update_finish_moves(self):
         """finish movements before Game Over"""
@@ -198,7 +198,7 @@ class SnakeGame:
 
     def update_ingame(self):
         self.delay -= 1
-        if self.delay <=0:
+        if self.delay <= 0:
             self.delay = self.move_delay
             if not EASY:
                 self.snake.move_forward()
@@ -224,13 +224,12 @@ class SnakeGame:
 
     def run(self):
         self.events = EventGenerator()
-
         self.events.add_listener(FigureMoveListener(self.snake.set_direction))
         self.events.add_listener(ExitListener(self.events.exit_signalled))
         with draw_timer(self, self.events):
             self.events.event_loop()
 
+
 if __name__ == '__main__':
     game = Game('data/snake.conf', SnakeGame)
     game.run()
-
