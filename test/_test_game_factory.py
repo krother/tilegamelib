@@ -1,8 +1,13 @@
 
-from unittest import TestCase, main
-from tilegamelib.game_factory import GameFactory
+from unittest import main
+from unittest import TestCase
+
+from pygame import K_RETURN
+from pygame import K_SPACE
+
 from tilegamelib.events import QUIT_EVENT
-from pygame import K_RETURN, K_SPACE
+from tilegamelib.game_factory import GameFactory
+
 
 class GameFactoryTests(TestCase):
 

@@ -10,9 +10,13 @@ __author__="Kristian Rother"
 __email__ ="krother@rubor.de"
 
 
-from tilegamelib.vector import Vector
+from unittest import main
+from unittest import TestCase
+
 from pygame import Rect
-from unittest import TestCase, main
+
+from tilegamelib.vector import Vector
+
 
 class VectorTests(TestCase):
 

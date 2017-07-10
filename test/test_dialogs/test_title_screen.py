@@ -1,12 +1,24 @@
 
-from unittest import TestCase, main
-from test_data import TITLE_IMAGE, TITLE_RECT, MENU_RECT
-from util import showdoc, TEST_GAME_CONTEXT
-from tilegamelib.events import EventGenerator, QUIT_EVENT
+from unittest import main
+from unittest import TestCase
+
+from pygame import K_DOWN
+from pygame import K_ESCAPE
+from pygame import K_LEFT
+from pygame import K_RETURN
+from pygame import K_RIGHT
+from pygame import K_SPACE
+from pygame import K_UP
+
+from test_data import MENU_RECT
+from test_data import TITLE_IMAGE
+from test_data import TITLE_RECT
 from tilegamelib.dialogs.title_screen import TitleScreen
+from tilegamelib.events import EventGenerator
+from tilegamelib.events import QUIT_EVENT
 from tilegamelib.menu import VERTICAL_MOVES
-from pygame import K_RETURN, K_SPACE, K_LEFT, K_RIGHT, K_UP, K_DOWN,\
-        K_ESCAPE
+from util import showdoc
+from util import TEST_GAME_CONTEXT
 
 
 class TitleScreenTests(TestCase):
@@ -42,4 +54,3 @@ class TitleScreenTests(TestCase):
 
 if __name__ == '__main__':
     main()
-    

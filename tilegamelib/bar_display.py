@@ -1,13 +1,17 @@
 
-from .tiled_map import TiledMap
-from tilegamelib.screen import Screen
+import time
+
+import pygame
+from pygame import Rect
+
 from tilegamelib.frame import Frame
+from tilegamelib.screen import Screen
 from tilegamelib.tile_factory import TileFactory
 from tilegamelib.tiled_map import TiledMap
-from tilegamelib.vector import Vector, RIGHT
-from pygame import Rect
-import pygame
-import time
+from tilegamelib.vector import RIGHT
+from tilegamelib.vector import Vector
+
+from .tiled_map import TiledMap
 
 
 class BarDisplay:
@@ -61,4 +65,3 @@ if __name__ == '__main__':
         cherries.increase()
         pygame.display.update()
     time.sleep(2)
-    

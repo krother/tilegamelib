@@ -1,9 +1,11 @@
 #!/usr/bin/env python
 
-from tilegamelib.vector import Vector
-from pygame.rect import Rect
-import pygame
 import os
+
+import pygame
+from pygame.rect import Rect
+
+from tilegamelib.vector import Vector
 
 BASE_PATH = os.path.split(__file__)[0]
 TEST_DATA_PATH = BASE_PATH + '/test_data/'

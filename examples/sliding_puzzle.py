@@ -1,13 +1,20 @@
 
-from tilegamelib import Screen, Frame, TileFactory, Vector, TiledMap
+from collections import Counter
+
+import pygame
+from pygame import Rect
+
+from tilegamelib import Frame
+from tilegamelib import Screen
+from tilegamelib import TiledMap
+from tilegamelib import TileFactory
+from tilegamelib import Vector
+from tilegamelib.event_listener import FigureMoveListener
+from tilegamelib.events import EventGenerator
 from tilegamelib.map_move import MapMove
 from tilegamelib.move import wait_for_move
-from tilegamelib.events import EventGenerator
-from tilegamelib.event_listener import FigureMoveListener
 from tilegamelib.util import DATA_PATH
-from pygame import Rect
-from collections import Counter
-import pygame
+
 
 PUZZLEMAP = """######
 #abce#

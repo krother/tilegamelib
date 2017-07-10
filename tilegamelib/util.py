@@ -1,7 +1,7 @@
 
 import os
-import pygame
 
+import pygame
 
 BASE_PATH = os.path.split(__file__)[0]
 DATA_PATH = os.path.join(BASE_PATH, '..', 'examples', 'data') + os.sep

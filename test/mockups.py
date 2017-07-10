@@ -9,10 +9,13 @@
 __author__="Kristian Rother"
 __email__ ="krother@rubor.de"
 
-from tilegamelib.events import EventGenerator, EventListener
-from tilegamelib.game_engine import GameFactory
-from pygame.locals import QUIT
 from pygame.event import Event
+from pygame.locals import QUIT
+
+from tilegamelib.events import EventGenerator
+from tilegamelib.events import EventListener
+from tilegamelib.game_engine import GameFactory
+
 
 class MockGenerator(EventGenerator):
     def __init__(self,settings):
@@ -44,4 +47,3 @@ class MockGameFactory(GameFactory):
         self.events = MockGenerator(self.settings)
         print self.events
         return self.events
-

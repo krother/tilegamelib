@@ -1,11 +1,14 @@
 
-from .screen import Screen
-from tilegamelib import Vector
-from tilegamelib.dialogs.title_screen import show_title_screen
-from tilegamelib.dialogs.highscores import show_highscores
-from tilegamelib.menu import VERTICAL_MOVES
-from pygame import Rect
 import os
+
+from pygame import Rect
+
+from tilegamelib import Vector
+from tilegamelib.dialogs.highscores import show_highscores
+from tilegamelib.dialogs.title_screen import show_title_screen
+from tilegamelib.menu import VERTICAL_MOVES
+
+from .screen import Screen
 
 
 class Game:

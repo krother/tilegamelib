@@ -1,11 +1,14 @@
 
+import time
+
 import pygame
 import pygame.font
+
+from tilegamelib.basic_boxes import TextBox
+from tilegamelib.screen import Frame
+from tilegamelib.screen import Screen
 from tilegamelib.settings import DialogSettings
 from tilegamelib.tiles import TileFactory
-from tilegamelib.screen import Screen, Frame
-from tilegamelib.basic_boxes import TextBox
-import time
 
 
 class TestSettings(DialogSettings):
@@ -26,5 +29,3 @@ class TestSettings(DialogSettings):
 
 SAMPLE_MAP_FILE = 'test_data/sample.map'
 HIGHSCORE_BACKUP = 'test_data/test_scores_backup.txt'
-
-

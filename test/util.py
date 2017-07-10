@@ -2,12 +2,18 @@
 Helper functions for testing
 """
 
-from tilegamelib import Screen, Frame, TileFactory
-from tilegamelib.basic_boxes import TextBox
-from data import RESOLUTION, BACKGROUND_IMAGE, TILE_SPECS
-from pygame import Rect
-import pygame
 import time
+
+import pygame
+from pygame import Rect
+
+from data import BACKGROUND_IMAGE
+from data import RESOLUTION
+from data import TILE_SPECS
+from tilegamelib import Frame
+from tilegamelib import Screen
+from tilegamelib import TileFactory
+from tilegamelib.basic_boxes import TextBox
 
 
 class TestGameContext:

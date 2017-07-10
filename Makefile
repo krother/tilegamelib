@@ -14,3 +14,6 @@ coverage:
 devinstall:
 	pip install -e .
 	pip install -e .[tests]
+
+lint:
+	coala --ci

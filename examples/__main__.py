@@ -1,11 +1,11 @@
 #! /usr/bin/python
 
-from tilegamelib.game import Game
-from snake import SnakeGame
-from pac import PacGame
-from collect_fruit import CollectFruit
 from boxes import Boxes
+from collect_fruit import CollectFruit
 from frutris import frutris
+from pac import PacGame
+from snake import SnakeGame
+from tilegamelib.game import Game
 
 
 class ExampleGameMenu(Game):

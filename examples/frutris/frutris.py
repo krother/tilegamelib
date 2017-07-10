@@ -1,18 +1,29 @@
 #! /usr/bin/python
 
-from tilegamelib import Frame, TileFactory
-from tilegamelib import EventGenerator, ExitListener, FigureMoveListener
-from tilegamelib.vector import UP, DOWN, LEFT, RIGHT
-from tilegamelib.sounds import play_effect, MusicPlayer, CLOSE_TO_END
-from tilegamelib.game import Game
-from tilegamelib.basic_boxes import DictBox
-from tilegamelib.draw_timer import draw_timer
-from .frutris_level import FrutrisLevel
-from .dropping_blocks import Diamond, FruitPair
-from .multiplets import MultipletCounter
-from pygame import Rect
 from random import randint
 
+from pygame import Rect
+
+from tilegamelib import EventGenerator
+from tilegamelib import ExitListener
+from tilegamelib import FigureMoveListener
+from tilegamelib import Frame
+from tilegamelib import TileFactory
+from tilegamelib.basic_boxes import DictBox
+from tilegamelib.draw_timer import draw_timer
+from tilegamelib.game import Game
+from tilegamelib.sounds import CLOSE_TO_END
+from tilegamelib.sounds import MusicPlayer
+from tilegamelib.sounds import play_effect
+from tilegamelib.vector import DOWN
+from tilegamelib.vector import LEFT
+from tilegamelib.vector import RIGHT
+from tilegamelib.vector import UP
+
+from .dropping_blocks import Diamond
+from .dropping_blocks import FruitPair
+from .frutris_level import FrutrisLevel
+from .multiplets import MultipletCounter
 
 START_DROP_DELAY = 50
 MIN_DROP_DELAY = 5

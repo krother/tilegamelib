@@ -1,11 +1,13 @@
 
-from .screen import Screen
+import time
+
+import pygame
+from pygame import Rect
+
 from .frame import Frame
+from .screen import Screen
 from .tile_factory import TileFactory
 from .vector import Vector
-from pygame import Rect
-import pygame
-import time
 
 
 class AnimatedTile:

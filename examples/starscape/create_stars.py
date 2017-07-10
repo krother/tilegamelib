@@ -2,12 +2,12 @@
 Generiert Sternenhimmel
 """
 
-from PIL import Image
-from PIL import ImageDraw
+import os
 from random import randint
 import sys
-import os
 
+from PIL import Image
+from PIL import ImageDraw
 
 XSIZE, YSIZE = 800, 600
 STAR_PATH = os.path.split(__file__)[0]

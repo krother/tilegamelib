@@ -1,12 +1,18 @@
 
-from tilegamelib import Screen, Frame, TileFactory, TiledMap, Vector, Sprite
-from tilegamelib.move import wait_for_move
-from frutris import FrutrisBox
-from pygame import Rect
-import pygame
 from random import randint
 import time
- 
+
+import pygame
+from pygame import Rect
+
+from frutris import FrutrisBox
+from tilegamelib import Frame
+from tilegamelib import Screen
+from tilegamelib import Sprite
+from tilegamelib import TiledMap
+from tilegamelib import TileFactory
+from tilegamelib import Vector
+from tilegamelib.move import wait_for_move
 
 if __name__ == '__main__':
     LEVEL = """#......#
@@ -63,5 +69,3 @@ if __name__ == '__main__':
         wait_for_move(frutris, screen, frutris.draw)
     
     time.sleep(2)
-    
-    

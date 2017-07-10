@@ -1,14 +1,21 @@
 
-from tilegamelib import Frame, Vector, TileFactory, TiledMap
-from tilegamelib import EventGenerator, ExitListener, FigureMoveListener
-from tilegamelib.sprites import Sprite
-from tilegamelib.draw_timer import draw_timer
-from tilegamelib.move import wait_for_move
-from tilegamelib.game import Game
-from tilegamelib.util import DATA_PATH
-from pygame import Rect
-import pygame
 import time
+
+import pygame
+from pygame import Rect
+
+from tilegamelib import EventGenerator
+from tilegamelib import ExitListener
+from tilegamelib import FigureMoveListener
+from tilegamelib import Frame
+from tilegamelib import TiledMap
+from tilegamelib import TileFactory
+from tilegamelib import Vector
+from tilegamelib.draw_timer import draw_timer
+from tilegamelib.game import Game
+from tilegamelib.move import wait_for_move
+from tilegamelib.sprites import Sprite
+from tilegamelib.util import DATA_PATH
 
 
 FRUITMAP = """##########

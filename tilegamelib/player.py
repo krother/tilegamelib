@@ -10,10 +10,14 @@ __author__="Kristian Rother"
 __email__ ="krother@rubor.de"
 
 
-from tiled_map import MoveableTiledMap, SpriteList
-from interfaces import Drawable, Updateable, Commandable
+from interfaces import Commandable
+from interfaces import Drawable
+from interfaces import Updateable
 from screen import GameElement
-    
+from tiled_map import MoveableTiledMap
+from tiled_map import SpriteList
+
+
 class PlayerBox(Drawable, Updateable, Commandable, GameElement):
     """
     Part of the screen where the game takes place, controlled by one
@@ -56,5 +60,3 @@ class PlayerBox(Drawable, Updateable, Commandable, GameElement):
         """Draws the 2D map and sprites."""
         self.map.draw()
         self.sprites.draw()
-
-

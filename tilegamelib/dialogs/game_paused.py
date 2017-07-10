@@ -1,8 +1,10 @@
 
-from tilegamelib.basic_boxes import ImageBox, TextBox
-from tilegamelib.events import EventGenerator
-from tilegamelib.event_listener import AnyKeyListener
 import pygame
+
+from tilegamelib.basic_boxes import ImageBox
+from tilegamelib.basic_boxes import TextBox
+from tilegamelib.event_listener import AnyKeyListener
+from tilegamelib.events import EventGenerator
 
 
 class GamePausedBox:

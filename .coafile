@@ -1,0 +1,5 @@
+[python]
+  files=**/*.py
+  bears=PycodestyleBear,PyImportSortBear
+  language=Python
+  max_line_length=96

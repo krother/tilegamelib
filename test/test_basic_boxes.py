@@ -1,12 +1,19 @@
 #!/usr/bin/env python
 
-from tilegamelib.frame import Frame
-from tilegamelib.basic_boxes import TextBox, ImageBox, DictBox
-from util import showdoc, TEST_GAME_CONTEXT, SHORT_DELAY
-from unittest import TestCase, main
-from pygame import Rect
-import pygame
 import time
+from unittest import main
+from unittest import TestCase
+
+import pygame
+from pygame import Rect
+
+from tilegamelib.basic_boxes import DictBox
+from tilegamelib.basic_boxes import ImageBox
+from tilegamelib.basic_boxes import TextBox
+from tilegamelib.frame import Frame
+from util import SHORT_DELAY
+from util import showdoc
+from util import TEST_GAME_CONTEXT
 
 
 class BasicBoxTests(TestCase):

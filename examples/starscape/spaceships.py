@@ -1,19 +1,28 @@
 #! /usr/bin/python
 
-from tilegamelib import Frame, Vector, TileFactory, TiledMap
-from tilegamelib import EventGenerator, ExitListener, FigureMoveListener
-from tilegamelib.game import Game
-from tilegamelib.sprites import Sprite
-from tilegamelib.vector import LEFT, UP, DOWN
-from tilegamelib.basic_boxes import DictBox
-from tilegamelib.draw_timer import draw_timer
-from starscape import StarScape
-from tilegamelib.util import DATA_PATH
-from pygame import Rect
+import os
 import random
 import time
+
 import pygame
-import os
+from pygame import Rect
+
+from starscape import StarScape
+from tilegamelib import EventGenerator
+from tilegamelib import ExitListener
+from tilegamelib import FigureMoveListener
+from tilegamelib import Frame
+from tilegamelib import TiledMap
+from tilegamelib import TileFactory
+from tilegamelib import Vector
+from tilegamelib.basic_boxes import DictBox
+from tilegamelib.draw_timer import draw_timer
+from tilegamelib.game import Game
+from tilegamelib.sprites import Sprite
+from tilegamelib.util import DATA_PATH
+from tilegamelib.vector import DOWN
+from tilegamelib.vector import LEFT
+from tilegamelib.vector import UP
 
 MOVE_DELAY = 50
 SHIP_SPEED = 4
@@ -174,4 +183,3 @@ class SpaceRaceGame:
 if __name__ == '__main__':
     game = Game(os.path.join(DATA_PATH, 'snake.conf'), SpaceRaceGame)
     game.run()
-

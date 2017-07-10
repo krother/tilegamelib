@@ -1,11 +1,16 @@
 
-from tilegamelib import Screen, Frame, Vector
-from tilegamelib.util import DATA_PATH
-from pygame import Rect, image
-import pygame
-import time
 import os
+import time
+
+import pygame
+from pygame import image
+from pygame import Rect
+
 from create_stars import STAR_PATH
+from tilegamelib import Frame
+from tilegamelib import Screen
+from tilegamelib import Vector
+from tilegamelib.util import DATA_PATH
 
 
 class StarScape:
@@ -46,4 +51,3 @@ if __name__ == '__main__':
         starscape.scroll()
         pygame.display.update()
         time.sleep(0.01)
-

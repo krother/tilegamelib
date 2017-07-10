@@ -1,10 +1,12 @@
 
-from tilegamelib.vector import Vector
-from tilegamelib.screen import Screen
-from tilegamelib.tile_factory import TileFactory
-import pygame
 from math import sqrt
 import time
+
+import pygame
+
+from tilegamelib.screen import Screen
+from tilegamelib.tile_factory import TileFactory
+from tilegamelib.vector import Vector
 
 VERZOEGERUNG = 0.01
 

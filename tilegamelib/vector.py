@@ -54,5 +54,3 @@ UPLEFT    = Vector(-1,-1)
 DOWNLEFT  = Vector(-1, 1)
 UPRIGHT   = Vector( 1,-1)
 DOWNRIGHT = Vector( 1, 1)
-
-    

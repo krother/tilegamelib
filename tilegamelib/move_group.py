@@ -1,14 +1,20 @@
 
-from .screen import Screen
+import time
+
+import pygame
+from pygame import Rect
+
 from .frame import Frame
-from .tile_factory import TileFactory
-from .tiled_map import TiledMap
-from .vector import Vector, UP, DOWN, LEFT, RIGHT
 from .map_move import MapMove
 from .move import wait_for_move
-from pygame import Rect
-import pygame
-import time
+from .screen import Screen
+from .tile_factory import TileFactory
+from .tiled_map import TiledMap
+from .vector import DOWN
+from .vector import LEFT
+from .vector import RIGHT
+from .vector import UP
+from .vector import Vector
 
 
 class MoveGroup:

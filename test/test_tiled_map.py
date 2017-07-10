@@ -1,14 +1,26 @@
 
-from tilegamelib.vector import Vector, UP, DOWN, LEFT, UPLEFT, UPRIGHT, DOWNLEFT
+import time
+from unittest import main
+from unittest import TestCase
+
+import pygame
+from pygame import Rect
+
+from data import SAMPLE_MAP_FILE
 from tilegamelib.frame import Frame
 from tilegamelib.move import Move
 from tilegamelib.tiled_map import TiledMap
-from util import DELAY, SHORT_DELAY, TEST_GAME_CONTEXT, showdoc
-from data import SAMPLE_MAP_FILE
-from unittest import TestCase, main
-from pygame import Rect
-import pygame
-import time
+from tilegamelib.vector import DOWN
+from tilegamelib.vector import DOWNLEFT
+from tilegamelib.vector import LEFT
+from tilegamelib.vector import UP
+from tilegamelib.vector import UPLEFT
+from tilegamelib.vector import UPRIGHT
+from tilegamelib.vector import Vector
+from util import DELAY
+from util import SHORT_DELAY
+from util import showdoc
+from util import TEST_GAME_CONTEXT
 
 
 class TiledMapTests(TestCase):

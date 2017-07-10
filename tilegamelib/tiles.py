@@ -1,6 +1,8 @@
 
+from pygame import image
+from pygame import Rect
+
 from .vector import Vector
-from pygame import Rect, image
 
 
 class Tile:
@@ -27,4 +29,3 @@ class Tile:
 
     def __repr__(self):
         return "[Tile '%s' (%ix%i)]"%(self.name, self.size.x, self.size.y)
-

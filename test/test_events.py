@@ -10,14 +10,20 @@ __author__="Kristian Rother"
 __email__ ="krother@rubor.de"
 
 
-from tilegamelib.screen import Screen
-from tilegamelib.events import EventGenerator, QUIT_EVENT
-from tilegamelib.event_listener import EventListener, AnyKeyListener, TextEnteringListener
-from unittest import TestCase, main
+from unittest import main
+from unittest import TestCase
+
+from pygame import K_DELETE
+from pygame import K_RETURN
 from pygame.event import Event
 from pygame.locals import KEYDOWN
-from pygame import K_RETURN, K_DELETE
 
+from tilegamelib.event_listener import AnyKeyListener
+from tilegamelib.event_listener import EventListener
+from tilegamelib.event_listener import TextEnteringListener
+from tilegamelib.events import EventGenerator
+from tilegamelib.events import QUIT_EVENT
+from tilegamelib.screen import Screen
 
 COMMANDS = {
     'a':'Hel',

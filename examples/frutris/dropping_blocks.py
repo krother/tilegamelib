@@ -1,6 +1,10 @@
 
-from tilegamelib.vector import UP, DOWN, LEFT, RIGHT
-from tilegamelib import Vector, Sprite
+from tilegamelib import Sprite
+from tilegamelib import Vector
+from tilegamelib.vector import DOWN
+from tilegamelib.vector import LEFT
+from tilegamelib.vector import RIGHT
+from tilegamelib.vector import UP
 
 
 class MovingBlocks:

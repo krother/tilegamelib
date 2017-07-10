@@ -1,14 +1,27 @@
 
-from unittest import TestCase, main
-from tilegamelib.frame import Frame
-from tilegamelib.events import EventGenerator, QUIT_EVENT
-from tilegamelib.dialogs.highscores import HighscoreBox, HighscoreList
-from util import showdoc, TEST_GAME_CONTEXT
-from test_data import HIGHSCORE_RECT, HIGHSCORE_TEXT_POS, HIGHSCORE_FILE, HIGHSCORE_IMAGE
-from pygame import K_RETURN, K_SPACE, K_LEFT, K_RIGHT, K_UP, K_DOWN,\
-        K_ESCAPE
 import os
+from unittest import main
+from unittest import TestCase
 
+from pygame import K_DOWN
+from pygame import K_ESCAPE
+from pygame import K_LEFT
+from pygame import K_RETURN
+from pygame import K_RIGHT
+from pygame import K_SPACE
+from pygame import K_UP
+
+from test_data import HIGHSCORE_FILE
+from test_data import HIGHSCORE_IMAGE
+from test_data import HIGHSCORE_RECT
+from test_data import HIGHSCORE_TEXT_POS
+from tilegamelib.dialogs.highscores import HighscoreBox
+from tilegamelib.dialogs.highscores import HighscoreList
+from tilegamelib.events import EventGenerator
+from tilegamelib.events import QUIT_EVENT
+from tilegamelib.frame import Frame
+from util import showdoc
+from util import TEST_GAME_CONTEXT
 
 HIGHSCORE_BACKUP = 'test_data/test_scores_backup.txt'
 
@@ -41,4 +54,3 @@ class HighscoreTests(TestCase):
 
 if __name__ == '__main__':
     main()
-    

@@ -9,13 +9,19 @@
 __author__="Kristian Rother"
 __email__ ="krother@rubor.de"
 
-from unittest import main,TestCase
-from tilegamelib.game_engine import GameEngine
-from test_settings import TestSettings, showdoc, DELAY
-from mockups import MockGameFactory
+import time
+from unittest import main
+from unittest import TestCase
+
 from pygame.event import Event
 from pygame.locals import KEYDOWN
-import time
+
+from mockups import MockGameFactory
+from test_settings import DELAY
+from test_settings import showdoc
+from test_settings import TestSettings
+from tilegamelib.game_engine import GameEngine
+
 
 class GameEngineTests(TestCase):
 

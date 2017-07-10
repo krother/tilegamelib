@@ -1,9 +1,12 @@
 
-from pygame import Rect, image
-from .vector import Vector
-from .tiles import Tile
 import json
 import os
+
+from pygame import image
+from pygame import Rect
+
+from .tiles import Tile
+from .vector import Vector
 
 TILE_SIZE = (32, 32)
 

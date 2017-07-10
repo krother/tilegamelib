@@ -10,7 +10,8 @@ __author__="Kristian Rother"
 __email__ ="krother@rubor.de"
 
 from distutils.core import setup
-import sys, time
+import sys
+import time
 
 packages = ['tilegamelib']
 
@@ -27,4 +28,3 @@ setup(
         package_data=package_data, 
         #data_files=[]#'RELEASE_NOTES.TXT', 'README.TXT', 'LICENSE_GPL.TXT']
         )
-        

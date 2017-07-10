@@ -1,13 +1,17 @@
 #!/usr/bin/env python
 
-from tilegamelib.frame import Frame
-from tilegamelib.dialogs.game_paused import GamePausedBox
-from tilegamelib.events import EventGenerator
-from util import showdoc, TEST_GAME_CONTEXT
-from test_data import PAUSE_IMAGE
+from unittest import main
+from unittest import TestCase
+
 import pygame
 from pygame import Rect
-from unittest import TestCase, main
+
+from test_data import PAUSE_IMAGE
+from tilegamelib.dialogs.game_paused import GamePausedBox
+from tilegamelib.events import EventGenerator
+from tilegamelib.frame import Frame
+from util import showdoc
+from util import TEST_GAME_CONTEXT
 
 
 class GamePausedTests(TestCase):

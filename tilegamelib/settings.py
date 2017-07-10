@@ -1,8 +1,15 @@
 
-from .vector import Vector
+from pygame import K_DOWN
+from pygame import K_ESCAPE
+from pygame import K_LEFT
+from pygame import K_RETURN
+from pygame import K_RIGHT
+from pygame import K_SPACE
+from pygame import K_UP
 import pygame.font
 from pygame.rect import Rect
-from pygame import K_RETURN, K_SPACE, K_LEFT, K_RIGHT, K_UP, K_DOWN, K_ESCAPE
+
+from .vector import Vector
 
 # fonts
 pygame.font.init()
@@ -28,5 +35,3 @@ def read_settings(filename):
             name, value = line.split('=')
             result[name.strip()] = eval(value.strip())
     return result
-
-

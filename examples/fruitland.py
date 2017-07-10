@@ -1,11 +1,15 @@
 
-from tilegamelib import Screen, Frame, TileFactory, TiledMap, Vector
-from tilegamelib.util import DATA_PATH
-from pygame import Rect
-import pygame
 import time
 
+import pygame
+from pygame import Rect
 
+from tilegamelib import Frame
+from tilegamelib import Screen
+from tilegamelib import TiledMap
+from tilegamelib import TileFactory
+from tilegamelib import Vector
+from tilegamelib.util import DATA_PATH
 
 if __name__ == '__main__':
     fruitmap = """################

@@ -1,11 +1,19 @@
 
-from tilegamelib.screen import Screen
+from unittest import main
+from unittest import TestCase
+
+from pygame import image
+from pygame import Rect
+
+from data import BACKGROUND_IMAGE
+from data import DEMIBOLD_BIG
+from data import RESOLUTION
+from data import TILE
 from tilegamelib.frame import Frame
+from tilegamelib.screen import Screen
 from tilegamelib.vector import Vector
-from pygame import Rect, image
-from data import RESOLUTION, BACKGROUND_IMAGE, TILE, DEMIBOLD_BIG
-from util import next_frame, graphictest
-from unittest import TestCase, main
+from util import graphictest
+from util import next_frame
 
 CYAN = (0, 255, 255)
 

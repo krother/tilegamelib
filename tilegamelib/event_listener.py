@@ -1,7 +1,17 @@
 
-from .vector import Vector, UP, DOWN, LEFT, RIGHT
-from pygame import K_ESCAPE, K_RETURN, K_DELETE
-from pygame import K_LEFT, K_RIGHT, K_UP, K_DOWN
+from pygame import K_DELETE
+from pygame import K_DOWN
+from pygame import K_ESCAPE
+from pygame import K_LEFT
+from pygame import K_RETURN
+from pygame import K_RIGHT
+from pygame import K_UP
+
+from .vector import DOWN
+from .vector import LEFT
+from .vector import RIGHT
+from .vector import UP
+from .vector import Vector
 
 
 class EventListener:

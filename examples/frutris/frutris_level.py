@@ -1,11 +1,15 @@
 
-from tilegamelib import Vector, TiledMap
+from tilegamelib import TiledMap
+from tilegamelib import Vector
+from tilegamelib.animation import AnimatedTile
 from tilegamelib.map_move import MapMove
 from tilegamelib.move_group import MoveGroup
-from tilegamelib.animation import AnimatedTile
-from tilegamelib.vector import UP, DOWN, LEFT, RIGHT
-from .multiplets import FruitMultiplets
+from tilegamelib.vector import DOWN
+from tilegamelib.vector import LEFT
+from tilegamelib.vector import RIGHT
+from tilegamelib.vector import UP
 
+from .multiplets import FruitMultiplets
 
 EXPLOSION = ['b.explo_1', 'b.explo_2', 'b.explo_3', 'b.explo_4',
              'b.explo_5', 'b.explo_6', 'b.empty']

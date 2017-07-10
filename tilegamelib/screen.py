@@ -1,7 +1,7 @@
 
 import pygame
 from pygame.locals import *
-from pygame.rect import Rect #numpy import array
+from pygame.rect import Rect  # numpy import array
 
 
 class Screen:

@@ -1,7 +1,9 @@
 
-from pygame.locals import USEREVENT
-import pygame
 from contextlib import contextmanager
+
+import pygame
+from pygame.locals import USEREVENT
+
 
 @contextmanager
 def draw_timer(callback, event_generator, delay=20, draw_event=USEREVENT):

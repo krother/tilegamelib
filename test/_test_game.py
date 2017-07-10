@@ -10,12 +10,17 @@ __author__="Kristian Rother"
 __email__ ="krother@rubor.de"
 
 
-from unittest import main,TestCase
-from tilegamelib.screen import Frame
-from test_game_engine import MockGameFactory
-from test_settings import TestSettings, showdoc
-from test_player import MockPlayer
+from unittest import main
+from unittest import TestCase
+
 import pygame
+
+from test_game_engine import MockGameFactory
+from test_player import MockPlayer
+from test_settings import showdoc
+from test_settings import TestSettings
+from tilegamelib.screen import Frame
+
 
 class GameTests(TestCase):
 

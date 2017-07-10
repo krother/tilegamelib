@@ -1,9 +1,15 @@
 
-from unittest import TestCase, main
-from tilegamelib.screen import Screen
-from data import RESOLUTION, BACKGROUND_IMAGE, TILE
-from util import graphictest, next_frame
+from unittest import main
+from unittest import TestCase
+
 import pygame
+
+from data import BACKGROUND_IMAGE
+from data import RESOLUTION
+from data import TILE
+from tilegamelib.screen import Screen
+from util import graphictest
+from util import next_frame
 
 
 class ScreenTests(TestCase):

@@ -1,11 +1,14 @@
 
-from tilegamelib.basic_boxes import ImageBox
-from tilegamelib.frame import Frame
-from tilegamelib.events import EventGenerator
-from tilegamelib.vector import Vector
-from tilegamelib.event_listener import TextEnteringListener, AnyKeyListener
 import pygame
-from tilegamelib.util import DEMIBOLD_BIG, BLUE
+
+from tilegamelib.basic_boxes import ImageBox
+from tilegamelib.event_listener import AnyKeyListener
+from tilegamelib.event_listener import TextEnteringListener
+from tilegamelib.events import EventGenerator
+from tilegamelib.frame import Frame
+from tilegamelib.util import BLUE
+from tilegamelib.util import DEMIBOLD_BIG
+from tilegamelib.vector import Vector
 
 
 class HighscoreList:
@@ -132,4 +135,3 @@ def show_highscores(new_score, screen, rect, filename, image, textpos):
     hs.activate()
     screen.clear()
     pygame.display.update()
-

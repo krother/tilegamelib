@@ -1,15 +1,24 @@
 
-from tilegamelib import Screen, Frame, Vector, TileFactory, TiledMap
-from tilegamelib import EventGenerator, ExitListener, FigureMoveListener
+import time
+
+import pygame
+from pygame import Rect
+
+from tilegamelib import EventGenerator
+from tilegamelib import ExitListener
+from tilegamelib import FigureMoveListener
+from tilegamelib import Frame
+from tilegamelib import Screen
+from tilegamelib import TiledMap
+from tilegamelib import TileFactory
+from tilegamelib import Vector
+from tilegamelib.draw_timer import draw_timer
 from tilegamelib.map_move import MapMove
 from tilegamelib.move import wait_for_move
 from tilegamelib.move_group import MoveGroup
 from tilegamelib.sprites import Sprite
-from tilegamelib.draw_timer import draw_timer
 from tilegamelib.util import DATA_PATH
-from pygame import Rect
-import pygame
-import time
+
 
 BOXMAP = """##########
 #..#...**#

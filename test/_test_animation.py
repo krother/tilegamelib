@@ -1,13 +1,18 @@
 
-from tilegamelib.vector import Vector
+import time
+from unittest import main
+from unittest import TestCase
+
+import pygame
+from pygame import Rect
+
+from test_settings import SHORT_DELAY
+from test_settings import showdoc
+from test_settings import TEST_GAME_CONTEXT
+from tilegamelib.animation import AnimationSequence
 from tilegamelib.frame import Frame
 from tilegamelib.sprites import Sprite
-from tilegamelib.animation import AnimationSequence
-from test_settings import showdoc, SHORT_DELAY, TEST_GAME_CONTEXT
-from unittest import TestCase, main
-from pygame import Rect
-import pygame
-import time
+from tilegamelib.vector import Vector
 
 
 class AnimationTests(TestCase):
@@ -15,8 +20,8 @@ class AnimationTests(TestCase):
     def setUp(self):
         self.factory = TEST_GAME_CONTEXT.tile_factory
         self.tile = self.factory.get('g')
-        self.frame = Frame(TEST_GAME_CONTEXT.screen, Rect(40,50, 160,160))
-        self.sprite = Sprite(self.frame, self.tile, Vector(1,1), speed=2)
+        self.frame = Frame(TEST_GAME_CONTEXT.screen, Rect(40, 50, 160, 160))
+        self.sprite = Sprite(self.frame, self.tile, Vector(1, 1), speed=2)
 
     @showdoc
     def test_animation(self):

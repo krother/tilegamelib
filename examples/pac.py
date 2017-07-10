@@ -1,16 +1,26 @@
 
-from tilegamelib import Frame, Vector, TileFactory, TiledMap
-from tilegamelib import EventGenerator, ExitListener, FigureMoveListener
-from tilegamelib.sprites import Sprite
-from tilegamelib.basic_boxes import DictBox
-from tilegamelib.bar_display import BarDisplay
-from tilegamelib.game import Game
-from tilegamelib.draw_timer import draw_timer
-from tilegamelib.vector import UP, DOWN, LEFT, RIGHT
-from pygame import Rect
 import random
-import pygame
 import time
+
+import pygame
+from pygame import Rect
+
+from tilegamelib import EventGenerator
+from tilegamelib import ExitListener
+from tilegamelib import FigureMoveListener
+from tilegamelib import Frame
+from tilegamelib import TiledMap
+from tilegamelib import TileFactory
+from tilegamelib import Vector
+from tilegamelib.bar_display import BarDisplay
+from tilegamelib.basic_boxes import DictBox
+from tilegamelib.draw_timer import draw_timer
+from tilegamelib.game import Game
+from tilegamelib.sprites import Sprite
+from tilegamelib.vector import DOWN
+from tilegamelib.vector import LEFT
+from tilegamelib.vector import RIGHT
+from tilegamelib.vector import UP
 
 ONE_PLAYER_START_DELAY = 10
 

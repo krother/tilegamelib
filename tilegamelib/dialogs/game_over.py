@@ -1,6 +1,8 @@
 
-from tilegamelib.basic_boxes import ImageBox, TextBox
 import pygame
+
+from tilegamelib.basic_boxes import ImageBox
+from tilegamelib.basic_boxes import TextBox
 
 
 class GameOverBox:

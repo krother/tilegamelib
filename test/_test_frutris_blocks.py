@@ -1,6 +1,16 @@
 
-from unittest import TestCase, main
-from blocks import Blocks,UP,DOWN,LEFT,RIGHT,DOWNLEFT,DOWNRIGHT,UPLEFT,UPRIGHT
+from unittest import main
+from unittest import TestCase
+
+from blocks import Blocks
+from blocks import DOWN
+from blocks import DOWNLEFT
+from blocks import DOWNRIGHT
+from blocks import LEFT
+from blocks import RIGHT
+from blocks import UP
+from blocks import UPLEFT
+from blocks import UPRIGHT
 
 
 class BlocksTests(TestCase):
@@ -428,4 +438,3 @@ box_game_over = """#...c..#
 
 if __name__ == '__main__':
     main()
-    

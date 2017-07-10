@@ -1,11 +1,13 @@
 
 from . import screen
-from .vector import Vector
-from .screen import Screen
+from .event_listener import EventListener
+from .event_listener import ExitListener
+from .event_listener import FigureMoveListener
+from .events import EventGenerator
 from .frame import Frame
-from .tiles import Tile 
+from .screen import Screen
+from .sprites import Sprite
 from .tile_factory import TileFactory
 from .tiled_map import TiledMap
-from .sprites import Sprite
-from .events import EventGenerator
-from .event_listener import EventListener, ExitListener, FigureMoveListener
+from .tiles import Tile
+from .vector import Vector

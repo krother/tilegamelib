@@ -1,15 +1,25 @@
 #!/usr/bin/env python
 
-from tilegamelib.frame import Frame
-from tilegamelib.menu import MenuBox, TextMenuBox, TileMenuBox, VERTICAL_MOVES
-from tilegamelib.events import EventGenerator, QUIT_EVENT
-from util import showdoc, DELAY, SHORT_DELAY, TEST_GAME_CONTEXT
-from unittest import TestCase, main
+import time
+from unittest import main
+from unittest import TestCase
+
+import pygame
 from pygame import Rect
 from pygame.event import Event
 from pygame.locals import KEYDOWN
-import pygame
-import time
+
+from tilegamelib.events import EventGenerator
+from tilegamelib.events import QUIT_EVENT
+from tilegamelib.frame import Frame
+from tilegamelib.menu import MenuBox
+from tilegamelib.menu import TextMenuBox
+from tilegamelib.menu import TileMenuBox
+from tilegamelib.menu import VERTICAL_MOVES
+from util import DELAY
+from util import SHORT_DELAY
+from util import showdoc
+from util import TEST_GAME_CONTEXT
 
 
 class MenuTests(TestCase):

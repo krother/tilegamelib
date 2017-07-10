@@ -10,15 +10,20 @@ __author__="Kristian Rother"
 __email__ ="krother@rubor.de"
 
 
-from unittest import TestCase, main
-from test_settings import showdoc,VERY_SHORT_DELAY, TEST_GAME_CONTEXT
-from test_tiled_map import TEST_MAP
-from tilegamelib.screen import Frame
-from tilegamelib.player import PlayerBox
-from tilegamelib.tiled_map import Move
+import time
+from unittest import main
+from unittest import TestCase
+
 import numpy as np
 import pygame
-import time
+
+from test_settings import showdoc
+from test_settings import TEST_GAME_CONTEXT
+from test_settings import VERY_SHORT_DELAY
+from test_tiled_map import TEST_MAP
+from tilegamelib.player import PlayerBox
+from tilegamelib.screen import Frame
+from tilegamelib.tiled_map import Move
 
 MOVES1 = [
         Move(np.array((0,0)), np.array((0,1)), 3, 2),

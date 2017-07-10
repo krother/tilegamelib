@@ -10,9 +10,13 @@ __author__="Kristian Rother"
 __email__ ="krother@rubor.de"
 
 
-from unittest import TestCase, main
+from unittest import main
+from unittest import TestCase
+
 from test_settings import TestSettings
-from tilegamelib.sounds import MusicPlayer, EffectPlayer
+from tilegamelib.sounds import EffectPlayer
+from tilegamelib.sounds import MusicPlayer
+
 
 class SoundTests(TestCase):
 

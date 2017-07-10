@@ -1,8 +1,9 @@
 
-from .vector import Vector
-from pygame import Rect
 import pygame
+from pygame import Rect
+
 from .util import BASE_PATH
+from .vector import Vector
 
 pygame.font.init()
 DEMIBOLD_BIG = pygame.font.Font(BASE_PATH + '/../examples/data/LucidaSansDemiBold.ttf', 20)

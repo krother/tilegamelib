@@ -1,11 +1,17 @@
 #!/usr/bin/env python
 
-from tilegamelib.frame import Frame
-from tilegamelib.dialogs.game_over import GameOverBox
-from util import showdoc, TEST_GAME_CONTEXT
-from test_data import DEMIBOLD_BIG, WHITE, GAME_OVER_IMAGE
+from unittest import main
+from unittest import TestCase
+
 from pygame import Rect
-from unittest import TestCase, main
+
+from test_data import DEMIBOLD_BIG
+from test_data import GAME_OVER_IMAGE
+from test_data import WHITE
+from tilegamelib.dialogs.game_over import GameOverBox
+from tilegamelib.frame import Frame
+from util import showdoc
+from util import TEST_GAME_CONTEXT
 
 
 class GameOverTests(TestCase):

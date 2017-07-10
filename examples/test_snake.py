@@ -1,13 +1,24 @@
 
-from unittest import TestCase, main
-from tilegamelib.vector import Vector, UP, DOWN, LEFT, RIGHT
-from tilegamelib.frame import Frame
-from tilegamelib.tiled_map import TiledMap
-from tilegamelib.game_factory import GameFactory
-from snake import SnakeController, SnakeSprite, SnakeLevel, SnakeGameState, TILE_SYNONYMS
-from pygame.rect import Rect
-import pygame
 import time
+from unittest import main
+from unittest import TestCase
+
+import pygame
+from pygame.rect import Rect
+
+from snake import SnakeController
+from snake import SnakeGameState
+from snake import SnakeLevel
+from snake import SnakeSprite
+from snake import TILE_SYNONYMS
+from tilegamelib.frame import Frame
+from tilegamelib.game_factory import GameFactory
+from tilegamelib.tiled_map import TiledMap
+from tilegamelib.vector import DOWN
+from tilegamelib.vector import LEFT
+from tilegamelib.vector import RIGHT
+from tilegamelib.vector import UP
+from tilegamelib.vector import Vector
 
 
 box = """########
@@ -224,4 +235,3 @@ class SnakeBla:
 
 if __name__ == '__main__':
     main()
-    

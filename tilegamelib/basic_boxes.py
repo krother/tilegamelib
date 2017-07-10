@@ -1,11 +1,13 @@
 
-from .vector import Vector
-from .frame import Frame
-from .tiled_map import TiledMap
-from pygame import Rect, image
-import pygame
 import time
 
+import pygame
+from pygame import image
+from pygame import Rect
+
+from .frame import Frame
+from .tiled_map import TiledMap
+from .vector import Vector
 
 DEFAULT_COLOR = (255, 255, 255)
 
@@ -83,4 +85,3 @@ class FpsBox(TextBox):
         self.lasttime = now
         if diff>0:
             self.text = 'fps: %3.1f'%(1.0/diff)
-        

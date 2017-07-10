@@ -1,9 +1,10 @@
 
-from tilegamelib.frame import Frame
-from tilegamelib.basic_boxes import ImageBox
-from tilegamelib.menu import TextMenuBox
-from tilegamelib.events import EventGenerator
 import pygame
+
+from tilegamelib.basic_boxes import ImageBox
+from tilegamelib.events import EventGenerator
+from tilegamelib.frame import Frame
+from tilegamelib.menu import TextMenuBox
 
 
 class TitleScreen:

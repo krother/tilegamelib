@@ -1,14 +1,27 @@
 #!/usr/bin/env python
 
-from tilegamelib.vector import Vector, UP, DOWN, LEFT, RIGHT, UPLEFT, UPRIGHT, DOWNLEFT, DOWNRIGHT
-from tilegamelib.frame import Frame
-from tilegamelib.sprites import Sprite
-from tilegamelib.sprite_list import SpriteList
-from util import showdoc, SHORT_DELAY, TEST_GAME_CONTEXT
-from unittest import TestCase, main
-from pygame import Rect
-import pygame
 import time
+from unittest import main
+from unittest import TestCase
+
+import pygame
+from pygame import Rect
+
+from tilegamelib.frame import Frame
+from tilegamelib.sprite_list import SpriteList
+from tilegamelib.sprites import Sprite
+from tilegamelib.vector import DOWN
+from tilegamelib.vector import DOWNLEFT
+from tilegamelib.vector import DOWNRIGHT
+from tilegamelib.vector import LEFT
+from tilegamelib.vector import RIGHT
+from tilegamelib.vector import UP
+from tilegamelib.vector import UPLEFT
+from tilegamelib.vector import UPRIGHT
+from tilegamelib.vector import Vector
+from util import SHORT_DELAY
+from util import showdoc
+from util import TEST_GAME_CONTEXT
 
 
 class SpriteTests(TestCase):
