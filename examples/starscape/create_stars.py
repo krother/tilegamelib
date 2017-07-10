@@ -6,9 +6,11 @@ from PIL import Image
 from PIL import ImageDraw
 from random import randint
 import sys
+import os
 
 
 XSIZE, YSIZE = 800, 600
+STAR_PATH = os.path.split(__file__)[0]
 
 def create_starmap(radius, color, nstars, outfile):
     w = Image.new('RGBA', (XSIZE, YSIZE))
@@ -30,9 +32,9 @@ if __name__ == '__main__':
         OUTFILE = sys.argv[4]
         create_starmap(RADIUS, COLOR, NSTARS, OUTFILE)
     elif len(sys.argv) == 1:
-        create_starmap(3, 'ffffff', 50, 'stars1.png')
-        create_starmap(2, 'cccccc', 100, 'stars2.png')
-        create_starmap(1, 'aaaaaa', 200, 'stars3.png')
+        create_starmap(3, 'ffffff', 50, os.path.join(STAR_PATH, 'stars1.png'))
+        create_starmap(2, 'cccccc', 100, os.path.join(STAR_PATH, 'stars2.png'))
+        create_starmap(1, 'aaaaaa', 200, os.path.join(STAR_PATH, 'stars3.png'))
 
     else:
         print("generate stars: python sterne.py <radius> <hex-farbe> <anzahl> <png_datei>")

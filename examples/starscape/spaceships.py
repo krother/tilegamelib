@@ -8,10 +8,12 @@ from tilegamelib.vector import LEFT, UP, DOWN
 from tilegamelib.basic_boxes import DictBox
 from tilegamelib.draw_timer import draw_timer
 from starscape import StarScape
+from tilegamelib.util import DATA_PATH
 from pygame import Rect
 import random
 import time
 import pygame
+import os
 
 MOVE_DELAY = 50
 SHIP_SPEED = 4
@@ -102,7 +104,7 @@ class SpaceRaceGame:
 
     def __init__(self, screen):
         self.screen = screen
-        self.tile_factory = TileFactory('data/tiles.conf')
+        self.tile_factory = TileFactory(os.path.join(DATA_PATH, 'tiles.conf'))
 
         self.starscape = None
         self.level = None
@@ -170,6 +172,6 @@ class SpaceRaceGame:
 
 
 if __name__ == '__main__':
-    game = Game('data/snake.conf', SpaceRaceGame)
+    game = Game(os.path.join(DATA_PATH, 'snake.conf'), SpaceRaceGame)
     game.run()
 

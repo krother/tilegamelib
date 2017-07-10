@@ -1,8 +1,10 @@
 
 from tilegamelib import Screen, Frame, TileFactory, TiledMap, Vector
+from tilegamelib.util import DATA_PATH
 from pygame import Rect
 import pygame
 import time
+
 
 
 if __name__ == '__main__':
@@ -21,15 +23,15 @@ if __name__ == '__main__':
 #cc..dd..ee..ff#
 ################"""
 
-    screen = Screen(Vector(800, 550), 'data/background.png')
-    frame = Frame(screen, Rect(64, 64, 320, 320))
-    tile_factory = TileFactory('data/tiles.conf')
+    screen = Screen(Vector(256, 256), DATA_PATH + 'background.png')
+    frame = Frame(screen, Rect(0, 0, 256, 256))
+    tile_factory = TileFactory(DATA_PATH + 'tiles.conf')
     tm = TiledMap(frame, tile_factory)
 
     tm.set_map(fruitmap)
     tm.draw()
     pygame.display.update()
-    for i in list(range(0, 132, 2)) + list(range(132, 0, -2)):
+    for i in list(range(0, 224, 2)) + list(range(224, 0, -4)):
         tm.offset = Vector(i, i)
         screen.clear()
         tm.draw()
