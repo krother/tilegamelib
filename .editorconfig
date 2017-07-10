@@ -1,0 +1,11 @@
+root = true
+
+[*.py]
+indent_style = space
+indent_size = 4
+line_length = 96
+lines_after_imports = 2
+
+[*.rst]
+indent_style = space
+indent_size = 4
