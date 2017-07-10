@@ -4,6 +4,7 @@ from tilegamelib.map_move import MapMove
 from tilegamelib.move import wait_for_move
 from tilegamelib.events import EventGenerator
 from tilegamelib.event_listener import FigureMoveListener
+from tilegamelib.util import DATA_PATH
 from pygame import Rect
 from collections import Counter
 import pygame
@@ -19,9 +20,9 @@ PUZZLEMAP = """######
 class SlidingPuzzle:
 
     def __init__(self):
-        self.screen = Screen(Vector(350, 350), 'data/background.png')
+        self.screen = Screen(Vector(350, 350), DATA_PATH + 'background.png')
         frame = Frame(self.screen, Rect(64, 64, 320, 320))
-        tile_factory = TileFactory('data/tiles.conf')
+        tile_factory = TileFactory(DATA_PATH + 'tiles.conf')
         self.tm = TiledMap(frame, tile_factory)
         self.gap = Vector(4, 4)
         self.tm.set_map(PUZZLEMAP)
