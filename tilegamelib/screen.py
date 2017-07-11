@@ -2,20 +2,16 @@
 import pygame
 from pygame.locals import *
 from pygame.rect import Rect  # numpy import array
+from .config import config
 
 
 class Screen:
-    """Manages a display."""
-    def __init__(self, resolution, background_image):
-        """
-        resolution - size of the display in pixels (x,y)
-        tile_size - size of tiles in pixels (x,y)
-        """
-        self.resolution = resolution
-        self.rect = Rect(0, 0, resolution.x, resolution.y)
-        self.display = pygame.display.set_mode(tuple(resolution))
+    """Manages a display window."""
+    def __init__(self):
+        self.rect = Rect(0, 0, config.RESOLUTION.x, config.RESOLUTION.y)
+        self.display = pygame.display.set_mode(tuple(config.RESOLUTION))
         self.display = pygame.display.get_surface()
-        self.background = pygame.image.load(background_image).convert()
+        self.background = pygame.image.load(config.BACKGROUND_IMAGE).convert()
 
     def blit(self, bitmap, destrect, sourcerect):
         """Draws something from the given bitmap on the screen."""

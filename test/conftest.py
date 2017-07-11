@@ -6,32 +6,15 @@ import pygame
 from pygame.rect import Rect
 
 from tilegamelib.vector import Vector
-
-BASE_PATH = os.path.split(__file__)[0]
-TEST_DATA_PATH = BASE_PATH + '/test_data/'
-DATA_PATH = BASE_PATH + '/../examples/data/'
+from tilegamelib.config import config
 
 KEY_EVENT_QUEUE = [27]
+TEST_DATA_PATH = config.BASE_PATH + '/../test/test_data/'
 SAMPLE_MAP_FILE = TEST_DATA_PATH + 'sample.map'
-
-DELAY = 0.1
-SHORT_DELAY = 0.05
-VERY_SHORT_DELAY = 0.02
-
-RESOLUTION = Vector(800, 600)
-TILE_SIZE = Vector(32, 32)
-BACKGROUND_IMAGE = DATA_PATH + 'background.png'
 
 TILE = TEST_DATA_PATH + 'test_tile.png'
 TILE_SET = TEST_DATA_PATH + 'tiles.xpm'
-TILE_SPECS = DATA_PATH + 'tiles.conf'
-
-pygame.font.init()
-DEMIBOLD_BIG = pygame.font.Font(TEST_DATA_PATH + 'LucidaSansDemiBold.ttf', 20)
-DEMIBOLD_SMALL = pygame.font.Font(TEST_DATA_PATH + 'LucidaSansDemiBold.ttf', 14)
-
-# colors
-WHITE = (255, 255, 255)
+TILE_SPECS = config.DATA_PATH + 'tiles.conf'
 
 # title screen
 TITLE_IMAGE = TEST_DATA_PATH + 'test_tile.png'

@@ -7,7 +7,7 @@
 # as part of this package.
 
 __author__="Kristian Rother"
-__email__ ="krother@rubor.de"
+__email__ ="krother@academis.eu"
 
 from distutils.core import setup
 import sys
@@ -23,7 +23,16 @@ setup(
         name = "tilegamelib",
         version = "0.8",
         author="Kristian Rother",
-        author_email="krother@rubor.de",
+        author_email="krother@academis.eu",
+        extras_require={
+            'tests': [
+                'pytest',
+                'pytest-pep8',
+                'pytest-isort',
+                'pytest-flakes',
+                'pytest-cov'
+            ]
+        },
         packages=packages, 
         package_data=package_data, 
         #data_files=[]#'RELEASE_NOTES.TXT', 'README.TXT', 'LICENSE_GPL.TXT']

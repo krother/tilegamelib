@@ -7,33 +7,28 @@ import time
 import pygame
 from pygame import Rect
 
-from data import BACKGROUND_IMAGE
-from data import RESOLUTION
-from data import TILE_SPECS
 from tilegamelib import Frame
 from tilegamelib import Screen
 from tilegamelib import TileFactory
 from tilegamelib.basic_boxes import TextBox
+from tilegamelib.config import config
 
 
 class TestGameContext:
 
     def __init__(self):
         pygame.init()
-        self.screen = Screen(RESOLUTION, BACKGROUND_IMAGE)
-        self.tile_factory = TileFactory(TILE_SPECS)
+        self.screen = Screen()
+        #self.tile_factory = TileFactory(config.TILE_SPECS)
 
 
 TEST_GAME_CONTEXT = TestGameContext()
 
-DELAY = 0.01
-SHORT_DELAY = 0.05
-VERY_SHORT_DELAY = 0.02
 
 
 def next_frame():
     pygame.display.update()
-    time.sleep(DELAY)
+    time.sleep(config.DELAY)
 
 
 def showdoc(func):
