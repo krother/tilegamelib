@@ -60,8 +60,8 @@ def simulieren(planeten, screen, tf):
     time.sleep(VERZOEGERUNG)
 
 
-sc = Screen(Vector(600, 400), 'data/background.png')
-tf = TileFactory('data/tiles.conf')
+sc = Screen()
+tf = TileFactory()
 
 planeten = [
     Planet("Sonne", 0, 0, 0, 0, 300000000),

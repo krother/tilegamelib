@@ -6,8 +6,7 @@ from tilegamelib.event_listener import AnyKeyListener
 from tilegamelib.event_listener import TextEnteringListener
 from tilegamelib.events import EventGenerator
 from tilegamelib.frame import Frame
-from tilegamelib.util import BLUE
-from tilegamelib.util import DEMIBOLD_BIG
+from tilegamelib.config import config
 from tilegamelib.vector import Vector
 
 
@@ -81,9 +80,9 @@ class HighscoreBox:
             i += 1
         if self.entering:
             self.frame.print_text("High Score! Please enter your name:",\
-                    self.textpos+Vector(0,y_offset+50), DEMIBOLD_BIG, BLUE)
+                    self.textpos+Vector(0,y_offset+50), config.DEMIBOLD_BIG, config.BLUE)
             self.frame.print_text(self.name,\
-                    self.textpos+Vector(0, y_offset+80), DEMIBOLD_BIG, BLUE)
+                    self.textpos+Vector(0, y_offset+80), config.DEMIBOLD_BIG, config.BLUE)
 
     def enter_score(self, score):
         """

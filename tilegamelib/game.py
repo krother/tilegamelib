@@ -17,7 +17,7 @@ class Game:
         self.game_class = game_class
         self.config = {}
         self.parse_config(config_filename)
-        self.screen = Screen(self.config['SCREEN_RESOLUTION'], self.config['SCREEN_BACKGROUND'])
+        self.screen = Screen()
         self._exit = False
 
     def parse_config(self, config_filename):

@@ -15,7 +15,7 @@ from tilegamelib.draw_timer import draw_timer
 from tilegamelib.game import Game
 from tilegamelib.move import wait_for_move
 from tilegamelib.sprites import Sprite
-from tilegamelib.util import DATA_PATH
+from tilegamelib.config import config
 
 
 FRUITMAP = """##########
@@ -33,7 +33,7 @@ class CollectFruit:
     def __init__(self, screen):
         self.screen = screen
         self.frame = Frame(self.screen, Rect(64, 64, 320, 320))
-        tile_factory = TileFactory(DATA_PATH + 'tiles.conf')
+        tile_factory = TileFactory()
         self.tm = TiledMap(self.frame, tile_factory)
         self.player = Sprite(self.frame, tile_factory.get('b.pac_right'),
                              Vector(4, 1), speed=4)
@@ -76,5 +76,5 @@ class CollectFruit:
 
 
 if __name__ == '__main__':
-    game = Game(DATA_PATH + 'collect_fruit.conf', CollectFruit)
+    game = Game(config.DATA_PATH + 'collect_fruit.conf', CollectFruit)
     game.run()

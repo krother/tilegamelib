@@ -9,7 +9,7 @@ from tilegamelib import Screen
 from tilegamelib import TiledMap
 from tilegamelib import TileFactory
 from tilegamelib import Vector
-from tilegamelib.util import DATA_PATH
+from tilegamelib.config import config
 
 if __name__ == '__main__':
     fruitmap = """################
@@ -27,9 +27,10 @@ if __name__ == '__main__':
 #cc..dd..ee..ff#
 ################"""
 
-    screen = Screen(Vector(256, 256), DATA_PATH + 'background.png')
-    frame = Frame(screen, Rect(0, 0, 256, 256))
-    tile_factory = TileFactory(DATA_PATH + 'tiles.conf')
+    config.RESOLUTION = Vector(320, 256)
+    screen = Screen()
+    frame = Frame(screen, Rect(0, 0, 320, 256))
+    tile_factory = TileFactory()
     tm = TiledMap(frame, tile_factory)
 
     tm.set_map(fruitmap)

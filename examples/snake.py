@@ -99,12 +99,12 @@ class SnakeSprite:
 
     @property
     def length(self):
-        return 1+ len(self.tail) + len(self.tail_waiting)
-    
+        return 1 + len(self.tail) + len(self.tail_waiting)
+
     @property
     def sprites(self):
         return [self.head] + self.tail
-                
+
     def is_moving(self):
         if not self.head.finished:
             return True
@@ -116,13 +116,13 @@ class SnakeSprite:
     def set_direction(self, direction):
         # prevent reverse move
         if self.tail and direction == self.past_directions[0] * -1:
-            return 
+            return
         self.direction = direction
         headtile = HEAD_TILES[direction]
         self.head.tile = self.tile_factory.get(headtile)
         if EASY:
             self.move_forward()
-         
+
     def draw(self):
         for s in self.sprites:
             s.draw()
@@ -131,7 +131,7 @@ class SnakeSprite:
         if self.is_moving():
             for s in self.sprites:
                 s.move()
-            
+
     @property
     def positions(self):
         return [self.head.pos] + [seg.pos for seg in self.tail]
