@@ -1,30 +1,19 @@
 #!/usr/bin/env python
 
 import time
-from unittest import main
-from unittest import TestCase
 
 import pygame
 from pygame import Rect
 
+from tilegamelib.config import config
 from tilegamelib.frame import Frame
 from tilegamelib.sprite_list import SpriteList
 from tilegamelib.sprites import Sprite
-from tilegamelib.vector import DOWN
-from tilegamelib.vector import DOWNLEFT
-from tilegamelib.vector import DOWNRIGHT
-from tilegamelib.vector import LEFT
-from tilegamelib.vector import RIGHT
-from tilegamelib.vector import UP
-from tilegamelib.vector import UPLEFT
-from tilegamelib.vector import UPRIGHT
-from tilegamelib.vector import Vector
-from util import SHORT_DELAY
-from util import showdoc
-from util import TEST_GAME_CONTEXT
+from tilegamelib.vector import DOWN, DOWNRIGHT, RIGHT, Vector
+from util import TEST_GAME_CONTEXT, showdoc
 
 
-class SpriteTests(TestCase):
+class SpriteTests:
 
     def setUp(self):
         self.factory = TEST_GAME_CONTEXT.tile_factory
@@ -45,7 +34,7 @@ class SpriteTests(TestCase):
             self.frame.clear()
             self.sprite.draw()
             pygame.display.update()
-            time.sleep(SHORT_DELAY)
+            time.sleep(config.SHORT_DELAY)
 
     @showdoc
     def test_move_sprite(self):
@@ -64,20 +53,20 @@ class SpriteTests(TestCase):
         self.move()
 
 
-class SpriteListTests(TestCase):
+class SpriteListTests:
 
     def setUp(self):
         self.factory = TEST_GAME_CONTEXT.tile_factory
         self.tile = self.factory.get('g')
-        self.frame = Frame(TEST_GAME_CONTEXT.screen, Rect(40,50, 160,160))
-        self.sprite = Sprite(self.frame, self.tile, Vector(1,1), speed=2)
-    
+        self.frame = Frame(TEST_GAME_CONTEXT.screen, Rect(40, 50, 160, 160))
+        self.sprite = Sprite(self.frame, self.tile, Vector(1, 1), speed=2)
+
     @showdoc
     def test_sprite_list(self):
         """Two sprites are moving."""
         sprites = SpriteList()
-        s1 = Sprite(self.frame, self.factory.get('g'), pos=Vector(1,0), speed=2)
-        s2 = Sprite(self.frame, self.factory.get('b'), pos=Vector(1,1), speed=4)
+        s1 = Sprite(self.frame, self.factory.get('g'), pos=Vector(1, 0), speed=2)
+        s2 = Sprite(self.frame, self.factory.get('b'), pos=Vector(1, 1), speed=4)
         sprites.append(s1)
         sprites.append(s2)
         s1.add_move(RIGHT)
@@ -88,7 +77,4 @@ class SpriteListTests(TestCase):
             self.frame.clear()
             sprites.draw()
             pygame.display.update()
-            time.sleep(SHORT_DELAY)
-
-if __name__ == "__main__":
-    main()
+            time.sleep(config.SHORT_DELAY)

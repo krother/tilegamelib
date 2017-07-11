@@ -1,44 +1,31 @@
-#!/usr/bin/env python
-#
-# Copyright 2010 Kristian Rother
-#
-# All rights reserved.
-# Please see the LICENSE file that should have been included
-# as part of this package.
 
-__author__="Kristian Rother"
-__email__ ="krother@rubor.de"
+from pygame import K_DELETE, K_RETURN
 
+from tilegamelib.event_listener import AnyKeyListener, EventListener, TextEnteringListener
+from tilegamelib.events import QUIT_EVENT, EventGenerator
 
-from unittest import main
-from unittest import TestCase
-
-from pygame import K_DELETE
-from pygame import K_RETURN
-from pygame.event import Event
-from pygame.locals import KEYDOWN
-
-from tilegamelib.event_listener import AnyKeyListener
-from tilegamelib.event_listener import EventListener
-from tilegamelib.event_listener import TextEnteringListener
-from tilegamelib.events import EventGenerator
-from tilegamelib.events import QUIT_EVENT
-from tilegamelib.screen import Screen
 
 COMMANDS = {
-    'a':'Hel',
-    'b':'lo',
-    'c':'World',
-    'd':' '
-    }
+    'a': 'Hel',
+    'b': 'lo',
+    'c': 'World',
+    'd': ' '
+}
 
 
-class EventTests(TestCase):
+class EventTests:
 
-    def hel(self): self.result += "Hel"
-    def lo(self): self.result += "lo"
-    def world(self): self.result += "World"
-    def space(self): self.result += " "
+    def hel(self):
+        self.result += "Hel"
+
+    def lo(self):
+        self.result += "lo"
+
+    def world(self):
+        self.result += "World"
+
+    def space(self):
+        self.result += " "
 
     def setUp(self):
         self.egen = EventGenerator()
@@ -47,7 +34,7 @@ class EventTests(TestCase):
             'b': self.lo,
             'c': self.world,
             'd': self.space
-            }
+        }
         self.elis = EventListener(keymap)
         self.egen.add_listener(self.elis)
         self.updated = 0
@@ -55,7 +42,7 @@ class EventTests(TestCase):
 
     def update(self):
         """Counts how many times the method was called"""
-        # callback function called from EventGenerator()        
+        # callback function called from EventGenerator()
         self.updated += 1
 
     def test_event_generator(self):
@@ -83,7 +70,7 @@ class EventTests(TestCase):
         self.assertEqual(self.updated, 5)
 
 
-class AnyKeyListenerTests(TestCase):
+class AnyKeyListenerTests:
 
     def callback(self):
         self.keypressed = True
@@ -106,9 +93,9 @@ class AnyKeyListenerTests(TestCase):
         self.egen.add_scripted_event(QUIT_EVENT)
         self.egen.event_loop()
         self.assertTrue(self.keypressed)
-    
 
-class TextEnteringListenerTests(TestCase):
+
+class TextEnteringListenerTests:
     def setUp(self):
         self.egen = EventGenerator()
         self.updated = 0
@@ -141,7 +128,7 @@ class TextEnteringListenerTests(TestCase):
         self.egen.add_scripted_event(QUIT_EVENT)
         self.egen.event_loop()
         self.assertEqual(self.result, "")
-        
+
     def test_delete(self):
         """Generate some key events and check whether they arrive."""
         elis = TextEnteringListener(self.key_pressed, self.text_finished)
@@ -165,7 +152,3 @@ class TextEnteringListenerTests(TestCase):
         self.egen.event_loop()
         self.assertEqual(self.result, "acbd")
         self.assertEqual(self.updated, 4)
-
-
-if __name__ == "__main__":
-    main()

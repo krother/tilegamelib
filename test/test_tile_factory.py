@@ -3,7 +3,6 @@ import pygame
 import pytest
 from pygame import Rect
 
-from conftest import TILE_SPECS
 from tilegamelib.tile_factory import NoTileError, TileFactory
 from tilegamelib.tiles import Tile
 from util import TEST_GAME_CONTEXT, showdoc
@@ -13,13 +12,13 @@ class TestTileFactory:
 
     def test_get_tiles(self):
         """Factory produces tiles."""
-        tfac = TileFactory(TILE_SPECS)
+        tfac = TileFactory()
         wall = tfac.get('b.wall')
         assert isinstance(wall, Tile)
 
     def test_tile_synonyms(self):
         """Tiles can be addressed by abbreviations"""
-        tfac = TileFactory(TILE_SPECS)
+        tfac = TileFactory()
         assert isinstance(tfac.get('.'), Tile)
         assert isinstance(tfac.get('#'), Tile)
         assert isinstance(tfac.get('*'), Tile)
@@ -27,14 +26,14 @@ class TestTileFactory:
 
     def test_notile_found(self):
         """Unknown tile raises exception"""
-        tfac = TileFactory(TILE_SPECS)
+        tfac = TileFactory()
         with pytest.raises(NoTileError):
             tfac.get('unkown_tile')
 
     @pytest.fixture
     def tile_factory(self):
         """Loads the default factory"""
-        return TileFactory(TILE_SPECS)
+        return TileFactory()
 
     def test_tile_identity(self, tile_factory):
         """Abbreviations for tiles match full name"""
@@ -55,7 +54,7 @@ class TestTileFactory:
     def test_display_tiles(self):
         """Display three tiles from factory"""
         screen = TEST_GAME_CONTEXT.screen
-        tfac = TileFactory(TILE_SPECS)
+        tfac = TileFactory()
         tfac.get('b.wall').draw(screen, Rect(32, 32, 32, 32))
         tfac.get('x').draw(screen, Rect(32, 64, 32, 32))
         tfac.get('*').draw(screen, Rect(64, 32, 32, 32))

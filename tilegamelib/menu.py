@@ -8,8 +8,7 @@ from pygame import K_SPACE
 from pygame import K_UP
 
 from .event_listener import EventListener
-from .settings import BLUE
-from .settings import WHITE
+from .config import config
 from .vector import Vector
 
 VERTICAL_MOVES = [K_ESCAPE, K_UP, K_DOWN, K_RETURN, K_SPACE]
@@ -94,7 +93,7 @@ class TileMenuBox(MenuBox):
 
 class TextMenuBox(MenuBox):
 
-    def __init__(self, frame, menu, egen, moves, color=BLUE, highlight=WHITE):
+    def __init__(self, frame, menu, egen, moves, color=config.BLUE, highlight=config.WHITE):
         MenuBox.__init__(self, frame, menu, egen, moves)
         self.color = color
         self.highlight = highlight

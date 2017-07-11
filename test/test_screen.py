@@ -1,6 +1,4 @@
 
-from unittest import TestCase, main
-
 import pygame
 
 from conftest import TILE
@@ -8,7 +6,7 @@ from tilegamelib.screen import Screen
 from util import graphictest, next_frame
 
 
-class ScreenTests(TestCase):
+class ScreenTests:
     """
     Tests Screen wrapper.
     """
@@ -28,7 +26,3 @@ class ScreenTests(TestCase):
         screen.blit(bitmap, dest, source)
         next_frame()
         screen.clear()
-
-
-if __name__ == "__main__":
-    main()

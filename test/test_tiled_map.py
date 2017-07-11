@@ -1,6 +1,5 @@
 
 import time
-from unittest import TestCase, main
 
 import pygame
 from pygame import Rect
@@ -13,7 +12,7 @@ from tilegamelib.vector import Vector
 from util import TEST_GAME_CONTEXT, showdoc
 
 
-class TiledMapTests(TestCase):
+class TiledMapTests:
 
     def setUp(self):
         frame = Frame(TEST_GAME_CONTEXT.screen, Rect(90, 50, 128, 128))
@@ -83,6 +82,3 @@ TEST_MAP = """#...#
 #...#"""
 
 TEST_LINES = [".....", ".....", ".....", ".....", "....."]
-
-if __name__ == "__main__":
-    main()

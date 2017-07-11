@@ -1,25 +1,17 @@
 #!/usr/bin/env python
 
-import time
-from unittest import main
-from unittest import TestCase
-
 import pygame
 from pygame import Rect
 
-from tilegamelib.basic_boxes import DictBox
-from tilegamelib.basic_boxes import ImageBox
-from tilegamelib.basic_boxes import TextBox
+from tilegamelib.basic_boxes import DictBox, ImageBox, TextBox
 from tilegamelib.frame import Frame
-from util import SHORT_DELAY
-from util import showdoc
-from util import TEST_GAME_CONTEXT
+from util import TEST_GAME_CONTEXT, showdoc
 
 
-class BasicBoxTests(TestCase):
+class BasicBoxTests:
 
     def setUp(self):
-        self.frame = Frame(TEST_GAME_CONTEXT.screen, Rect(100,100, 260,160))
+        self.frame = Frame(TEST_GAME_CONTEXT.screen, Rect(100, 100, 260, 160))
 
     @showdoc
     def test_text_box(self):
@@ -39,10 +31,10 @@ class BasicBoxTests(TestCase):
     def test_dict_box(self):
         """Display data from a dictionary."""
         dict_data = {
-            'Level':'20',
-            'Name':'Zeratul',
-            'HP':'400'
-            }
+            'Level': '20',
+            'Name': 'Zeratul',
+            'HP': '400'
+        }
         db = DictBox(self.frame, dict_data)
         db.draw()
         pygame.display.update()
@@ -57,7 +49,3 @@ class BasicBoxTests(TestCase):
     #         pygame.display.update()
     #         lifes.lose_one()
     #         time.sleep(SHORT_DELAY)
-
-
-if __name__ == "__main__":
-    main()

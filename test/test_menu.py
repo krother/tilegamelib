@@ -1,28 +1,20 @@
 #!/usr/bin/env python
 
 import time
-from unittest import main
-from unittest import TestCase
 
 import pygame
 from pygame import Rect
 from pygame.event import Event
 from pygame.locals import KEYDOWN
 
-from tilegamelib.events import EventGenerator
-from tilegamelib.events import QUIT_EVENT
+from tilegamelib.config import config
+from tilegamelib.events import QUIT_EVENT, EventGenerator
 from tilegamelib.frame import Frame
-from tilegamelib.menu import MenuBox
-from tilegamelib.menu import TextMenuBox
-from tilegamelib.menu import TileMenuBox
-from tilegamelib.menu import VERTICAL_MOVES
-from util import DELAY
-from util import SHORT_DELAY
-from util import showdoc
-from util import TEST_GAME_CONTEXT
+from tilegamelib.menu import VERTICAL_MOVES, MenuBox, TextMenuBox, TileMenuBox
+from util import TEST_GAME_CONTEXT, showdoc
 
 
-class MenuTests(TestCase):
+class MenuTests:
 
     def setUp(self):
         self.result = None
@@ -41,12 +33,12 @@ class MenuTests(TestCase):
     def draw_menu(self, menu):
         menu.draw()
         pygame.display.update()
-        time.sleep(SHORT_DELAY)
+        time.sleep(config.SHORT_DELAY)
 
     def run_menu(self, menu):
         """Execute some standard operations on the menu and display them."""
         self.draw_menu(menu)
-        time.sleep(DELAY)
+        time.sleep(config.DELAY)
         menu.next_item()
         self.draw_menu(menu)
         menu.next_item()
@@ -55,7 +47,7 @@ class MenuTests(TestCase):
         self.draw_menu(menu)
         menu.prev_item()
         self.draw_menu(menu)
-        time.sleep(DELAY)
+        time.sleep(config.DELAY)
 
 
 class TextMenuTests(MenuTests):
@@ -63,27 +55,27 @@ class TextMenuTests(MenuTests):
     def setUp(self):
         MenuTests.setUp(self)
         self.menu = [
-           ('first', self.select_one),
-           ('second', self.select_two),
-           ('third', self.select_three),
+            ('first', self.select_one),
+            ('second', self.select_two),
+            ('third', self.select_three),
         ]
 
     def test_menu(self):
         """menu mechanics work."""
         events = [
-            Event(KEYDOWN,{'key':276}),
-            Event(KEYDOWN,{'key':273}),
-            Event(KEYDOWN,{'key':273}),
-            Event(KEYDOWN,{'key':274}),
-            Event(KEYDOWN,{'key':274}),
-            Event(KEYDOWN,{'key':273}),
-            Event(KEYDOWN,{'key':13}),
-            Event(KEYDOWN,{'key':274}),
+            Event(KEYDOWN, {'key': 276}),
+            Event(KEYDOWN, {'key': 273}),
+            Event(KEYDOWN, {'key': 273}),
+            Event(KEYDOWN, {'key': 274}),
+            Event(KEYDOWN, {'key': 274}),
+            Event(KEYDOWN, {'key': 273}),
+            Event(KEYDOWN, {'key': 13}),
+            Event(KEYDOWN, {'key': 274}),
             QUIT_EVENT,
         ]
         for evt in events:
             self.egen.add_scripted_event(evt)
-        menu = MenuBox(self.frame, self.menu, self.egen, VERTICAL_MOVES)
+        MenuBox(self.frame, self.menu, self.egen, VERTICAL_MOVES)
         self.assertEqual(len(self.egen.listeners), 1)
         self.assertEqual(self.result, None)
         self.egen.event_loop()
@@ -101,26 +93,23 @@ class TileMenuTests(MenuTests):
     def setUp(self):
         MenuTests.setUp(self)
         self.menu = [
-           ('#', self.select_one),
-           ('*', self.select_two),
-           ('.', self.select_three),
-           ]
-        
+            ('#', self.select_one),
+            ('*', self.select_two),
+            ('.', self.select_three),
+        ]
+
     @showdoc
     def test_tile_menu(self):
         """Displays a vertical tile menu plus navigation."""
         factory = TEST_GAME_CONTEXT.tile_factory
-        menu = TileMenuBox(factory, self.frame, self.menu, self.egen, VERTICAL_MOVES, horizontal=False)
+        menu = TileMenuBox(factory, self.frame, self.menu,
+            self.egen, VERTICAL_MOVES, horizontal=False)
         self.run_menu(menu)
 
     def test_deactivate_menu(self):
         factory = TEST_GAME_CONTEXT.tile_factory
-        menu = TileMenuBox(factory, self.frame, self.menu, self.egen, VERTICAL_MOVES, horizontal=False)
-        self.assertEqual(len(self.egen.listeners),1)
+        menu = TileMenuBox(factory, self.frame, self.menu,
+            self.egen, VERTICAL_MOVES, horizontal=False)
+        self.assertEqual(len(self.egen.listeners), 1)
         menu.deactivate()
-        self.assertEqual(len(self.egen.listeners),0)
-
-
-
-if __name__ == "__main__":
-    main()
+        self.assertEqual(len(self.egen.listeners), 0)

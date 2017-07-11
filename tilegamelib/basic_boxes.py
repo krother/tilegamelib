@@ -8,21 +8,20 @@ from pygame import Rect
 from .frame import Frame
 from .tiled_map import TiledMap
 from .vector import Vector
-
-DEFAULT_COLOR = (255, 255, 255)
+from .config import config
 
 
 class TextBox(object):
     """Displays a box with text."""
-    def __init__(self, frame, text, offset=None, font=None, color=DEFAULT_COLOR):
+    def __init__(self, frame, text, offset=None, font=None, color=config.WHITE):
         """Initializes the TextBox."""
         self.frame = frame
         self.text = text
         self.font = font
         self.color = color
         self.pos = offset
-        if offset == None:
-            self.pos = Vector(0,0)
+        if offset is None:
+            self.pos = Vector(0, 0)
 
     def draw(self):
         """Draws the Box."""
@@ -42,8 +41,8 @@ class ImageBox(object):
     def draw(self):
         """Draws the Box."""
         self.frame.clear()
-        self.frame.blit(self.image, self.frame.rect, \
-            Rect(0,0,self.frame.size.x,self.frame.size.y))
+        self.frame.blit(self.image, self.frame.rect,
+                        Rect(0, 0, self.frame.size.x, self.frame.size.y))
 
 
 class DictBox(object):
@@ -63,16 +62,16 @@ class DictBox(object):
         else:
             labels = list(self.data.keys())
             labels.sort()
-        for i,lab in enumerate(labels):
+        for i, lab in enumerate(labels):
             pos = Vector(0, 20*i)
-            self.frame.print_text('%s : %s' % (lab, str(self.data[lab])) , pos)
+            self.frame.print_text('{} : {}'.format(lab, str(self.data[lab])), pos)
 
 
 class FpsBox(TextBox):
-    """Displays FPS rate"""    
+    """Displays FPS rate"""
     def __init__(self, screen):
-        frame = Frame(screen, Rect(10, 10, 80,15))
-        TextBox.__init__(self, frame,'fps:',font=frame.settings.DEMIBOLD_SMALL,color=frame.settings.BLUE)
+        frame = Frame(screen, Rect(10, 10, 80, 15))
+        TextBox.__init__(self, frame, 'fps:', font=config.DEMIBOLD_SMALL, color=config.BLUE)
         self.lasttime = time.time()
 
     def update(self):
@@ -83,5 +82,5 @@ class FpsBox(TextBox):
         now = time.time()
         diff = now-self.lasttime
         self.lasttime = now
-        if diff>0:
-            self.text = 'fps: %3.1f'%(1.0/diff)
+        if diff > 0:
+            self.text = 'fps: %3.1f' % (1.0 / diff)

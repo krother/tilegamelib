@@ -1,6 +1,4 @@
 
-from unittest import TestCase, main
-
 from pygame import Rect, image
 
 from conftest import TILE
@@ -14,7 +12,7 @@ from util import graphictest, next_frame
 CYAN = (0, 255, 255)
 
 
-class FrameTests(TestCase):
+class FrameTests:
 
     def setUp(self):
         self.screen = Screen()
@@ -43,7 +41,3 @@ class FrameTests(TestCase):
         rect = Rect(10, 20, 20, 31)
         dest = self.frame.get_dest_rect(rect)
         self.assertEqual(dest, Rect(60, 70, 20, 31))
-
-
-if __name__ == "__main__":
-    main()

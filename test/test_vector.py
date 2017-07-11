@@ -1,12 +1,10 @@
 
-from unittest import TestCase, main
-
 from pygame import Rect
 
 from tilegamelib.vector import Vector
 
 
-class VectorTests(TestCase):
+class VectorTests:
 
     def test_vector(self):
         """Vector has x and y attributes."""
@@ -58,7 +56,3 @@ class VectorTests(TestCase):
              }
         self.assertEqual(d[Vector(1, 0)], 'a')
         self.assertEqual(d[Vector(0, 1)], 'b')
-
-
-if __name__ == "__main__":
-    main()
