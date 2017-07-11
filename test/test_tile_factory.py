@@ -1,14 +1,12 @@
 
 import pygame
-from pygame import Rect
 import pytest
+from pygame import Rect
 
-from data import TILE_SPECS
-from tilegamelib.tile_factory import NoTileError
-from tilegamelib.tile_factory import TileFactory
+from conftest import TILE_SPECS
+from tilegamelib.tile_factory import NoTileError, TileFactory
 from tilegamelib.tiles import Tile
-from util import showdoc
-from util import TEST_GAME_CONTEXT
+from util import TEST_GAME_CONTEXT, showdoc
 
 
 class TestTileFactory:

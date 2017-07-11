@@ -7,7 +7,7 @@ from .vector import Vector
 
 class Tile:
     """A tile is a quadratic piece of graphic that can be written
-    anywhere on the screen. 
+    anywhere on the screen.
     """
     def __init__(self, name, index, size, image):
         """
@@ -28,4 +28,4 @@ class Tile:
         frame.blit(self.image, destrect, self.box)
 
     def __repr__(self):
-        return "[Tile '%s' (%ix%i)]"%(self.name, self.size.x, self.size.y)
+        return "[Tile '{}' ({}x{})]".format(self.name, self.size.x, self.size.y)

@@ -14,6 +14,10 @@ class BasicConfig:
     BASE_PATH = os.path.split(__file__)[0]
     DATA_PATH = os.path.join(BASE_PATH, '..', 'examples', 'data') + os.sep
 
+    # tiles
+    TILE_SET = DATA_PATH + 'tiles.xpm'
+    TILE_SPECS = DATA_PATH + 'tiles.conf'
+
     # fonts
     FONT_FILE = os.path.join(DATA_PATH, 'LucidaSansDemiBold.ttf')
     DEMIBOLD_BIG = pygame.font.Font(FONT_FILE, 20)

@@ -13,8 +13,6 @@ TEST_DATA_PATH = config.BASE_PATH + '/../test/test_data/'
 SAMPLE_MAP_FILE = TEST_DATA_PATH + 'sample.map'
 
 TILE = TEST_DATA_PATH + 'test_tile.png'
-TILE_SET = TEST_DATA_PATH + 'tiles.xpm'
-TILE_SPECS = config.DATA_PATH + 'tiles.conf'
 
 # title screen
 TITLE_IMAGE = TEST_DATA_PATH + 'test_tile.png'

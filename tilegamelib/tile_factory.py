@@ -7,8 +7,7 @@ from pygame import Rect
 
 from .tiles import Tile
 from .vector import Vector
-
-TILE_SIZE = (32, 32)
+from .config import config
 
 
 class NoTileError(Exception): pass
@@ -18,11 +17,11 @@ class TileFactory:
     """
     Manages a set of tiles.
     """
-    def __init__(self, config_filename):
+    def __init__(self):
         self.tiles = {}
-        self.tile_size = Vector(32, 32)
+        self.tile_size = config.TILE_SIZE
         self.path = ''
-        self.parse_config(config_filename)
+        self.parse_config(config.TILE_SPECS)
 
     def parse_config(self, config_filename):
         path, fn = os.path.split(config_filename)

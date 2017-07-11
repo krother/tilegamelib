@@ -1,17 +1,5 @@
-#!/usr/bin/env python
-#
-# Copyright 2010 Kristian Rother
-#
-# All rights reserved.
-# Please see the LICENSE file that should have been included
-# as part of this package.
 
-__author__="Kristian Rother"
-__email__ ="krother@rubor.de"
-
-
-from unittest import main
-from unittest import TestCase
+from unittest import TestCase, main
 
 from pygame import Rect
 
@@ -22,38 +10,38 @@ class VectorTests(TestCase):
 
     def test_vector(self):
         """Vector has x and y attributes."""
-        a = Vector(1,2)
+        a = Vector(1, 2)
         self.assertEqual(a.x, 1)
         self.assertEqual(a.y, 2)
 
     def test_add(self):
         """Vectors can be added."""
-        a = Vector(1,2)
-        b = Vector(3,4)
+        a = Vector(1, 2)
+        b = Vector(3, 4)
         c = a + b
         self.assertEqual(c.x, 4)
         self.assertEqual(c.y, 6)
 
     def test_mul(self):
         """Vectors can be multiplied."""
-        a = Vector(1,2)
+        a = Vector(1, 2)
         c = a * 3
         self.assertEqual(c.x, 3)
         self.assertEqual(c.y, 6)
 
     def test_rect(self):
         """Vectors can be used for creating Rect objects."""
-        a = Vector(0,0)
-        b = Vector(5,6)
+        a = Vector(0, 0)
+        b = Vector(5, 6)
         r = Rect(a.x, a.y, b.x, b.y)
         self.assertEqual(r.x, 0)
         self.assertEqual(r.y, 0)
         self.assertEqual(r.width, 5)
         self.assertEqual(r.height, 6)
-        
+
     def test_iter(self):
         """Vectors can be iterated."""
-        b = Vector(5,6)
+        b = Vector(5, 6)
         self.assertEqual(list(b), [5, 6])
 
     def test_equal(self):
@@ -70,9 +58,7 @@ class VectorTests(TestCase):
              }
         self.assertEqual(d[Vector(1, 0)], 'a')
         self.assertEqual(d[Vector(0, 1)], 'b')
-        
 
-        
 
 if __name__ == "__main__":
     main()

@@ -19,7 +19,7 @@ class TestGameContext:
     def __init__(self):
         pygame.init()
         self.screen = Screen()
-        #self.tile_factory = TileFactory(config.TILE_SPECS)
+        self.tile_factory = TileFactory()
 
 
 TEST_GAME_CONTEXT = TestGameContext()
