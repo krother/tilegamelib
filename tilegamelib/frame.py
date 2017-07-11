@@ -2,12 +2,8 @@
 import pygame
 from pygame import Rect
 
-from .util import BASE_PATH
+from .config import config
 from .vector import Vector
-
-pygame.font.init()
-DEMIBOLD_BIG = pygame.font.Font(BASE_PATH + '/../examples/data/LucidaSansDemiBold.ttf', 20)
-DEFAULT_COLOR = GREEN = (128, 255, 128, 0)
 
 
 class Frame:
@@ -15,7 +11,7 @@ class Frame:
     Rectangular piece of the screen.
     Manages relative positions of objects.
     """
-    def __init__(self, screen, rect, font=DEMIBOLD_BIG):
+    def __init__(self, screen, rect, font=config.DEMIBOLD_BIG):
         """
         rect - position and size of the frame in pixels (x, y, x, y)
         """
@@ -41,7 +37,7 @@ class Frame:
         destrect = self.get_dest_rect(rect)
         self.screen.blit(bitmap, destrect, sourcerect)
 
-    def print_text(self, text, pos, font=DEMIBOLD_BIG, color=DEFAULT_COLOR):
+    def print_text(self, text, pos, font=config.DEMIBOLD_BIG, color=config.BLUE):
         """Writes text on the screen."""
         font = font or self.font
         color = color or self.color

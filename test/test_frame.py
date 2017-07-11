@@ -1,19 +1,15 @@
 
-from unittest import main
-from unittest import TestCase
+from unittest import TestCase, main
 
-from pygame import image
-from pygame import Rect
+from pygame import Rect, image
 
-from data import BACKGROUND_IMAGE
-from data import DEMIBOLD_BIG
-from data import RESOLUTION
-from data import TILE
+from conftest import TILE
+from tilegamelib.config import config
 from tilegamelib.frame import Frame
 from tilegamelib.screen import Screen
 from tilegamelib.vector import Vector
-from util import graphictest
-from util import next_frame
+from util import graphictest, next_frame
+
 
 CYAN = (0, 255, 255)
 
@@ -21,7 +17,7 @@ CYAN = (0, 255, 255)
 class FrameTests(TestCase):
 
     def setUp(self):
-        self.screen = Screen(RESOLUTION, BACKGROUND_IMAGE)
+        self.screen = Screen()
         self.frame = Frame(self.screen, Rect(50, 50, 100, 100))
 
     @graphictest
@@ -37,8 +33,8 @@ class FrameTests(TestCase):
     @graphictest
     def test_text(self):
         """Text drawn into frame, then cleared."""
-        self.frame.print_text('Hello Frame', Vector(50,50), \
-            DEMIBOLD_BIG, CYAN )
+        self.frame.print_text('Hello Frame', Vector(50, 50),
+            config.DEMIBOLD_BIG, config.CYAN)
         next_frame()
         self.frame.clear()
 
@@ -48,6 +44,6 @@ class FrameTests(TestCase):
         dest = self.frame.get_dest_rect(rect)
         self.assertEqual(dest, Rect(60, 70, 20, 31))
 
-     
+
 if __name__ == "__main__":
     main()
