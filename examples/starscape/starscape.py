@@ -10,7 +10,7 @@ from create_stars import STAR_PATH
 from tilegamelib import Frame
 from tilegamelib import Screen
 from tilegamelib import Vector
-from tilegamelib.util import DATA_PATH
+from tilegamelib.config import config
 
 
 class StarScape:
@@ -41,7 +41,7 @@ class StarScape:
 
 
 if __name__ == '__main__':
-    screen = Screen(Vector(800, 600), os.path.join(DATA_PATH, 'background.png'))
+    screen = Screen()
     frame = Frame(screen, Rect(0, 0, 800, 600))
     starscape = StarScape(frame)
 

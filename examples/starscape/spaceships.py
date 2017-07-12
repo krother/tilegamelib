@@ -19,7 +19,7 @@ from tilegamelib.basic_boxes import DictBox
 from tilegamelib.draw_timer import draw_timer
 from tilegamelib.game import Game
 from tilegamelib.sprites import Sprite
-from tilegamelib.util import DATA_PATH
+from tilegamelib.config import config
 from tilegamelib.vector import DOWN
 from tilegamelib.vector import LEFT
 from tilegamelib.vector import UP
@@ -113,7 +113,7 @@ class SpaceRaceGame:
 
     def __init__(self, screen):
         self.screen = screen
-        self.tile_factory = TileFactory(os.path.join(DATA_PATH, 'tiles.conf'))
+        self.tile_factory = TileFactory()
 
         self.starscape = None
         self.level = None
@@ -181,5 +181,5 @@ class SpaceRaceGame:
 
 
 if __name__ == '__main__':
-    game = Game(os.path.join(DATA_PATH, 'snake.conf'), SpaceRaceGame)
-    game.run()
+    game = Game()
+    game.play(SpaceRaceGame)
