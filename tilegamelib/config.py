@@ -44,6 +44,16 @@ class BasicConfig:
     CYAN    = (128, 255, 255, 0)
     MAGENTA = (255, 128, 255, 0)
 
+    MAIN_MENU_RECT = Rect(0, 0, 750, 550)
+    MAIN_MENU_IMAGE = DATA_PATH + '/title.png'
+    MAIN_MENU_TEXTPOS = Rect(550, 380, 800, 550)
+
+    HIGHSCORES = False
+    HIGHSCORE_RECT = Rect(200, 100, 800,550)
+    HIGHSCORE_IMAGE = DATA_PATH + '/background.png'
+    HIGHSCORE_TEXTPOS = Vector(0, 0)
+
+
     def read_config(filename):
         '''reads lines from config file into a dictionary.'''
         result = {}

@@ -14,6 +14,7 @@ from tilegamelib import TileFactory
 from tilegamelib import Vector
 from tilegamelib.bar_display import BarDisplay
 from tilegamelib.basic_boxes import DictBox
+from tilegamelib.config import config
 from tilegamelib.draw_timer import draw_timer
 from tilegamelib.game import Game
 from tilegamelib.sprites import Sprite
@@ -37,6 +38,16 @@ LEVEL = """####################
 #*#*###**##**##*##*#
 #e****************e#
 ####################"""
+
+config.RESOLUTION = Vector(850, 450)
+
+config.HIGHSCORES = True
+config.HIGHSCORE_FILE = config.DATA_PATH + '/pac_scores.txt'
+
+config.BOX_IMAGE = config.DATA_PATH + '/frame_box.png'
+config.DEFAULT_GAME_DELAY = 30
+config.KEY_REPEAT = {}
+config.GAME_KEY_REPEAT = { 273:1, 274:1, 275:1, 276:1}
 
 PAC_START = Vector(1, 1)
 GHOST_POSITIONS = [Vector(18, 1),
@@ -177,7 +188,7 @@ class PacGame:
     def __init__(self, screen):
         self.screen = screen
         self.frame = Frame(self.screen, Rect(10, 10, 640, 512))
-        self.tile_factory = TileFactory('data/tiles.conf')
+        self.tile_factory = TileFactory()
 
         self.level = None
         self.pac = None
@@ -278,5 +289,5 @@ class PacGame:
 
 
 if __name__ == '__main__':
-    game = Game('data/pac.conf', PacGame)
-    game.run()
+    game = Game()
+    game.play(PacGame)

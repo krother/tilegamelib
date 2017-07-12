@@ -27,6 +27,8 @@ FRUITMAP = """##########
 #*..b..#g#
 ##########"""
 
+config.RESOLUTION = Vector(450, 370)
+
 
 class CollectFruit:
 
@@ -76,5 +78,5 @@ class CollectFruit:
 
 
 if __name__ == '__main__':
-    game = Game(config.DATA_PATH + 'collect_fruit.conf', CollectFruit)
-    game.run()
+    game = Game()
+    game.play(CollectFruit)

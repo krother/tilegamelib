@@ -21,6 +21,7 @@ from tilegamelib.vector import LEFT
 from tilegamelib.vector import RIGHT
 from tilegamelib.vector import UP
 from tilegamelib.vector import Vector
+from tilegamelib.config import config
 
 MOVE_DELAY = 15
 
@@ -51,6 +52,11 @@ HEAD_TILES = {
 
 EASY = False
 
+config.RESOLUTION = Vector(800, 550)
+
+config.HIGHSCORES = True
+config.HIGHSCORE_FILE = config.DATA_PATH + '/snake_scores.txt'
+
 
 class SnakeLevel:
 
@@ -59,15 +65,12 @@ class SnakeLevel:
         self.tmap.set_map(str(data))
         self.tmap.cache_map()
 
-    def at(self, pos):
-        return self.tmap.at(pos)
-
     def place_fruit(self, pos, fruit):
         self.tmap.set_tile(pos, fruit)
         self.tmap.cache_map()
 
     def remove_fruit(self, pos):
-        tile = self.at(pos)
+        tile = self.tmap.at(pos)
         if tile != '.':
             self.tmap.set_tile(pos, '.')
             self.tmap.cache_map()
@@ -146,7 +149,7 @@ class SnakeSprite:
 
     def move_forward(self):
         newpos = self.head.pos + self.direction
-        tile = self.level.at(newpos)
+        tile = self.level.tmap.at(newpos)
         if newpos in self.positions or tile == '#':
             self.crashed = True
         else:
@@ -166,7 +169,7 @@ class SnakeGame:
 
     def __init__(self, screen):
         self.screen = screen
-        self.tile_factory = TileFactory('data/tiles.conf')
+        self.tile_factory = TileFactory()
 
         self.level = None
         self.snake = None
@@ -241,5 +244,5 @@ class SnakeGame:
 
 
 if __name__ == '__main__':
-    game = Game('data/snake.conf', SnakeGame)
-    game.run()
+    game = Game()
+    game.play(SnakeGame)

@@ -17,7 +17,7 @@ from tilegamelib.map_move import MapMove
 from tilegamelib.move import wait_for_move
 from tilegamelib.move_group import MoveGroup
 from tilegamelib.sprites import Sprite
-from tilegamelib.util import DATA_PATH
+from tilegamelib.config import config
 
 
 BOXMAP = """##########
@@ -29,13 +29,15 @@ BOXMAP = """##########
 #........#
 ##########"""
 
+config.RESOLUTION = Vector(450, 400)
+
 
 class Boxes:
 
     def __init__(self):
-        self.screen = Screen(Vector(600, 400), DATA_PATH + 'background.png')
+        self.screen = Screen()
         self.frame = Frame(self.screen, Rect(64, 64, 320, 320))
-        tile_factory = TileFactory(DATA_PATH + 'tiles.conf')
+        tile_factory = TileFactory()
         self.tm = TiledMap(self.frame, tile_factory)
         self.player = Sprite(self.frame, tile_factory.get('b.tail'),
                              Vector(4, 1), speed=2)

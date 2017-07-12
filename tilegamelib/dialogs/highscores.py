@@ -75,7 +75,7 @@ class HighscoreBox:
             y_offset = i * 30
             text = "%8i - %s"%(score, name)
             self.frame.print_text(text, self.textpos+Vector(0,y_offset), \
-                    DEMIBOLD_BIG, BLUE,\
+                    config.DEMIBOLD_BIG, config.BLUE,\
                     )
             i += 1
         if self.entering:
