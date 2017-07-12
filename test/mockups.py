@@ -12,8 +12,7 @@ __email__ ="krother@rubor.de"
 from pygame.event import Event
 from pygame.locals import QUIT
 
-from tilegamelib.events import EventGenerator
-from tilegamelib.events import EventListener
+from tilegamelib.events import EventGenerator, EventListener
 from tilegamelib.game_engine import GameFactory
 
 

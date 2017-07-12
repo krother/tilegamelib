@@ -1,7 +1,7 @@
 
 from pygame import Rect, image
 
-from conftest import TILE
+from test.conftest import TILE
 from tilegamelib.config import config
 from tilegamelib.frame import Frame
 from tilegamelib.screen import Screen

@@ -7,9 +7,7 @@ import time
 import pygame
 from pygame import Rect
 
-from tilegamelib import Frame
-from tilegamelib import Screen
-from tilegamelib import TileFactory
+from tilegamelib import Frame, Screen, TileFactory
 from tilegamelib.basic_boxes import TextBox
 from tilegamelib.config import config
 
@@ -23,7 +21,6 @@ class TestGameContext:
 
 
 TEST_GAME_CONTEXT = TestGameContext()
-
 
 
 def next_frame():

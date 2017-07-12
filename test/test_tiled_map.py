@@ -4,7 +4,7 @@ import time
 import pygame
 from pygame import Rect
 
-from conftest import SAMPLE_MAP_FILE
+from test.conftest import SAMPLE_MAP_FILE
 from tilegamelib.config import config
 from tilegamelib.frame import Frame
 from tilegamelib.tiled_map import TiledMap

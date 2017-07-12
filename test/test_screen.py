@@ -1,7 +1,7 @@
 
 import pygame
 
-from conftest import TILE
+from test.conftest import TILE
 from tilegamelib.screen import Screen
 from util import graphictest, next_frame
 
