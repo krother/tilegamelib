@@ -3,11 +3,8 @@ import sys
 
 import pygame
 from pygame.event import Event
-from pygame.locals import KEYDOWN
-from pygame.locals import KEYUP
-from pygame.locals import MOUSEBUTTONDOWN
-from pygame.locals import MOUSEBUTTONUP
-from pygame.locals import QUIT
+from pygame.locals import KEYDOWN, KEYUP, MOUSEBUTTONDOWN, MOUSEBUTTONUP, QUIT
+
 
 """
 Observer pattern for event handling:

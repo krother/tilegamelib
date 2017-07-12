@@ -1,15 +1,10 @@
 
-from pygame import K_DOWN
-from pygame import K_ESCAPE
-from pygame import K_LEFT
-from pygame import K_RETURN
-from pygame import K_RIGHT
-from pygame import K_SPACE
-from pygame import K_UP
+from pygame import K_DOWN, K_ESCAPE, K_LEFT, K_RETURN, K_RIGHT, K_SPACE, K_UP
 
-from .event_listener import EventListener
 from .config import config
+from .event_listener import EventListener
 from .vector import Vector
+
 
 VERTICAL_MOVES = [K_ESCAPE, K_UP, K_DOWN, K_RETURN, K_SPACE]
 HORIZONTAL_MOVES = [K_ESCAPE, K_LEFT, K_RIGHT, K_RETURN, K_SPACE]

@@ -4,10 +4,10 @@ import os
 from pygame import Rect
 
 from tilegamelib import Vector
+from tilegamelib.config import config
 from tilegamelib.dialogs.highscores import show_highscores
 from tilegamelib.dialogs.title_screen import show_title_screen
 from tilegamelib.menu import VERTICAL_MOVES
-from tilegamelib.config import config
 
 from .screen import Screen
 

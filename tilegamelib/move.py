@@ -7,8 +7,7 @@ from pygame import Rect
 from tilegamelib.frame import Frame
 from tilegamelib.screen import Screen
 from tilegamelib.tile_factory import TileFactory
-from tilegamelib.vector import RIGHT
-from tilegamelib.vector import Vector
+from tilegamelib.vector import RIGHT, Vector
 
 
 class Move:

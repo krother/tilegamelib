@@ -2,12 +2,11 @@
 import json
 import os
 
-from pygame import image
-from pygame import Rect
+from pygame import Rect, image
 
+from .config import config
 from .tiles import Tile
 from .vector import Vector
-from .config import config
 
 
 class NoTileError(Exception): pass

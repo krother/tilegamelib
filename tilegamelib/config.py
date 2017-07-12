@@ -1,10 +1,12 @@
 
-import pygame
 import os
+
+import pygame
 import pygame.font
 from pygame.rect import Rect
 
 from .vector import Vector
+
 
 pygame.font.init()
 

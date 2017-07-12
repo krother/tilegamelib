@@ -2,6 +2,7 @@
 import pygame
 from pygame.locals import *
 from pygame.rect import Rect  # numpy import array
+
 from .config import config
 
 

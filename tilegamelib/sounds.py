@@ -5,6 +5,7 @@ import time
 import pygame
 import pygame.mixer
 
+
 pygame.mixer.pre_init(44100, -16, 2, 2048)
 pygame.mixer.init()
 

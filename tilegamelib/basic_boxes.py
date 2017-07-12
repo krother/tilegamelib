@@ -2,13 +2,12 @@
 import time
 
 import pygame
-from pygame import image
-from pygame import Rect
+from pygame import Rect, image
 
+from .config import config
 from .frame import Frame
 from .tiled_map import TiledMap
 from .vector import Vector
-from .config import config
 
 
 class TextBox(object):

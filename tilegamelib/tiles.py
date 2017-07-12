@@ -1,6 +1,5 @@
 
-from pygame import image
-from pygame import Rect
+from pygame import Rect, image
 
 from .vector import Vector
 

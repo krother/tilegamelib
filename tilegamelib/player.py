@@ -10,12 +10,9 @@ __author__="Kristian Rother"
 __email__ ="krother@rubor.de"
 
 
-from interfaces import Commandable
-from interfaces import Drawable
-from interfaces import Updateable
+from interfaces import Commandable, Drawable, Updateable
 from screen import GameElement
-from tiled_map import MoveableTiledMap
-from tiled_map import SpriteList
+from tiled_map import MoveableTiledMap, SpriteList
 
 
 class PlayerBox(Drawable, Updateable, Commandable, GameElement):

@@ -5,16 +5,11 @@ import pygame
 from pygame import Rect
 
 from .frame import Frame
-from .move import Move
-from .move import wait_for_move
+from .move import Move, wait_for_move
 from .screen import Screen
 from .tile_factory import TileFactory
 from .tiled_map import TiledMap
-from .vector import DOWN
-from .vector import LEFT
-from .vector import RIGHT
-from .vector import UP
-from .vector import Vector
+from .vector import DOWN, LEFT, RIGHT, UP, Vector
 
 
 class Sprite:

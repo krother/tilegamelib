@@ -2,11 +2,10 @@
 import pygame
 
 from tilegamelib.basic_boxes import ImageBox
-from tilegamelib.event_listener import AnyKeyListener
-from tilegamelib.event_listener import TextEnteringListener
+from tilegamelib.config import config
+from tilegamelib.event_listener import AnyKeyListener, TextEnteringListener
 from tilegamelib.events import EventGenerator
 from tilegamelib.frame import Frame
-from tilegamelib.config import config
 from tilegamelib.vector import Vector
 
 
