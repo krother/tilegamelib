@@ -8,9 +8,6 @@ from tilegamelib.frame import Frame
 from tilegamelib.screen import Screen
 from tilegamelib.tile_factory import TileFactory
 from tilegamelib.tiled_map import TiledMap
-from tilegamelib.vector import RIGHT, Vector
-
-from .tiled_map import TiledMap
 
 
 class BarDisplay:
@@ -41,10 +38,9 @@ class BarDisplay:
         self.redraw()
 
 
-
 if __name__ == '__main__':
-    screen = Screen(Vector(800,550), '../examples/data/background.png')
-    tile_factory = TileFactory('../examples/data/tiles.conf')
+    screen = Screen()
+    tile_factory = TileFactory()
     frame = Frame(screen, Rect(96, 64, 640, 32))
     bananas = BarDisplay(frame, tile_factory, 0, 'b', False)
     frame = Frame(screen, Rect(64, 64, 32, 320))
@@ -52,7 +48,7 @@ if __name__ == '__main__':
     for i in range(15):
         pygame.display.update()
         time.sleep(0.1)
-        #screen.clear()
+        # screen.clear()
         bananas.increase()
         cherries.decrease()
         pygame.display.update()

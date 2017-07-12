@@ -20,14 +20,14 @@ class HighscoreList:
     def load_scores(self):
         self.scores = []
         for line in open(self.filename):
-            score,name = line.strip().split()
+            score, name = line.strip().split()
             self.scores.append((int(score), name))
 
     def write_scores(self):
         out = []
-        for score,name in self.scores:
-            out.append('%i\t%s\n'%(score, name))
-        open(self.filename,'w').writelines(out)
+        for score, name in self.scores:
+            out.append('%i\t%s\n' % (score, name))
+        open(self.filename, 'w').writelines(out)
 
     def is_in_highscores(self, score):
         """Returns true if the given score gets into the list."""
@@ -35,9 +35,9 @@ class HighscoreList:
             return True
 
     def insert_entry(self, name, score):
-        if name.strip()=='':
-            name='ANONYMOUS'
-        self.scores.append((score,name))
+        if name.strip() == '':
+            name = 'ANONYMOUS'
+        self.scores.append((score, name))
         self.scores.sort()
         self.scores.reverse()
         self.scores = self.scores[:self.length]
@@ -57,10 +57,11 @@ class HighscoreBox:
         """
         self.frame = frame
         self.egen = egen
+
         self.textpos = textpos
         self.highscores = highscores
         self.image = ImageBox(frame, highscore_image)
-        
+
         # for entering new entries
         self.entering = False
         self.name = ""
@@ -70,18 +71,19 @@ class HighscoreBox:
         """Draws the highscore list."""
         self.image.draw()
         i = 0
-        for score,name in self.highscores.scores:
+        for score, name in self.highscores.scores:
             y_offset = i * 30
-            text = "%8i - %s"%(score, name)
-            self.frame.print_text(text, self.textpos+Vector(0,y_offset), \
-                    config.DEMIBOLD_BIG, config.BLUE,\
-                    )
+            text = "%8i - %s" % (score, name)
+            self.frame.print_text(text, self.textpos + Vector(0, y_offset),
+                    config.DEMIBOLD_BIG, config.BLUE)
             i += 1
         if self.entering:
-            self.frame.print_text("High Score! Please enter your name:",\
-                    self.textpos+Vector(0,y_offset+50), config.DEMIBOLD_BIG, config.BLUE)
-            self.frame.print_text(self.name,\
-                    self.textpos+Vector(0, y_offset+80), config.DEMIBOLD_BIG, config.BLUE)
+            self.frame.print_text("High Score! Please enter your name:",
+                    self.textpos + Vector(0, y_offset + 50),
+                    config.DEMIBOLD_BIG, config.BLUE)
+            self.frame.print_text(self.name,
+                    self.textpos + Vector(0, y_offset + 80),
+                    config.DEMIBOLD_BIG, config.BLUE)
 
     def enter_score(self, score):
         """

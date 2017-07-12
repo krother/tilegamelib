@@ -8,8 +8,7 @@ from .frame import Frame
 from .move import Move, wait_for_move
 from .screen import Screen
 from .tile_factory import TileFactory
-from .tiled_map import TiledMap
-from .vector import DOWN, LEFT, RIGHT, UP, Vector
+from .vector import DOWN, RIGHT, UP, Vector
 
 
 class Sprite:
@@ -44,9 +43,9 @@ class Sprite:
             self.direction, when_finished = self.path.pop(0)
             self.callback = when_finished
             start_vector = self.pos * self.size.x
-            self._move = Move(self.frame, self.tile, start_vector, \
-                self.direction * self.speed, \
-                steps=self.size.x // self.speed, \
+            self._move = Move(self.frame, self.tile, start_vector,
+                self.direction * self.speed,
+                steps=self.size.x // self.speed,
                 when_finished=self.finalize_move)
 
     @property
@@ -74,14 +73,14 @@ class Sprite:
         """Draw the sprite on the screen."""
         if not self._move:
             pos = self.pos * self.size.x
-            destrect = Rect(pos.x,pos.y,self.size.x,self.size.y)
+            destrect = Rect(pos.x, pos.y, self.size.x, self.size.y)
             self.tile.draw(self.frame, destrect)
         else:
             self._move.draw()
 
 
 if __name__ == '__main__':
-    screen = Screen(Vector(800,550), '../examples/data/background.png')
+    screen = Screen(Vector(800, 550), '../examples/data/background.png')
     frame = Frame(screen, Rect(64, 64, 400, 320))
     tile_factory = TileFactory('../examples/data/tiles.conf')
 
@@ -95,7 +94,7 @@ if __name__ == '__main__':
     sprite.add_move(RIGHT)
     sprite.add_move(UP)
     wait_for_move(sprite, screen, sprite.draw, 0.01)
-    
+
     sprite.draw()
     pygame.display.update()
     time.sleep(1.0)

@@ -42,9 +42,9 @@ LEVEL = """####################
 config.RESOLUTION = Vector(850, 450)
 
 config.HIGHSCORES = True
-config.HIGHSCORE_FILE = config.DATA_PATH + '/pac_scores.txt'
+config.HIGHSCORE_FILE = config.DATA_PATH + 'pac_scores.txt'
 
-config.BOX_IMAGE = config.DATA_PATH + '/frame_box.png'
+config.BOX_IMAGE = config.DATA_PATH + 'frame_box.png'
 config.DEFAULT_GAME_DELAY = 30
 config.KEY_REPEAT = {}
 config.GAME_KEY_REPEAT = { 273:1, 274:1, 275:1, 276:1}

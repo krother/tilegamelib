@@ -1,15 +1,4 @@
 
-import time
-
-import pygame
-from pygame import Rect
-
-from .frame import Frame
-from .screen import Screen
-from .tile_factory import TileFactory
-from .vector import Vector
-
-
 class AnimatedTile:
     """
     Loop through a sequence of tiles.

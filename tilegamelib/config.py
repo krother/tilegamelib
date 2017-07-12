@@ -37,13 +37,13 @@ class BasicConfig:
     BACKGROUND_IMAGE = DATA_PATH + 'background.png'
 
     # colors
-    WHITE   = (255, 255, 255, 0)
-    RED     = (255, 128, 128, 0)
-    GREEN   = (128, 255, 128, 0)
-    BLUE    = (128, 128, 255, 0)
-    GRAY    = (128, 128, 128, 0)
-    YELLOW  = (255, 255, 128, 0)
-    CYAN    = (128, 255, 255, 0)
+    WHITE = (255, 255, 255, 0)
+    RED = (255, 128, 128, 0)
+    GREEN = (128, 255, 128, 0)
+    BLUE = (128, 128, 255, 0)
+    GRAY = (128, 128, 128, 0)
+    YELLOW = (255, 255, 128, 0)
+    CYAN = (128, 255, 255, 0)
     MAGENTA = (255, 128, 255, 0)
 
     MAIN_MENU_RECT = Rect(0, 0, 750, 550)
@@ -52,7 +52,7 @@ class BasicConfig:
     # MENU_KEY_REPEAT = {274: 20, 115: 20}
 
     HIGHSCORES = False
-    HIGHSCORE_RECT = Rect(200, 100, 800,550)
+    HIGHSCORE_RECT = Rect(200, 100, 800, 550)
     HIGHSCORE_IMAGE = DATA_PATH + '/background.png'
     HIGHSCORE_TEXT_POS = Vector(0, 0)
 
@@ -68,6 +68,7 @@ class BasicConfig:
     # pause box
     PAUSE_BOX_RECT = Rect(200, 150, 400, 100)
     PAUSE_IMAGE = DATA_PATH + '/frame_box.png'
+    PAUSE_TEXT = "Game Paused - press any key to continue"
 
     def read_config(filename):
         '''reads lines from config file into a dictionary.'''

@@ -52,7 +52,7 @@ class MusicPlayer:
         c.set_volume(volume)
         c.play(sound)
         MUSIC[0] = c
-        print ('playing', filename)
+        print('playing', filename)
         STARTED_TIME[0] = 0
 
     def next_music(self, filename):

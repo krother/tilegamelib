@@ -2,14 +2,15 @@
 import json
 import os
 
-from pygame import Rect, image
+from pygame import image
 
 from .config import config
 from .tiles import Tile
 from .vector import Vector
 
 
-class NoTileError(Exception): pass
+class NoTileError(Exception):
+    pass
 
 
 class TileFactory:
@@ -41,7 +42,7 @@ class TileFactory:
     def add_tile_synonyms(self, synonyms):
         for abbrev in synonyms:
             self.tiles[abbrev] = self.get(synonyms[abbrev])
-    
+
     def get(self, key):
         """Returns a Tile instance."""
         result = self.tiles.get(key, None)

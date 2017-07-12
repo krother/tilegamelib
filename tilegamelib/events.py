@@ -1,6 +1,4 @@
 
-import sys
-
 import pygame
 from pygame.event import Event
 from pygame.locals import KEYDOWN, KEYUP, MOUSEBUTTONDOWN, MOUSEBUTTONUP, QUIT
@@ -12,7 +10,8 @@ Observer pattern for event handling:
     event_listener.EventListener - handles event objects (abstract class)
 """
 
-QUIT_EVENT = Event(QUIT,{})
+QUIT_EVENT = Event(QUIT, {})
+
 
 class EventGenerator:
     """
@@ -57,7 +56,7 @@ class EventGenerator:
     def add_scripted_keys(self, keys, converter=ord):
         """Queues a list of key events."""
         for key in keys:
-            event = Event(KEYDOWN,{'key': converter(key)})
+            event = Event(KEYDOWN, {'key': converter(key)})
             self.event_queue.append(event)
 
     # -------------- methods taking care of event types ----------

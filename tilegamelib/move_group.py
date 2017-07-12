@@ -70,11 +70,11 @@ if __name__ == '__main__':
     wait_for_move(mg, screen, tm.draw, 0.02)
 
     mg = MoveGroup()
-    mg.add(MapMove(tm, Vector(7,5), RIGHT, 2))
-    mg.add(MapMove(tm, Vector(8,5), DOWN, 2))
-    mg.add(MapMove(tm, Vector(7,6), UP, 2))
-    mg.add(MapMove(tm, Vector(8,6), LEFT, 2))
-        
+    mg.add(MapMove(tm, Vector(7, 5), RIGHT, 2))
+    mg.add(MapMove(tm, Vector(8, 5), DOWN, 2))
+    mg.add(MapMove(tm, Vector(7, 6), UP, 2))
+    mg.add(MapMove(tm, Vector(8, 6), LEFT, 2))
+
     wait_for_move(mg, screen, tm.draw, 0.02)
 
     tm.draw()

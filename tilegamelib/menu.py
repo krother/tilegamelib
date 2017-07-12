@@ -32,20 +32,21 @@ class MenuBox:
         self.egen.add_listener(self.listener)
 
     def get_listener(self, moves):
-        callbacks = [self.deactivate, self.prev_item, self.next_item, self.select, self.select]
+        callbacks = [self.deactivate, self.prev_item, self.next_item,
+            self.select, self.select]
         keymap = dict(zip(moves, callbacks))
         return EventListener(keymap=keymap)
-    
+
     def select(self):
         """Handles selecting things in the menu."""
         callback = self.menu[self.active][1]
         callback()
         self.deactivate()
-             
+
     def prev_item(self):
         self.active -= 1
         if self.active < 0:
-            self.active = len(self.menu)-1
+            self.active = len(self.menu) - 1
 
     def next_item(self):
         self.active += 1
@@ -75,11 +76,11 @@ class TileMenuBox(MenuBox):
         """Draws the menu and background image."""
         i = 0
         for tile, value in self.menu:
-            x = self.horizontal and i*tile.size.x or 0
-            y = not self.horizontal and i*tile.size.y or 0
-            tile.draw(self.frame, Vector(x,y))
-            if self.active==i:
-                self.draw_cursor(Vector(x,y))
+            x = self.horizontal and i * tile.size.x or 0
+            y = not self.horizontal and i * tile.size.y or 0
+            tile.draw(self.frame, Vector(x, y))
+            if self.active == i:
+                self.draw_cursor(Vector(x, y))
             i += 1
 
     def draw_cursor(self, pos):
@@ -88,16 +89,17 @@ class TileMenuBox(MenuBox):
 
 class TextMenuBox(MenuBox):
 
-    def __init__(self, frame, menu, egen, moves, color=config.BLUE, highlight=config.WHITE):
+    def __init__(self, frame, menu, egen, moves, color=config.BLUE,
+            highlight=config.WHITE):
         MenuBox.__init__(self, frame, menu, egen, moves)
         self.color = color
         self.highlight = highlight
-        
+
     def draw(self):
         """Draws the menu and background image."""
         i = 0
         for text, value in self.menu:
-            pos = Vector(0, i*30)
+            pos = Vector(0, i * 30)
             if i == self.active:
                 col = self.highlight
             else:

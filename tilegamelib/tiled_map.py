@@ -45,14 +45,14 @@ class TiledMap:
         Returns boolean.
         """
         if pos.x >= self.map_pos.x \
-            and pos.y >= self.map_pos.y \
-            and pos.x <= self.map_pos.x + self.win_size.x \
-            and pos.y <= self.map_pos.y + self.win_size.y:
-                return True
+           and pos.y >= self.map_pos.y \
+           and pos.x <= self.map_pos.x + self.win_size.x \
+           and pos.y <= self.map_pos.y + self.win_size.y:
+            return True
 
     def check_position(self, pos):
         """Checks if the given position is on the map."""
-        if 0 <= pos.x < self.size.x and\
+        if 0 <= pos.x < self.size.x and \
            0 <= pos.y < self.size.y:
             return True
 
@@ -67,8 +67,8 @@ class TiledMap:
         the given numpy 2D vector.
         """
         newpos = self.map_pos + vector
-        if 0 <= newpos.x <= self.size.x-self.win_size.x and\
-           0 <= newpos.y <= self.size.y-self.win_size.y:
+        if 0 <= newpos.x <= self.size.x - self.win_size.x and \
+           0 <= newpos.y <= self.size.y - self.win_size.y:
             return True
 
     def zoom_to(self, pos):
@@ -77,7 +77,7 @@ class TiledMap:
         pos (x,y) are integer indices on the tile map.
         """
         self.map_pos = pos
-        self.offset = pos*self.tile_factory.tile_size.x
+        self.offset = pos * self.tile_factory.tile_size.x
 
     def __str__(self):
         return self.get_map()
@@ -102,9 +102,9 @@ class TiledMap:
 
     def draw(self):
         """Draws the map."""
-        src = pygame.Rect(self.offset.x, self.offset.y,\
+        src = pygame.Rect(self.offset.x, self.offset.y,
                 self.win_size_px.x, self.win_size_px.y)
-        dest = pygame.Rect(0, 0,\
+        dest = pygame.Rect(0, 0,
                 self.win_size_px.x, self.win_size_px.y)
         self.frame.blit(self.mapsurf, dest, src)
 

@@ -28,7 +28,7 @@ class TitleScreen:
         self.title.draw()
         self.menu.draw()
         self.events.event_loop()
-        #self.menu.deactivate()
+        self.menu.deactivate()
         self.events.remove_callback(self)
 
 

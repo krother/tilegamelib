@@ -23,8 +23,8 @@ class MapMove:
         self.tile_char = insert_tile or tmap.at(pos)
 
         tile = self.map.get_tile(pos)
-        self._move = Move(tmap.frame, tile, tmap.pos_in_pixels(pos), \
-                          direction*2, steps=16)
+        self._move = Move(tmap.frame, tile, tmap.pos_in_pixels(pos),
+                          direction * 2, steps=16)
         self.map.set_tile(pos, floor_tile or '.')
         self.map.cache_map()
 
@@ -39,11 +39,10 @@ class MapMove:
 
     def draw(self):
         self._move.draw()
-    
+
     def finish_move(self):
         self.map.set_tile(self.end_pos, self.tile_char)
         self.map.cache_map()
-
 
 
 if __name__ == '__main__':
@@ -56,9 +55,9 @@ if __name__ == '__main__':
 #..ff..gg..#
 ############"""
 
-    screen = Screen(Vector(800,550), '../examples/data/background.png')
+    screen = Screen()
     frame = Frame(screen, Rect(64, 64, 400, 320))
-    tile_factory = TileFactory('../examples/data/tiles.conf')
+    tile_factory = TileFactory()
     tm = TiledMap(frame, tile_factory)
 
     tm.set_map(fruitmap)
@@ -67,9 +66,9 @@ if __name__ == '__main__':
 
     for i in range(40):
         move = None
-        while move == None:
-            pos = Vector(randint(1,10), randint(1,6))
-            direction = [UP, DOWN, LEFT, RIGHT][randint(0,3)]
+        while move is None:
+            pos = Vector(randint(1, 10), randint(1, 6))
+            direction = [UP, DOWN, LEFT, RIGHT][randint(0, 3)]
             newpos = pos + direction
             if tm.at(pos) != '.' and tm.at(newpos) != '#':
                 move = MapMove(tm, pos, direction, 2)

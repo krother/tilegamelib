@@ -1,9 +1,6 @@
 
 import os
 
-from pygame import Rect
-
-from tilegamelib import Vector
 from tilegamelib.config import config
 from tilegamelib.dialogs.highscores import show_highscores
 from tilegamelib.dialogs.title_screen import show_title_screen
@@ -43,18 +40,16 @@ class Game:
                 rect=config.HIGHSCORE_RECT,
                 filename=config.HIGHSCORE_FILE,
                 image=config.HIGHSCORE_IMAGE,
-                textpos=config.HIGHSCORE_TEXTPOS,
-            )
+                textpos=config.HIGHSCORE_TEXT_POS)
 
     def exit(self):
         self._exit = True
 
     def main_menu(self):
         while not self._exit:
-            show_title_screen(self.screen, \
+            show_title_screen(self.screen,
                 config.MAIN_MENU_RECT,
                 config.MAIN_MENU_IMAGE,
                 config.MAIN_MENU,
                 config.MAIN_MENU_TEXTPOS,
-                VERTICAL_MOVES,
-            )
+                VERTICAL_MOVES)

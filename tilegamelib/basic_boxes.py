@@ -1,12 +1,10 @@
 
 import time
 
-import pygame
 from pygame import Rect, image
 
 from .config import config
 from .frame import Frame
-from .tiled_map import TiledMap
 from .vector import Vector
 
 
@@ -62,7 +60,7 @@ class DictBox(object):
             labels = list(self.data.keys())
             labels.sort()
         for i, lab in enumerate(labels):
-            pos = Vector(0, 20*i)
+            pos = Vector(0, 20 * i)
             self.frame.print_text('{} : {}'.format(lab, str(self.data[lab])), pos)
 
 
@@ -79,7 +77,7 @@ class FpsBox(TextBox):
         and calculates the FPS rate (frames per second).
         """
         now = time.time()
-        diff = now-self.lasttime
+        diff = now - self.lasttime
         self.lasttime = now
         if diff > 0:
             self.text = 'fps: %3.1f' % (1.0 / diff)

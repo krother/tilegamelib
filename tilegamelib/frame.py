@@ -1,5 +1,4 @@
 
-import pygame
 from pygame import Rect
 
 from .config import config
@@ -47,8 +46,8 @@ class Frame:
 
     def clear(self):
         """Clears the area in the frame."""
-        self.screen.blit(self.screen.background, self.rect, \
+        self.screen.blit(self.screen.background, self.rect,
             Rect(0, 0, self.size.x, self.size.y))
 
     def __repr__(self):
-        return "[Frame '%s']"%(str(self.rect))
+        return "[Frame '%s']" % (str(self.rect))

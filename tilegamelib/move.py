@@ -14,7 +14,8 @@ class Move:
     """
     Moves a tile over a certain amount of steps in one direction.
     """
-    def __init__(self, frame, tile, start_vector=None, direction=None, steps=0, when_finished=None):
+    def __init__(self, frame, tile, start_vector=None, direction=None,
+            steps=0, when_finished=None):
         self.frame = frame
         self.tile = tile
         self.start_vector = start_vector or Vector(0, 0)
