@@ -1,22 +1,9 @@
 
-from unittest import main
-from unittest import TestCase
-
-from blocks import Blocks
-from blocks import DOWN
-from blocks import DOWNLEFT
-from blocks import DOWNRIGHT
-from blocks import LEFT
-from blocks import RIGHT
-from blocks import UP
-from blocks import UPLEFT
-from blocks import UPRIGHT
-
-
-class BlocksTests(TestCase):
+'''
+class BlocksTests:
     def setUp(self):
         self.blocks = Blocks()
-        
+
     def test_get_set(self):
         self.blocks.set(box)
         self.assertEqual(self.blocks.get(), box)
@@ -49,7 +36,7 @@ class BlocksTests(TestCase):
         self.blocks.set(box_drop_before)
         r = self.blocks.drop()
         self.assertEqual(r,[(3,0,'a',DOWN),(4,0,'e',DOWN)])
-    
+
     def test_settle(self):
         self.blocks.set(box_settle_before)
         self.blocks.drop()
@@ -60,7 +47,7 @@ class BlocksTests(TestCase):
         result = self.blocks.left_shift()
         self.assertEqual(self.blocks.get(), box_leftshift)
         self.assertTrue(result)
-        
+
     def test_rightshift(self):
         self.blocks.set(box_shift_before)
         result = self.blocks.right_shift()
@@ -140,7 +127,6 @@ class BlocksTests(TestCase):
             self.assertEqual(r[1],e[1])
             self.assertEqual(r[2],e[2])
             self.assertEqual(sum(r[3]==e[3]),2)
-            
 
     def test_remove_and_drop(self):
         self.blocks.set(box_drop_remove_before)
@@ -167,9 +153,7 @@ class BlocksTests(TestCase):
         self.assertEqual(self.blocks.get_stack_size(),5)
         self.blocks.set(box_remove_multi_after)
         self.assertEqual(self.blocks.get_stack_size(),3)
-        
 
-        
 box = """#......#
 #......#
 #......#
@@ -434,7 +418,4 @@ box_game_over = """#...c..#
 #ccddde#
 #cbbbaa#
 ########"""
-
-
-if __name__ == '__main__':
-    main()
+'''

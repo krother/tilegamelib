@@ -1,20 +1,24 @@
 
-from random import randint
 import time
 
 import pygame
 from pygame import Rect
 
-from frutris import FrutrisBox
-from tilegamelib import Frame
-from tilegamelib import Screen
-from tilegamelib import Sprite
-from tilegamelib import TiledMap
-from tilegamelib import TileFactory
-from tilegamelib import Vector
-from tilegamelib.move import wait_for_move
+from examples.frutris.frutris import FrutrisBox
+from tilegamelib import Frame, Screen, TileFactory, Vector
+from tilegamelib.config import config
+from tilegamelib.vector import LEFT, RIGHT
 
-if __name__ == '__main__':
+
+def wait(box):
+    while not box.moving_blocks.finished:
+        box.moving_blocks.move()
+        box.draw()
+        pygame.display.update()
+        time.sleep(config.SHORT_DELAY)
+
+
+def test_frutris():
     LEVEL = """#......#
 #......#
 #......#
@@ -25,47 +29,57 @@ if __name__ == '__main__':
 #cbbbaa#
 ########"""
 
-
-    screen = Screen(Vector(800,550), 'data/background.png')
+    screen = Screen()
     frame = Frame(screen, Rect(64, 64, 320, 320))
-    tile_factory = TileFactory('data/tiles.conf')
+    tile_factory = TileFactory()
     frutris = FrutrisBox(frame, tile_factory, LEVEL)
 
+    # draw screen
     screen.clear()
     frutris.draw()
     pygame.display.update()
     time.sleep(0.5)
+
+    # insert fruit
     frutris.level.insert(Vector(4, 5), 'd')
     frutris.level.draw()
     pygame.display.update()
     time.sleep(0.5)
+
+    # remove fruits
     for i in range(3):
-        frutris.level.remove_fruit()
-        wait_for_move(frutris, screen, frutris.draw)
-        frutris.level.drop_bricks()
-        wait_for_move(frutris, screen, frutris.draw)
+        frutris.remove_blocks()
+        # wait_for_move(frutris, screen, frutris.draw)
+        frutris.level.get_dropped_bricks()
+        # wait_for_move(frutris, screen, frutris.draw)
+
     # test diamond
     frutris.insert_diamond(2)
     for i in range(10):
-        frutris.moving.drop()
-        wait_for_move(frutris, screen, frutris.draw)
+        wait(frutris)
+        frutris.moving_blocks.drop()
+
     # test fruit pair
     frutris.insert_fruit_pair('a', 'b')
-    frutris.moving.drop()
-    wait_for_move(frutris, screen, frutris.draw)
-    frutris.moving.drop()
-    wait_for_move(frutris, screen, frutris.draw)
+
+    # drop stuff
+    frutris.moving_blocks.drop()
+    wait(frutris)
+    frutris.moving_blocks.drop()
+    wait(frutris)
+
+    # move stuff
     for i in range(4):
-        frutris.moving.left_shift()
-        wait_for_move(frutris, screen, frutris.draw)
+        frutris.moving_blocks.shift(LEFT)
+        wait(frutris)
     for i in range(4):
-        frutris.moving.right_shift()
-        wait_for_move(frutris, screen, frutris.draw)
+        frutris.moving_blocks.shift(RIGHT)
+        wait(frutris)
     for i in range(4):
-        frutris.moving.rotate()
-        wait_for_move(frutris, screen, frutris.draw)
+        frutris.moving_blocks.rotate()
+        wait(frutris)
     for i in range(6):
-        frutris.moving.drop()
-        wait_for_move(frutris, screen, frutris.draw)
-    
+        frutris.moving_blocks.drop()
+        wait(frutris)
+
     time.sleep(2)
