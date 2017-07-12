@@ -57,10 +57,10 @@ class EventGenerator:
     def add_scripted_event(self, event):
         self.event_queue.append(event)
 
-    def add_scripted_keys(self, keys):
+    def add_scripted_keys(self, keys, converter=ord):
         """Queues a list of key events."""
         for key in keys:
-            event = Event(KEYDOWN,{'key': ord(key)})
+            event = Event(KEYDOWN,{'key': converter(key)})
             self.event_queue.append(event)
 
     # -------------- methods taking care of event types ----------
