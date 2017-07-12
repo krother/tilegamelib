@@ -42,23 +42,3 @@ class AnimatedTile:
 
     def draw(self):
         self.tile.draw(self.frame, self.pos)
-
-
-
-if __name__ == '__main__':
-    screen = Screen(Vector(800,550), '../examples/data/background.png')
-    frame = Frame(screen, Rect(64, 64, 400, 320))
-    tile_factory = TileFactory('../examples/data/tiles.conf')
-    tiles = [tile_factory.get(x) for x in "abcdefgh"]
-    ani = AnimatedTile(tiles)
-    
-    while not ani.finished:
-        screen.clear()
-        ani.draw(frame, Rect(64, 64, 32, 32))
-        pygame.display.update()
-        time.sleep(0.5)
-        ani.next_tile()
-
-    ani.draw(frame, Rect(64, 64, 32, 32))
-    pygame.display.update()
-    time.sleep(1.0)

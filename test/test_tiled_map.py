@@ -7,8 +7,11 @@ from pygame import Rect
 from test.conftest import SAMPLE_MAP_FILE
 from tilegamelib.config import config
 from tilegamelib.frame import Frame
+from tilegamelib.map_move import MapMove
+from tilegamelib.move import wait_for_move
+from tilegamelib.move_group import MoveGroup
 from tilegamelib.tiled_map import TiledMap
-from tilegamelib.vector import Vector
+from tilegamelib.vector import DOWNLEFT, UP, Vector
 from util import TEST_GAME_CONTEXT, showdoc
 
 
@@ -73,6 +76,29 @@ class TiledMapTests:
         self.tm.zoom_to(Vector(4, 4))
         self.tm.draw()
         pygame.display.update()
+
+    @showdoc
+    def test_move_map_tile(self):
+        """Moves two tiles right and up, then moves one tile back."""
+        self.tm.set_map(open(SAMPLE_MAP_FILE).read())
+        self.tm.draw()
+        moves = MoveGroup()
+        moves.add(MapMove(self.tm, Vector(3, 1), DOWNLEFT, 1,
+            floor_tile='.', insert_tile='#'))
+        moves.add(MapMove(self.tm, Vector(3, 2), UP, 1,
+            floor_tile='.', insert_tile='#'))
+        wait_for_move(moves, TEST_GAME_CONTEXT.screen, self.tm.draw, 0.01)
+
+
+#     @showdoc
+#     def test_queued_moves(self):
+#         """Two 2+1 moves across the map shown."""
+#         self.tm.set_map(TEST_MAP)
+#         self.tm.add_queued_moveset(
+#                 [Move(Vector(0,0), DOWN, 3, 2),
+#                  Move(Vector(2,1), UPLEFT, 1, 4)])
+#         self.tm.add_queued_moveset([Move(Vector(3,3), LEFT, 2, 1)])
+#         self.move_tiles()
 
 
 TEST_MAP = """#...#
