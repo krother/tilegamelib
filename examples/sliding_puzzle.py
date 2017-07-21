@@ -68,3 +68,4 @@ class SlidingPuzzle:
 if __name__ == '__main__':
     puzzle = SlidingPuzzle()
     puzzle.run()
+    pygame.quit()

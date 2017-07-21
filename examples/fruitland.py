@@ -42,3 +42,4 @@ if __name__ == '__main__':
         tm.draw()
         pygame.display.update()
         time.sleep(0.05)
+    pygame.quit()

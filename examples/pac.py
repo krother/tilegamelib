@@ -135,19 +135,23 @@ class Pac:
         self.tile_factory = tile_factory
         tile = tile_factory.get('b.pac_right')
         self.sprite = Sprite(frame, tile, pos, speed=4)
+        self.direction = RIGHT
         self.eaten = None
         self.score = 0
         self.buffered_move = None
 
     def set_direction(self, direction):
         self.sprite.tile = self.tile_factory.get(PAC_TILES[direction])
+        self.direction = direction
+        self.move()
 
-    def move(self, direction):
+    def move(self, direction=None):
+        if not direction:
+            direction = self.direction
         if not self.sprite.finished:
             self.buffered_move = direction
             return
         newpos = self.sprite.pos + direction
-        self.set_direction(direction)
         tile = self.level.at(newpos)
         if tile != '#':
             self.sprite.add_move(direction, when_finished=self.try_eating)
@@ -169,6 +173,8 @@ class Pac:
             self.buffered_move = None
         if not self.sprite.finished:
             self.sprite.move()
+        else:
+            self.move()
 
     def draw(self):
         self.sprite.draw()
@@ -282,7 +288,7 @@ class PacGame:
     def run(self):
         self.mode = self.update_ingame
         self.events = EventGenerator()
-        self.events.add_listener(FigureMoveListener(self.pac.move))
+        self.events.add_listener(FigureMoveListener(self.pac.set_direction))
         self.events.add_listener(ExitListener(self.events.exit_signalled))
         with draw_timer(self, self.events):
             self.events.event_loop()
@@ -291,3 +297,4 @@ class PacGame:
 if __name__ == '__main__':
     game = Game()
     game.play(PacGame)
+    pygame.quit()

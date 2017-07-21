@@ -94,3 +94,4 @@ class Boxes:
 if __name__ == '__main__':
     boxes = Boxes()
     boxes.run()
+    pygame.quit()
