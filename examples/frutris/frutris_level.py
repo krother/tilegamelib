@@ -1,6 +1,5 @@
 
 from tilegamelib import TiledMap
-from tilegamelib import Vector
 from tilegamelib.animation import AnimatedTile
 from tilegamelib.map_move import MapMove
 from tilegamelib.move_group import MoveGroup
@@ -17,16 +16,16 @@ EXPLOSION = ['b.explo_1', 'b.explo_2', 'b.explo_3', 'b.explo_4',
 
 class FrutrisLevel:
 
-    def __init__(self, frame, tile_factory, level):
-        self.tmap = TiledMap(frame, tile_factory)
+    def __init__(self, game, level):
+        self.tmap = TiledMap(game)
         self.tmap.set_map(level)
 
     def insert(self, pos, fruit):
         self.tmap.set_tile(pos, fruit)
-        self.tmap.cache_map()
 
     def is_pos_in_box(self, pos):
-        if (0 <= pos.x < self.tmap.size.x) and (0 <= pos.y < self.tmap.size.y):
+        if (0 <= pos[0] < self.tmap.size[0]) and \
+           (0 <= pos[1] < self.tmap.size[1]):
             return True
 
     def are_positions_empty(self, positions):
@@ -39,9 +38,9 @@ class FrutrisLevel:
         """Recursively looks for quartets of identical bricks."""
         if not self.is_pos_in_box(pos) \
             or pos in taboo \
-            or self.tmap.at(pos) != char or pos in trace:
+            or self.tmap.at(pos) != char or str(pos) in trace:
             return
-        trace.add(pos)
+        trace.add(str(pos))
         self.trace_multiplets(pos + LEFT, trace, char, taboo)
         self.trace_multiplets(pos + RIGHT, trace, char, taboo)
         self.trace_multiplets(pos + DOWN, trace, char, taboo)
@@ -50,9 +49,9 @@ class FrutrisLevel:
         """Returns a list of multiplet positions"""
         multiplets = FruitMultiplets()
         taboo = []
-        for x in range(1, self.tmap.size.x - 1):
-            for y in range(self.tmap.size.y):
-                pos = Vector(x, y)
+        for x in range(1, self.tmap.size[0] - 1):
+            for y in range(self.tmap.size[1]):
+                pos = (x, y)
                 if self.tmap.at(pos) in ('.', '#'):
                     continue
                 found = set()
@@ -65,8 +64,8 @@ class FrutrisLevel:
 
     def get_dropped_bricks(self):
         drop_moves = MoveGroup()
-        for x in range(self.tmap.size.x):
-            pos = Vector(x, self.tmap.size.y - 1)
+        for x in range(self.tmap.size[0]):
+            pos = (x, self.tmap.size[1] - 1)
             while pos.y > 0:
                 pos_above = pos + UP
                 if self.tmap.at(pos) == '.' and self.tmap.at(pos_above) != '.':
@@ -75,27 +74,28 @@ class FrutrisLevel:
         return drop_moves
 
     def get_explosions(self, multiplets):
-        explosions = MoveGroup()
+        explosions = []
         for pos in multiplets.get_positions():
             self.tmap.set_tile(pos, '.')
-            explosions.add(AnimatedTile(EXPLOSION, self.tmap.tile_factory, self.tmap.frame, pos)) 
+            explosions.append(AnimatedTile(EXPLOSION, self.tmap.tile_factory, self.tmap.frame, pos)) 
         self.tmap.cache_map()
         if len(explosions.moves) == 0:
             return None
+        explosions = MoveGroup(explosions)
         return explosions
 
     def box_overflow(self):
-        if self.get_stack_size() == self.tmap.size.y - 1:
+        if self.get_stack_size() == self.tmap.size[1] - 1:
             return True
 
     def get_stack_size(self):
         """Returns height of the fruit stack."""
         y = 0
-        while y < self.tmap.size.y:
-            for x in range(1, self.tmap.size.x - 1):
-                char = self.tmap.at(Vector(x, y))
+        while y < self.tmap.size[1]:
+            for x in range(1, self.tmap.size[0] - 1):
+                char = self.tmap.at((x, y))
                 if char != '.':
-                    return self.tmap.size.y - y - 1
+                    return self.tmap.size[1] - y - 1
             y += 1
         return 0
 

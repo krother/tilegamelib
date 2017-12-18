@@ -4,15 +4,10 @@ from random import randint
 
 from pygame import Rect
 
-from tilegamelib import EventGenerator
-from tilegamelib import ExitListener
-from tilegamelib import FigureMoveListener
 from tilegamelib import Frame
-from tilegamelib import TileFactory
+from tilegamelib import Game
 from tilegamelib.basic_boxes import DictBox
 from tilegamelib.config import config
-from tilegamelib.draw_timer import draw_timer
-from tilegamelib.game import Game
 from tilegamelib.sounds import CLOSE_TO_END
 from tilegamelib.sounds import MusicPlayer
 from tilegamelib.sounds import play_effect
@@ -37,10 +32,9 @@ MAX_FRUIT = 5
 
 
 class FrutrisBox:
-    def __init__(self, frame, tile_factory, level):
-        self.frame = frame
-        self.tile_factory = tile_factory
-        self.level = FrutrisLevel(frame, tile_factory, level)
+    def __init__(self, game, level):
+        self.game = game
+        self.level = FrutrisLevel(game, level)
         self.moving_blocks = None
         self.insert_random_fruit_pair()
         self.drop_delay = START_DROP_DELAY
@@ -58,10 +52,10 @@ class FrutrisBox:
             self.drop_delay -= DROP_DELAY_DECREASE_PER_LEVEL
 
     def insert_diamond(self, column):
-        self.moving_blocks = Diamond(self.frame, self.tile_factory, self.level, 2)
+        self.moving_blocks = Diamond(self.game, self.level, 2)
 
     def insert_fruit_pair(self, first, second):
-        self.moving_blocks = FruitPair(self.frame, self.tile_factory, self.level, (first, second))
+        self.moving_blocks = FruitPair(self.game, self.level, (first, second))
 
     def insert_random_fruit_pair(self):
         blocks = 'abcefg'
@@ -143,31 +137,28 @@ class FrutrisBox:
         self._queued_command = direction
 
     def handle_command(self):
-        if self._queued_command:
+        if self._queued_command is not None:
             direction = self._queued_command
             self._queued_command = None
-            if direction == DOWN:
+            if direction is DOWN:
                 self.moving_blocks.drop()
                 self._fast_drop += 1
             else:
                 self._fast_drop = 0
-            if direction in (LEFT, RIGHT):
+            if direction is LEFT or direction is RIGHT:
                 self.moving_blocks.shift(direction)
-            elif direction == UP:
+            elif direction is UP:
                 self.moving_blocks.rotate()
 
 
 class FrutrisGame:
 
-    def __init__(self, screen):
+    def __init__(self):
+        config.FRAME = Rect(250, 10, 640, 512)
+        self.game = Game()
         self.level_counter = LEVEL_COUNTER_INIT
         play_effect('frutris')
-        self.screen = screen
-        screen.clear()
-        self.frame = Frame(self.screen, Rect(250, 10, 640, 512))
-        self.tile_factory = TileFactory()
-        self.events = None
-        self.frutris_box = FrutrisBox(self.frame, self.tile_factory, LEVEL)
+        self.frutris_box = FrutrisBox(self.game, LEVEL)
         # frame = Frame(self.screen, Rect(660, 220, 200, 200))
         self.data = {
             'score': 0,
@@ -216,7 +207,7 @@ class FrutrisGame:
         return self.data['score']
 
     def create_status_box(self):
-        frame = Frame(self.screen, Rect(660, 20, 200, 200))
+        frame = Frame(self.game.screen, Rect(660, 20, 200, 200))
         return DictBox(frame, self.data)
 
     def draw(self):
@@ -224,16 +215,12 @@ class FrutrisGame:
         self.frutris_box.draw()
         self.status_box.draw()
         if self.frutris_box.game_over:
-            self.events.exit_signalled()
+            self.game.exit()
         self.update_level()
         self.update_music()
 
     def run(self):
-        self.events = EventGenerator()
-        self.events.add_listener(FigureMoveListener(self.frutris_box.store_command))
-        self.events.add_listener(ExitListener(self.events.exit_signalled))
-        with draw_timer(self, self.events):
-            self.events.event_loop()
+        self.game.event_loop(figure_moves=self.frutris_box.store_command, draw_func=self.draw)
 
 
 class OnePlayerGame(FrutrisGame):
@@ -269,12 +256,13 @@ class TwoPlayerGame(FrutrisGame):
     def win(self):
         play_effect('winner_first')
         play_effect('winner_second')
-                
-class MainGame(Game):
+
+
+class MainGame:
 
     def one_player_game(self):
-        self.game_class = OnePlayerGame
-        self.play()
+        self.game_class = OnePlayerGame()
+        self.game_class.run()
 
     def two_player_game(self):
         game = TwoPlayerGame(self.screen)
@@ -283,4 +271,4 @@ class MainGame(Game):
 
 if __name__ == '__main__':
     game = MainGame()
-    game.play(OnePlayerGame)
+    game.one_player_game()

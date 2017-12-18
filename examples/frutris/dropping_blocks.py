@@ -1,6 +1,5 @@
 
 from tilegamelib import Sprite
-from tilegamelib import Vector
 from tilegamelib.vector import DOWN
 from tilegamelib.vector import LEFT
 from tilegamelib.vector import RIGHT
@@ -47,17 +46,17 @@ class MovingBlocks:
 
 class Diamond(MovingBlocks):
 
-    def __init__(self, frame, tile_factory, level, column):
-        sprites = [Sprite(frame, tile_factory.get('d'), Vector(column + 1, 0), speed=4)]
+    def __init__(self, game, level, column):
+        sprites = [Sprite(game, 'd', (column + 1, 0), speed=4)]
         MovingBlocks.__init__(self, level, sprites, 'd')
 
 
 class FruitPair(MovingBlocks):
 
-    def __init__(self, frame, tile_factory, level, chars=('a', 'b')):
+    def __init__(self, game, level, chars=('a', 'b')):
         sprites = [
-            Sprite(frame, tile_factory.get(chars[0]), Vector(3, 0), speed=4),
-            Sprite(frame, tile_factory.get(chars[1]), Vector(4, 0), speed=4),
+            Sprite(game, chars[0], (3, 0), speed=4),
+            Sprite(game, chars[1], (4, 0), speed=4),
         ]
         MovingBlocks.__init__(self, level, sprites, chars)
 
@@ -65,7 +64,7 @@ class FruitPair(MovingBlocks):
         if len(self.sprites) != 2 or not self.finished:
             return
         first, second = self.sprites
-        if first.pos.x == second.pos.x:
+        if first.pos[0] == second.pos[0]:
             newpos = [first.pos + UP, second.pos + RIGHT]
             if self.level.are_positions_empty(newpos):
                 first.add_move(UP)
