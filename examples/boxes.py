@@ -4,12 +4,8 @@ import time
 import pygame
 from pygame import Rect
 
-from tilegamelib import EventGenerator
-from tilegamelib import ExitListener
-from tilegamelib import FigureMoveListener
 from tilegamelib import TiledMap
 from tilegamelib.game import Game
-from tilegamelib.draw_timer import draw_timer
 from tilegamelib.map_move import MapMove
 from tilegamelib.move import wait_for_move
 from tilegamelib.move_group import MoveGroup
@@ -76,15 +72,11 @@ class Boxes:
         if s.count('X') == 4:
             print("\nCongratulations!\n")
             time.sleep(2)
-            self.events.exit_signalled()
+            self.game.exit()
 
     def run(self):
-        self.events = EventGenerator()
-        self.events.add_listener(FigureMoveListener(self.move))
-        self.events.add_listener(ExitListener(self.events.exit_signalled))
-        with draw_timer(self, self.events):
-            self.events.event_loop()
-
+        self.game.event_loop(figure_moves=self.move, draw_func=self.draw)
+        
 
 if __name__ == '__main__':
     boxes = Boxes()

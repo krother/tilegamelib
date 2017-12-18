@@ -6,14 +6,10 @@ import time
 import pygame
 from pygame import Rect
 
-from tilegamelib import EventGenerator
-from tilegamelib import ExitListener
-from tilegamelib import FigureMoveListener
 from tilegamelib import Frame
 from tilegamelib import TiledMap
 from tilegamelib import TileFactory
 from tilegamelib.basic_boxes import DictBox
-from tilegamelib.draw_timer import draw_timer
 from tilegamelib.game import Game
 from tilegamelib.sprites import Sprite
 from tilegamelib.vector import DOWN
@@ -201,7 +197,7 @@ class SnakeGame:
         if not self.snake.is_moving():
             pygame.display.update()
             time.sleep(1)
-            self.events.exit_signalled()
+            self.game.exit()
 
     def update_ingame(self):
         self.delay -= 1
@@ -227,14 +223,9 @@ class SnakeGame:
         self.level.draw()
         self.snake.draw()
         self.status_box.draw()
-        pygame.display.update()
 
     def run(self):
-        self.events = EventGenerator()
-        self.events.add_listener(FigureMoveListener(self.snake.set_direction))
-        self.events.add_listener(ExitListener(self.events.exit_signalled))
-        with draw_timer(self, self.events):
-            self.events.event_loop()
+        self.game.event_loop(figure_moves=self.snake.set_direction, draw_func=self.draw)
 
 
 if __name__ == '__main__':

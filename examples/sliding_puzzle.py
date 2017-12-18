@@ -6,8 +6,6 @@ from pygame import Rect
 
 from tilegamelib import Game
 from tilegamelib import TiledMap
-from tilegamelib.event_listener import FigureMoveListener
-from tilegamelib.events import EventGenerator
 from tilegamelib.map_move import MapMove
 from tilegamelib.move import wait_for_move
 from tilegamelib.config import config
@@ -54,12 +52,10 @@ class SlidingPuzzle:
         same = [self.get_same(row) for row in rows[1:5]]
         if sum(same) == 15:
             print("\nCongratulations!\n")
-            self.events.exit_signalled()
+            self.game.exit()
 
     def run(self):
-        self.events = EventGenerator()
-        self.events.add_listener(FigureMoveListener(self.move))
-        self.events.event_loop()
+        self.game.event_loop(figure_moves=self.move)
 
 
 if __name__ == '__main__':

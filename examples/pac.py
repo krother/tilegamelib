@@ -1,18 +1,15 @@
 
 import random
 import time
+import numpy as np
 
 import pygame
 from pygame import Rect
 
-from tilegamelib import EventGenerator
-from tilegamelib import ExitListener
-from tilegamelib import FigureMoveListener
 from tilegamelib import TiledMap
 from tilegamelib.bar_display import BarDisplay
 from tilegamelib.basic_boxes import DictBox
 from tilegamelib.config import config
-from tilegamelib.draw_timer import draw_timer
 from tilegamelib.frame import Frame
 from tilegamelib.game import Game
 from tilegamelib.sprites import Sprite
@@ -47,7 +44,7 @@ config.DEFAULT_GAME_DELAY = 30
 config.KEY_REPEAT = {}
 config.GAME_KEY_REPEAT = { 273:1, 274:1, 275:1, 276:1}
 
-PAC_START = (1, 1)
+PAC_START = np.array([1, 1])
 GHOST_POSITIONS = [(18, 1),
                    (18, 10),
                    (1, 10)]
@@ -96,7 +93,7 @@ class Ghost:
         result = []
         directions = [LEFT, RIGHT, UP, DOWN]
         for vector in directions:
-            if all(vector * -1 != self.direction):
+            if not all(vector * -1 == self.direction):
                 newpos = self.sprite.pos + vector
                 tile = self.level.at(newpos)
                 if tile != '#':
@@ -107,8 +104,7 @@ class Ghost:
 
     def set_random_direction(self):
         moves = self.get_possible_moves()
-        i = random.randint(0, len(moves) - 1)
-        self.direction = moves[i]
+        self.direction = random.choice(moves)
 
     def move(self):
         if self.sprite.finished:
@@ -194,7 +190,6 @@ class PacGame:
         self.pac = None
         self.ghosts = []
         self.status_box = None
-        self.events = None
 
         self.create_level()
         self.create_pac()
@@ -222,7 +217,7 @@ class PacGame:
                                pos, self.level))
 
     def reset_level(self):
-        self.pac.sprite.pos = PAC_START
+        self.pac.sprite.pos = np.array(PAC_START)  # TODO: create setter in Sprite
         self.create_ghosts()
 
     def create_status_box(self):
@@ -245,17 +240,17 @@ class PacGame:
             time.sleep(1)
             self.lives.decrease()
             if self.lives.value == 0:
-                self.events.exit_signalled()
+                self.game.exit()
             else:
                 self.reset_level()
-                self.events.empty_event_queue()
+                self.game.events.empty_event_queue()
                 self.update_mode = self.update_ingame
 
     def update_level_complete(self):
         """finish movement"""
         if self.pac.sprite.finished:
             time.sleep(1)
-            self.events.exit_signalled()
+            self.game.exit()
 
     def update_ingame(self):
         self.check_collision()
@@ -281,11 +276,8 @@ class PacGame:
 
     def run(self):
         self.mode = self.update_ingame
-        self.events = EventGenerator()
-        self.events.add_listener(FigureMoveListener(self.pac.set_direction))
-        self.events.add_listener(ExitListener(self.events.exit_signalled))
-        with draw_timer(self, self.events):
-            self.events.event_loop()
+        self.game.event_loop(figure_moves=self.pac.set_direction,
+            draw_func=self.draw)
 
 
 if __name__ == '__main__':

@@ -22,8 +22,9 @@ class DrawTimer:
         self.delay = delay
 
     def draw(self):
-        for c in self.callbacks:
-            c.draw()
+        for draw in self.callbacks:
+            if draw is not None:
+                draw()
         pygame.display.update()
 
     def start_timer(self):

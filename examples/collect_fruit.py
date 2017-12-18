@@ -4,11 +4,7 @@ import time
 import pygame
 from pygame import Rect
 
-from tilegamelib import EventGenerator
-from tilegamelib import ExitListener
-from tilegamelib import FigureMoveListener
 from tilegamelib import TiledMap
-from tilegamelib.draw_timer import draw_timer
 from tilegamelib.game import Game
 from tilegamelib.move import wait_for_move
 from tilegamelib.sprites import Sprite
@@ -61,18 +57,14 @@ class CollectFruit:
         field = self.tm.at(self.player.pos)
         if field == EXIT_TILE:
             time.sleep(1)
-            self.events.exit_signalled()
+            self.game.exit()
         elif field in FRUIT:
             self.score += 100
             self.tm.set_tile(self.player.pos, '.')
             self.draw()
 
     def run(self):
-        self.events = EventGenerator(game_delay=20)
-        self.events.add_listener(FigureMoveListener(self.move))
-        self.events.add_listener(ExitListener(self.events.exit_signalled))
-        with draw_timer(self, self.events):
-            self.events.event_loop()
+        self.game.event_loop(figure_moves=self.move, draw_func=self.draw)
 
 
 if __name__ == '__main__':
