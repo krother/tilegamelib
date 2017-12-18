@@ -18,19 +18,19 @@ from tilegamelib.vector import LEFT
 from tilegamelib.vector import RIGHT
 from tilegamelib.vector import UP
 
-ONE_PLAYER_START_DELAY = 10
+ONE_PLAYER_START_DELAY = 3000
 
 
 LEVEL = """####################
 #.****************e#
-#*#*#####**#####*#*#
-#*#******cc******#*#
-#*#*#####**#####*#*#
-#******************#
-#*##*###*f**###*##*#
-#*##*###*f**###*##*#
-#******************#
-#*#*###**##**##*##*#
+#*#*#######*####*#*#
+#*#*******#c*****#*#
+#*#*#####**c####*#*#
+#*********###******#
+#*##*####f****#*##*#
+#*##*#***f#####*##*#
+#******#***********#
+#*#*####*##**##*##*#
 #e****************e#
 ####################"""
 
@@ -40,7 +40,6 @@ config.HIGHSCORES = True
 config.HIGHSCORE_FILE = config.DATA_PATH + 'pac_scores.txt'
 
 config.BOX_IMAGE = config.DATA_PATH + 'frame_box.png'
-config.DEFAULT_GAME_DELAY = 30
 config.KEY_REPEAT = {}
 config.GAME_KEY_REPEAT = { 273:1, 274:1, 275:1, 276:1}
 
@@ -270,9 +269,7 @@ class PacGame:
             g.update()
             g.draw()
         self.status_box.draw()
-        pygame.display.update()
         self.check_collision()
-        time.sleep(0.005)
 
     def run(self):
         self.mode = self.update_ingame
