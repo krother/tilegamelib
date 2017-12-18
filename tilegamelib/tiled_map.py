@@ -17,6 +17,7 @@ class TiledMap:
         self.size = Vector(0, 0)
         self.map = []
         self.mapsurf = None
+        self._modified = True
 
     @property
     def win_size_px(self):
@@ -93,7 +94,7 @@ class TiledMap:
         for x in range(self.size.x):
             for y in range(self.size.y):
                 self.map[x][y] = rows[y][x]
-        self.cache_map()
+        self._cache_map()
 
     def fill_map(self, xsize, ysize, char):
         """Creates an empty map."""
@@ -102,10 +103,15 @@ class TiledMap:
 
     def draw(self):
         """Draws the map."""
-        src = pygame.Rect(self.offset.x, self.offset.y,
-                self.win_size_px.x, self.win_size_px.y)
-        dest = pygame.Rect(0, 0,
-                self.win_size_px.x, self.win_size_px.y)
+        if self._modified:
+            self._cache_map()
+        src = pygame.Rect(
+            self.offset.x, self.offset.y,
+            self.win_size_px.x, self.win_size_px.y
+        )
+        dest = pygame.Rect(
+            0, 0,
+            self.win_size_px.x, self.win_size_px.y)
         self.frame.blit(self.mapsurf, dest, src)
 
     def get_tile(self, pos):
@@ -113,12 +119,19 @@ class TiledMap:
 
     def set_tile(self, pos, tilename):
         self.map[pos.x][pos.y] = tilename
+        self._modified = True
 
     def cache_map(self):
         """Creates a static bitmap for a 2D map that is faster."""
+        import warnings
+        warnings.warn('tiled_map.cache_map has been deprecated')
+        self._cache_map()
+
+    def _cache_map(self):
         self.mapsurf = pygame.Surface(tuple(self.map_size_px))
         for x in range(self.size.x):
             for y in range(self.size.y):
                 tile = self.get_tile(Vector(x, y))
                 pos = Vector(tile.size.x * x, tile.size.y * y)
                 tile.draw(self.mapsurf, pos)
+        self._modified = False

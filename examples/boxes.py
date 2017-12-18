@@ -72,7 +72,6 @@ class Boxes:
 
         wait_for_move(moves, self.screen, self.draw, 0.01)
 
-        self.tm.cache_map()
         self.draw()
         self.check_complete()
 

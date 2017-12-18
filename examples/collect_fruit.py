@@ -66,7 +66,6 @@ class CollectFruit:
         elif field in 'abcdefgh':
             self.score += 100
             self.tm.set_tile(self.player.pos, '.')
-            self.tm.cache_map()
             self.draw()
 
     def run(self):

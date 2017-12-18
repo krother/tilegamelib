@@ -63,17 +63,14 @@ class SnakeLevel:
     def __init__(self, data, tmap):
         self.tmap = tmap
         self.tmap.set_map(str(data))
-        self.tmap.cache_map()
 
     def place_fruit(self, pos, fruit):
         self.tmap.set_tile(pos, fruit)
-        self.tmap.cache_map()
 
     def remove_fruit(self, pos):
         tile = self.tmap.at(pos)
         if tile != '.':
             self.tmap.set_tile(pos, '.')
-            self.tmap.cache_map()
 
     def place_random_fruit(self):
         x = random.randint(1, self.tmap.size.x - 2)
