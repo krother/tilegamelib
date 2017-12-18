@@ -5,7 +5,7 @@ A Python/pygame library for games based on square tiles.
 
 (c) 2015 Kristian Rother (krother@academis.eu)
 
-Distributed under the conditions of the Python license.
+Distributed under the conditions of the MIT license.
 (some artwork covered by a separate license. See ART_LICENSE.TXT for details)
 
 ## Description
