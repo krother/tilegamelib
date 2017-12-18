@@ -2,11 +2,12 @@
 from math import sqrt
 import time
 
+import numpy as np
+
 import pygame
 
 from tilegamelib.screen import Screen
 from tilegamelib.tile_factory import TileFactory
-from tilegamelib.vector import Vector
 
 VERZOEGERUNG = 0.01
 
@@ -15,36 +16,30 @@ class Planet:
 
     def __init__(self, name, x, y, vx, vy, masse):
         self.name = name
-        self.x = x
-        self.y = y
-        self.vx = vx
-        self.vy = vy
+        self.position = np.array([x, y])
+        self.velocity = np.array([vx, vy])
         self.masse = masse
 
     def entfernung(self, planet):
         '''Entfernung ausrechnen'''
-        dx = (self.x - planet.x)**2
-        dy = (self.y - planet.y)**2
-        return sqrt(dx**2 + dy**2)
+        delta = (self.position - planet.position)**2
+        return sqrt(delta[0]**2 + delta[1]**2)
 
     def anziehungskraft(self, planet):
         '''Geschwindigkeit veraendern'''
         entfernung = self.entfernung(planet)
         if entfernung > 0:
-            beschl_x = -planet.masse / (entfernung**3) * self.x
-            beschl_y = -planet.masse / (entfernung**3) * self.y
-            self.vx += beschl_x
-            self.vy += beschl_y
+            beschleunigung = -planet.masse / (entfernung**3) * self.position
+            self.velocity += beschleunigung
 
     def bewegen(self):
         '''Position veraendern'''
-        self.x = self.x + self.vx
-        self.y = self.y + self.vy
+        self.position += self.velocity
 
     def zeichnen(self, screen, tiles):
         '''Auf dem Bildschirm anzeigen'''
         tile = tiles.get(self.name.lower())
-        tile.draw(screen, Vector(self.x + 300, self.y + 200))
+        tile.draw(screen, (self.position[0] + 300, self.position[1] + 200))
 
 
 def simulieren(planeten, screen, tf):
@@ -64,9 +59,9 @@ sc = Screen()
 tf = TileFactory()
 
 planeten = [
-    Planet("Sonne", 0, 0, 0, 0, 300000000),
-    Planet("Erde", 0, 100, 2.17601657851805, 0, 1),
-    Planet("Venus", 0, 60, -5.91572020809202436808504899092, 0, 1)
+    Planet("Sonne", 0.0, 0.0, 0.0, 0.0, 300000000.0),
+    Planet("Erde", 0.0, 100.0, 2.17601657851805, 0.0, 1.0),
+    Planet("Venus", 0.0, 60.0, -5.91572020809202436808504899092, 0.0, 1.0)
 ]
 
 while True:

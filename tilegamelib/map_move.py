@@ -10,7 +10,7 @@ from .move import Move, wait_for_move
 from .screen import Screen
 from .tile_factory import TileFactory
 from .tiled_map import TiledMap
-from .vector import DOWN, LEFT, RIGHT, UP, Vector
+from .vector import DOWN, LEFT, RIGHT, UP
 
 
 class MapMove:

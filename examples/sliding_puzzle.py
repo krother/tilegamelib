@@ -4,11 +4,8 @@ from collections import Counter
 import pygame
 from pygame import Rect
 
-from tilegamelib import Frame
-from tilegamelib import Screen
+from tilegamelib import Game
 from tilegamelib import TiledMap
-from tilegamelib import TileFactory
-from tilegamelib import Vector
 from tilegamelib.event_listener import FigureMoveListener
 from tilegamelib.events import EventGenerator
 from tilegamelib.map_move import MapMove
@@ -23,16 +20,16 @@ PUZZLEMAP = """######
 #acb.#
 ######"""
 
-config.RESOLUTION = Vector(350, 350)
+config.RESOLUTION = (350, 350)
+
 
 class SlidingPuzzle:
 
     def __init__(self):
-        self.screen = Screen()
-        frame = Frame(self.screen, Rect(64, 64, 320, 320))
-        tile_factory = TileFactory()
-        self.tm = TiledMap(frame, tile_factory)
-        self.gap = Vector(4, 4)
+        self.game = Game()
+        tf = self.game.tile_factory
+        self.tm = TiledMap(self.game.frame, tf)
+        self.gap = (4, 4)
         self.tm.set_map(PUZZLEMAP)
         self.tm.draw()
         self.events = None
@@ -43,7 +40,7 @@ class SlidingPuzzle:
         if self.tm.at(start) == '#':
             return
         move = MapMove(self.tm, start, direction, 2)
-        wait_for_move(move, self.screen, self.tm.draw, 0.01)
+        wait_for_move(move, self.game.screen, self.tm.draw, 0.01)
         self.gap = start
         self.check_complete()
 

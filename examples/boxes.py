@@ -10,8 +10,7 @@ from tilegamelib import FigureMoveListener
 from tilegamelib import Frame
 from tilegamelib import Screen
 from tilegamelib import TiledMap
-from tilegamelib import TileFactory
-from tilegamelib import Vector
+from tilegamelib.game import Game
 from tilegamelib.draw_timer import draw_timer
 from tilegamelib.map_move import MapMove
 from tilegamelib.move import wait_for_move
@@ -29,18 +28,17 @@ BOXMAP = """##########
 #........#
 ##########"""
 
-config.RESOLUTION = Vector(450, 400)
+config.RESOLUTION = (450, 400)
 
 
 class Boxes:
 
-    def __init__(self):
-        self.screen = Screen()
-        self.frame = Frame(self.screen, Rect(64, 64, 320, 320))
+    def __init__(self, screen, tile_factory):
+        self.frame = Frame(screen, Rect(64, 64, 320, 320))
         tile_factory = TileFactory()
         self.tm = TiledMap(self.frame, tile_factory)
         self.player = Sprite(self.frame, tile_factory.get('b.tail'),
-                             Vector(4, 1), speed=2)
+                             (4, 1), speed=2)
         self.tm.set_map(BOXMAP)
         self.events = None
 
@@ -70,7 +68,7 @@ class Boxes:
                 moves.add(MapMove(self.tm, nearpos, direction, 1,
                           floor_tile=floor, insert_tile=insert))
 
-        wait_for_move(moves, self.screen, self.draw, 0.01)
+        wait_for_move(moves, self.frame.screen, self.draw, 0.01)
 
         self.draw()
         self.check_complete()
@@ -91,6 +89,6 @@ class Boxes:
 
 
 if __name__ == '__main__':
-    boxes = Boxes()
-    boxes.run()
+    game = Game()
+    game.play(Boxes)
     pygame.quit()
