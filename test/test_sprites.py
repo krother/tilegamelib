@@ -9,8 +9,12 @@ from tilegamelib.config import config
 from tilegamelib.frame import Frame
 from tilegamelib.sprite_list import SpriteList
 from tilegamelib.sprites import Sprite
-from tilegamelib.vector import DOWN, DOWNRIGHT, RIGHT, Vector
-from util import TEST_GAME_CONTEXT, showdoc
+from tilegamelib.vector import DOWN
+from tilegamelib.vector import DOWNRIGHT
+from tilegamelib.vector import RIGHT
+from tilegamelib.vector import Vector
+from util import showdoc
+from util import TEST_GAME_CONTEXT
 
 
 class SpriteTests:

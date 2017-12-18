@@ -11,8 +11,11 @@ from tilegamelib.map_move import MapMove
 from tilegamelib.move import wait_for_move
 from tilegamelib.move_group import MoveGroup
 from tilegamelib.tiled_map import TiledMap
-from tilegamelib.vector import DOWNLEFT, UP, Vector
-from util import TEST_GAME_CONTEXT, showdoc
+from tilegamelib.vector import DOWNLEFT
+from tilegamelib.vector import UP
+from tilegamelib.vector import Vector
+from util import showdoc
+from util import TEST_GAME_CONTEXT
 
 
 class TiledMapTests:

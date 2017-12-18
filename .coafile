@@ -1,5 +1,7 @@
 [python]
   files=**/*.py
-  bears=PycodestyleBear,PyImportSortBear,MypyBear
+  ignore = .tox/**/*.py
+  bears=PycodestyleBear,PyImportSortBear
+  #,MypyBear
   language=Python
   max_line_length=96

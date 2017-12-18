@@ -10,6 +10,7 @@ from tilegamelib import FigureMoveListener
 from tilegamelib import Frame
 from tilegamelib import TileFactory
 from tilegamelib.basic_boxes import DictBox
+from tilegamelib.config import config
 from tilegamelib.draw_timer import draw_timer
 from tilegamelib.game import Game
 from tilegamelib.sounds import CLOSE_TO_END
@@ -20,10 +21,10 @@ from tilegamelib.vector import LEFT
 from tilegamelib.vector import RIGHT
 from tilegamelib.vector import UP
 
-from .dropping_blocks import Diamond
-from .dropping_blocks import FruitPair
-from .frutris_level import FrutrisLevel
-from .multiplets import MultipletCounter
+from examples.frutris.dropping_blocks import Diamond
+from examples.frutris.dropping_blocks import FruitPair
+from examples.frutris.frutris_level import FrutrisLevel
+from examples.frutris.multiplets import MultipletCounter
 
 START_DROP_DELAY = 50
 MIN_DROP_DELAY = 5
@@ -31,7 +32,7 @@ DROP_DELAY_DECREASE_PER_LEVEL = 5
 ONE_PLAYER_START_DELAY = 7
 TWO_PLAYER_DELAY = 10
 LEVEL_COUNTER_INIT = 5000
-LEVEL = open('data/emptybox.map').read()
+LEVEL = open(config.DATA_PATH + '/emptybox.map').read()
 MAX_FRUIT = 5
 
 
@@ -164,8 +165,7 @@ class FrutrisGame:
         self.screen = screen
         screen.clear()
         self.frame = Frame(self.screen, Rect(250, 10, 640, 512))
-        #self.frame = Frame(self.screen, Rect(10, 10, 640, 512))
-        self.tile_factory = TileFactory('data/tiles.conf')
+        self.tile_factory = TileFactory()
         self.events = None
         self.frutris_box = FrutrisBox(self.frame, self.tile_factory, LEVEL)
         # frame = Frame(self.screen, Rect(660, 220, 200, 200))
@@ -282,5 +282,5 @@ class MainGame(Game):
 
 
 if __name__ == '__main__':
-    game = MainGame('data/frutris.conf', None)
-    game.run()
+    game = MainGame()
+    game.play(OnePlayerGame)

@@ -47,16 +47,16 @@ class BasicConfig:
     MAGENTA = (255, 128, 255, 0)
 
     MAIN_MENU_RECT = Rect(0, 0, 750, 550)
-    MAIN_MENU_IMAGE = DATA_PATH + '/title.png'
+    MAIN_MENU_IMAGE = DATA_PATH + 'title.png'
     MAIN_MENU_TEXTPOS = Rect(550, 380, 800, 550)
     # MENU_KEY_REPEAT = {274: 20, 115: 20}
 
     HIGHSCORES = False
     HIGHSCORE_RECT = Rect(200, 100, 800, 550)
-    HIGHSCORE_IMAGE = DATA_PATH + '/background.png'
+    HIGHSCORE_IMAGE = DATA_PATH + 'background.png'
     HIGHSCORE_TEXT_POS = Vector(0, 0)
 
-    GAME_OVER_IMAGE = DATA_PATH + '/frame_box.png'
+    GAME_OVER_IMAGE = DATA_PATH + 'frame_box.png'
     GAME_OVER_RECT = Rect(200, 150, 400, 100)
     GAME_OVER_OFFSET = Vector(120, 30)
     GAME_OVER_SHORT_OFFSET = Vector(50, 30)
