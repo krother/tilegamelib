@@ -90,8 +90,10 @@ class TiledMap:
                 self.map[x][y] = rows[y][x]
         self._cache_map()
 
-    def fill_map(self, char):
+    def fill_map(self, char, size=None):
         """Creates an empty map."""
+        if not size is None:
+            self.size = np.array(size)
         self.map = np.chararray(self.size, unicode=True)
         self.map[:] = char
 
