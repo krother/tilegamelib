@@ -24,8 +24,7 @@ class SlidingPuzzle:
 
     def __init__(self):
         self.game = Game()
-        tf = self.game.tile_factory
-        self.tm = TiledMap(self.game.frame, tf)
+        self.tm = TiledMap(self.game)
         self.gap = (4, 4)
         self.tm.set_map(PUZZLEMAP)
         self.tm.draw()

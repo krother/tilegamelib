@@ -20,7 +20,7 @@ class MiniGame:
     def __init__(self):
         self.game = Game()
         
-        self.map = TiledMap(self.game.frame, self.game.tile_factory)
+        self.map = TiledMap(self.game)
         self.map.fill_map('#', (10, 10))
         self.map.set_map(MAZE)
         self.map.set_tile((4,4), 'a')

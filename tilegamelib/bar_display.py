@@ -12,9 +12,9 @@ from tilegamelib.tiled_map import TiledMap
 
 class BarDisplay:
 
-    def __init__(self, frame, tile_factory, value, tile_name, vertical=False):
+    def __init__(self, frame, game, value, tile_name, vertical=False):
         self.frame = frame
-        self.map = TiledMap(frame, tile_factory)
+        self.map = TiledMap(game, frame=frame)
         self.value = value
         self.tile_name = tile_name
         self.vertical = vertical

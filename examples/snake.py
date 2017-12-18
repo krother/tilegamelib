@@ -8,7 +8,6 @@ from pygame import Rect
 
 from tilegamelib import Frame
 from tilegamelib import TiledMap
-from tilegamelib import TileFactory
 from tilegamelib.basic_boxes import DictBox
 from tilegamelib.game import Game
 from tilegamelib.sprites import Sprite
@@ -184,7 +183,7 @@ class SnakeGame:
         self.snake.set_direction(RIGHT)
 
     def create_level(self):
-        tmap = TiledMap(self.game.frame, self.game.tile_factory)
+        tmap = TiledMap(self.game)
         self.level = SnakeLevel(LEVEL, tmap)
         self.level.place_random_fruit()
 

@@ -30,9 +30,8 @@ class CollectFruit:
 
     def __init__(self):
         self.game = Game()
-        tf = self.game.tile_factory
-        self.tm = TiledMap(self.game.frame, tf)
-        self.player = Sprite(self.game.frame, tf.get('b.pac_right'), (4, 1), speed=4)
+        self.tm = TiledMap(self.game)
+        self.player = Sprite(self.game.frame, self.game.get_tile('b.pac_right'), (4, 1), speed=4)
         self.tm.set_map(FRUITMAP)
         self.draw()
         self.events = None

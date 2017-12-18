@@ -10,9 +10,9 @@ class TiledMap:
     A map consisting of 2D-tiles. The map can be scrolled
     in a way that only a part of the map is displayed.
     """
-    def __init__(self, frame, tile_factory):
-        self.frame = frame
-        self.tile_factory = tile_factory
+    def __init__(self, game, frame=None):
+        self.frame = frame or game.frame
+        self.tile_factory = game.tile_factory
         self.offset = ZERO_VECTOR
         self.map_pos = ZERO_VECTOR
         self.size = ZERO_VECTOR

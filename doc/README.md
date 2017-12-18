@@ -41,7 +41,7 @@ The class `tilegamelib.TiledMap` is responsible for drawing 2D-maps composed of 
 
 In `__init__` we create a new map and fill it with wall tiles:
 
-    self.map = TiledMap(self.game.frame, self.game.tile_factory)
+    self.map = TiledMap(self.game)
     self.map.fill_map('#', (10, 10))
 
 At this point, we won't see anything yet. First, we need to write a method in `MazeGame` that draws the map:

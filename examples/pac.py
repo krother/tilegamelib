@@ -195,14 +195,14 @@ class PacGame:
         self.create_ghosts()
         self.create_status_box()
         frame = Frame(self.game.screen, Rect(660, 220, 200, 200))
-        self.lives = BarDisplay(frame, self.game.tile_factory, 3, 'p')
+        self.lives = BarDisplay(frame, self.game, 3, 'p')
 
         self.collided = False
         self.mode = None
         self.update_mode = self.update_ingame
 
     def create_level(self):
-        tmap = TiledMap(self.game.frame, self.game.tile_factory)
+        tmap = TiledMap(self.game)
         self.level = PacLevel(LEVEL, tmap)
 
     def create_pac(self):
