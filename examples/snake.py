@@ -78,14 +78,13 @@ class SnakeLevel:
 
 class SnakeSprite:
 
-    def __init__(self, frame, tile_factory, pos, level):
-        self.frame = frame
-        self.tile_factory = tile_factory
+    def __init__(self, game, pos, level):
+        self.game = game
         self.level = level
         self.head = None
         self.tail = []
         self.tail_waiting = []
-        self.create_head(pos)
+        self.head = Sprite(self.game, 'b.pac_right', pos, HEAD_SPEED)
         self.direction = RIGHT
         self.past_directions = []
         self.crashed = False
@@ -103,17 +102,13 @@ class SnakeSprite:
         if not self.head.finished:
             return True
 
-    def create_head(self, pos):
-        tile = self.tile_factory.get('b.pac_right')
-        self.head = Sprite(self.frame, tile, pos, HEAD_SPEED)
-
     def set_direction(self, direction):
         # prevent reverse move
         if len(self.tail) > 0 and all(direction == self.past_directions[0] * -1):
             return
         self.direction = direction
         headtile = HEAD_TILES[str(direction)]
-        self.head.tile = self.tile_factory.get(headtile)
+        self.head.tile = self.game.get_tile(headtile)
         if EASY:
             self.move_forward()
 
@@ -131,8 +126,7 @@ class SnakeSprite:
         return [self.head.pos] + [seg.pos for seg in self.tail]
 
     def grow(self):
-        tile = self.tile_factory.get('b.tail')
-        self.tail_waiting.append(Sprite(self.frame, tile, self.positions[-1], HEAD_SPEED))
+        self.tail_waiting.append(Sprite(self.game, 'b.tail', self.positions[-1], HEAD_SPEED))
         if not self.past_directions:
             self.past_directions.append(self.direction)
         else:
@@ -178,8 +172,7 @@ class SnakeGame:
 
     def create_snake(self):
         start_pos = (5, 5)
-        self.snake = SnakeSprite(self.game.frame, self.game.tile_factory,
-                                 start_pos, self.level)
+        self.snake = SnakeSprite(self.game, start_pos, self.level)
         self.snake.set_direction(RIGHT)
 
     def create_level(self):

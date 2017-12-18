@@ -81,9 +81,8 @@ class PacLevel:
 
 class Ghost:
 
-    def __init__(self, frame, tile_factory, pos, level):
-        tile = tile_factory.get(GHOST_TILE)
-        self.sprite = Sprite(frame, tile, pos, speed=2)
+    def __init__(self, game, pos, level):
+        self.sprite = Sprite(game, GHOST_TILE, pos, speed=2)
         self.level = level
         self.direction = None
         self.set_random_direction()
@@ -121,18 +120,17 @@ class Ghost:
 
 class Pac:
 
-    def __init__(self, frame, tile_factory, pos, level):
+    def __init__(self, game, pos, level):
+        self.game = game
         self.level = level
-        self.tile_factory = tile_factory
-        tile = tile_factory.get('b.pac_right')
-        self.sprite = Sprite(frame, tile, pos, speed=4)
+        self.sprite = Sprite(game, 'b.pac_right', pos, speed=4)
         self.direction = RIGHT
         self.eaten = None
         self.score = 0
         self.buffered_move = None
 
     def set_direction(self, direction):
-        self.sprite.tile = self.tile_factory.get(PAC_TILES[str(direction)])
+        self.sprite.tile = self.game.get_tile(PAC_TILES[str(direction)])
         self.direction = direction
         self.move()
 
@@ -206,14 +204,13 @@ class PacGame:
         self.level = PacLevel(LEVEL, tmap)
 
     def create_pac(self):
-        self.pac = Pac(self.game.frame, self.game.tile_factory, PAC_START, self.level)
+        self.pac = Pac(self.game, PAC_START, self.level)
         self.pac.set_direction(RIGHT)
 
     def create_ghosts(self):
         self.ghosts = []
         for pos in GHOST_POSITIONS:
-            self.ghosts.append(Ghost(self.game.frame, self.game.tile_factory,
-                               pos, self.level))
+            self.ghosts.append(Ghost(self.game, pos, self.level))
 
     def reset_level(self):
         self.pac.sprite.pos = np.array(PAC_START)  # TODO: create setter in Sprite

@@ -14,9 +14,9 @@ class Sprite:
     Object that moves along a tile grid.
     Sprites have a queue of moves.
     """
-    def __init__(self, frame, tile, pos=None, speed=1):
-        self.frame = frame
-        self.tile = tile
+    def __init__(self, game, tile_name, pos=None, speed=1, frame=None):
+        self.frame = frame or game.frame
+        self.tile = game.get_tile(tile_name)
         self.size = self.tile.size
         if pos is None:
             pos = (0, 0)

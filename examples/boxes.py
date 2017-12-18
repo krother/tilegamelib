@@ -28,8 +28,7 @@ class Boxes:
     def __init__(self):
         self.game = Game()
         self.tm = TiledMap(self.game)
-        self.player = Sprite(self.game.frame, self.game.get_tile('b.tail'),
-                             (4, 1), speed=2)
+        self.player = Sprite(self.game, 'b.tail', (4, 1), speed=2)
         self.tm.set_map(BOXMAP)
 
     def draw(self):

@@ -96,8 +96,7 @@ Another possibility to draw tiles are **sprites**, moveable objects:
 
 Of course, sprites need to be created in `__init__` as well (again, **before** calling `event_loop`). We will give our sprite a well-known *"face"*:
 
-    self.sprite = Sprite(self.game.frame, self.game.get_tile('b.pac_right'),
-                         (1, 1), speed=2)
+    self.sprite = Sprite(self.game, 'b.pac_right', (1, 1), speed=2)
 
 And we need to draw the sprite in `draw()`:
 

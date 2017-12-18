@@ -25,8 +25,7 @@ class MiniGame:
         self.map.set_map(MAZE)
         self.map.set_tile((4,4), 'a')
         self.game.frame.print_text("Hello World", (32, 330))
-        self.sprite = Sprite(self.game.frame, self.game.get_tile('b.pac_right'),
-                             (1, 1), speed=2)
+        self.sprite = Sprite(self.game, 'b.pac_right', (1, 1), speed=2)
         self.game.event_loop(figure_moves=self.move, draw_func=self.draw)
 
     def draw(self):
