@@ -56,37 +56,12 @@ Run the programs in the `examples/` directory:
 
 Here is an overview of the most important classes
 
-### screen.Screen
-
-manages the main screen window.
-
-
-### frame.Frame
-
-a part of a screen
-
-
-### tiles.Tile
-
-a quadratic piece of graphic.
-
-
-### tile_factory.TileFactory
-
-a class that produces tiles.
-
-
-### sprites.Sprite
-
-A moveable tile.
-
-
-### tiled_map.TiledMap
-
-a 2D array of tiles.
-    	
-
-### events.EventGenerator
-
-Observer pattern for EventListeners. Contains an event loop, detects and distributes events
-
+| class | description |
+|-------|-------------|
+| tilegamelib.Game | Facade for frequently used functions |
+| tilegamelib.TiledMap | 2D map composed of tiles |
+| tilegamelib.Sprite   | moving object |
+| tilegamelib.Screen   | manages screen window |
+| tilegamelib.EventGenerator | main event loop |
+| tilegamelib.Frame | rectangular area on screen |
+| tilegamelib.TileFactory | loads tile graphics |
