@@ -14,7 +14,6 @@ from .vector import DOWN
 from .vector import LEFT
 from .vector import RIGHT
 from .vector import UP
-from .vector import Vector
 
 
 class MoveGroup:
@@ -56,7 +55,7 @@ if __name__ == '__main__':
 #..ff..gg..#
 ############"""
 
-    screen = Screen(Vector(800, 550), '../examples/data/background.png')
+    screen = Screen((800, 550), '../examples/data/background.png')
     frame = Frame(screen, Rect(64, 64, 400, 320))
     tile_factory = TileFactory('../examples/data/tiles.conf')
     tm = TiledMap(frame, tile_factory)
@@ -66,18 +65,18 @@ if __name__ == '__main__':
     pygame.display.update()
 
     mg = MoveGroup()
-    mg.add(MapMove(tm, Vector(5, 3), LEFT * 2, 2))
-    mg.add(MapMove(tm, Vector(6, 3), LEFT * 2, 2))
-    mg.add(MapMove(tm, Vector(5, 4), LEFT * 2, 2))
-    mg.add(MapMove(tm, Vector(6, 4), LEFT * 2, 2))
+    mg.add(MapMove(tm, (5, 3), LEFT * 2, 2))
+    mg.add(MapMove(tm, (6, 3), LEFT * 2, 2))
+    mg.add(MapMove(tm, (5, 4), LEFT * 2, 2))
+    mg.add(MapMove(tm, (6, 4), LEFT * 2, 2))
 
     wait_for_move(mg, screen, tm.draw, 0.02)
 
     mg = MoveGroup()
-    mg.add(MapMove(tm, Vector(7, 5), RIGHT, 2))
-    mg.add(MapMove(tm, Vector(8, 5), DOWN, 2))
-    mg.add(MapMove(tm, Vector(7, 6), UP, 2))
-    mg.add(MapMove(tm, Vector(8, 6), LEFT, 2))
+    mg.add(MapMove(tm, (7, 5), RIGHT, 2))
+    mg.add(MapMove(tm, (8, 5), DOWN, 2))
+    mg.add(MapMove(tm, (7, 6), UP, 2))
+    mg.add(MapMove(tm, (8, 6), LEFT, 2))
 
     wait_for_move(mg, screen, tm.draw, 0.02)
 

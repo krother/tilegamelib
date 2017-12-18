@@ -5,7 +5,6 @@ from pygame import Rect, image
 
 from .config import config
 from .frame import Frame
-from .vector import Vector
 
 
 class TextBox(object):
@@ -18,7 +17,7 @@ class TextBox(object):
         self.color = color
         self.pos = offset
         if offset is None:
-            self.pos = Vector(0, 0)
+            self.pos = (0, 0)
 
     def draw(self):
         """Draws the Box."""
@@ -60,7 +59,7 @@ class DictBox(object):
             labels = list(self.data.keys())
             labels.sort()
         for i, lab in enumerate(labels):
-            pos = Vector(0, 20 * i)
+            pos = (0, 20 * i)
             self.frame.print_text('{} : {}'.format(lab, str(self.data[lab])), pos)
 
 

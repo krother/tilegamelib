@@ -20,7 +20,6 @@ from tilegamelib.vector import DOWN
 from tilegamelib.vector import LEFT
 from tilegamelib.vector import RIGHT
 from tilegamelib.vector import UP
-from tilegamelib.vector import Vector
 from tilegamelib.config import config
 
 MOVE_DELAY = 15
@@ -44,15 +43,15 @@ MOVE_CRASH = 2
 HEAD_SPEED = 4
 
 HEAD_TILES = {
-    UP: 'b.pac_up',
-    DOWN: 'b.pac_down',
-    LEFT: 'b.pac_left',
-    RIGHT: 'b.pac_right'
+    str(UP): 'b.pac_up',
+    str(DOWN): 'b.pac_down',
+    str(LEFT): 'b.pac_left',
+    str(RIGHT): 'b.pac_right'
 }
 
 EASY = False
 
-config.RESOLUTION = Vector(800, 550)
+config.RESOLUTION = (800, 550)
 
 config.HIGHSCORES = True
 config.HIGHSCORE_FILE = config.DATA_PATH + '/snake_scores.txt'
@@ -73,10 +72,10 @@ class SnakeLevel:
             self.tmap.set_tile(pos, '.')
 
     def place_random_fruit(self):
-        x = random.randint(1, self.tmap.size.x - 2)
-        y = random.randint(1, self.tmap.size.y - 2)
+        x = random.randint(1, self.tmap.size[0] - 2)
+        y = random.randint(1, self.tmap.size[1] - 2)
         fruit = random.randint(0, 5)
-        self.place_fruit(Vector(x, y), 'abcdef'[fruit])
+        self.place_fruit((x, y), 'abcdef'[fruit])
 
     def draw(self):
         self.tmap.draw()
@@ -115,10 +114,10 @@ class SnakeSprite:
 
     def set_direction(self, direction):
         # prevent reverse move
-        if self.tail and direction == self.past_directions[0] * -1:
+        if len(self.tail) > 0 and all(direction == self.past_directions[0] * -1):
             return
         self.direction = direction
-        headtile = HEAD_TILES[direction]
+        headtile = HEAD_TILES[str(direction)]
         self.head.tile = self.tile_factory.get(headtile)
         if EASY:
             self.move_forward()
@@ -147,7 +146,8 @@ class SnakeSprite:
     def move_forward(self):
         newpos = self.head.pos + self.direction
         tile = self.level.tmap.at(newpos)
-        if newpos in self.positions or tile == '#':
+        position_in_tail = any((newpos == x).all() for x in self.positions)
+        if position_in_tail or tile == '#':
             self.crashed = True
         else:
             self.head.add_move(self.direction)
@@ -164,9 +164,8 @@ class SnakeSprite:
 
 class SnakeGame:
 
-    def __init__(self, screen):
-        self.screen = screen
-        self.tile_factory = TileFactory()
+    def __init__(self):
+        self.game = Game()
 
         self.level = None
         self.snake = None
@@ -183,20 +182,18 @@ class SnakeGame:
         self.delay = MOVE_DELAY
 
     def create_snake(self):
-        start_pos = Vector(5, 5)
-        frame = Frame(self.screen, Rect(10, 10, 640, 512))
-        self.snake = SnakeSprite(frame, self.tile_factory,
+        start_pos = (5, 5)
+        self.snake = SnakeSprite(self.game.frame, self.game.tile_factory,
                                  start_pos, self.level)
         self.snake.set_direction(RIGHT)
 
     def create_level(self):
-        frame = Frame(self.screen, Rect(10, 10, 640, 512))
-        tmap = TiledMap(frame, self.tile_factory)
+        tmap = TiledMap(self.game.frame, self.game.tile_factory)
         self.level = SnakeLevel(LEVEL, tmap)
         self.level.place_random_fruit()
 
     def create_status_box(self):
-        frame = Frame(self.screen, Rect(660, 20, 200, 200))
+        frame = Frame(self.game.screen, Rect(660, 20, 200, 200))
         self.status_box = DictBox(frame, {'score': 0})
 
     def update_finish_moves(self):
@@ -241,6 +238,7 @@ class SnakeGame:
 
 
 if __name__ == '__main__':
-    game = Game()
-    game.play(SnakeGame)
+    config.FRAME = Rect(10, 10, 640, 512)
+    snake = SnakeGame()
+    snake.run()
     pygame.quit()

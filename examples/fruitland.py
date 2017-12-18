@@ -8,7 +8,6 @@ from tilegamelib import Frame
 from tilegamelib import Screen
 from tilegamelib import TiledMap
 from tilegamelib import TileFactory
-from tilegamelib import Vector
 from tilegamelib.config import config
 
 if __name__ == '__main__':
@@ -27,7 +26,7 @@ if __name__ == '__main__':
 #cc..dd..ee..ff#
 ################"""
 
-    config.RESOLUTION = Vector(320, 256)
+    config.RESOLUTION = (320, 256)
     screen = Screen()
     frame = Frame(screen, Rect(0, 0, 320, 256))
     tile_factory = TileFactory()
@@ -37,9 +36,10 @@ if __name__ == '__main__':
     tm.draw()
     pygame.display.update()
     for i in list(range(0, 224, 2)) + list(range(224, 0, -4)):
-        tm.offset = Vector(i, i)
+        tm.offset = (i, i)
         screen.clear()
         tm.draw()
         pygame.display.update()
-        time.sleep(0.05)
+        time.sleep(0.025)
+    time.sleep(1.0)
     pygame.quit()

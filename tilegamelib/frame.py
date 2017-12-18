@@ -41,7 +41,7 @@ class Frame:
         font = font or self.font
         color = color or self.color
         rendered = font.render(text, 1, color)
-        pos = self.pos + pos
+        pos = self.position + pos
         self.screen.display.blit(rendered, tuple(pos))
 
     def clear(self):

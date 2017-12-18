@@ -12,3 +12,7 @@ UPLEFT = np.array([-1, -1])
 DOWNLEFT = np.array([-1, 1])
 UPRIGHT = np.array([1, -1])
 DOWNRIGHT = np.array([1, 1])
+
+for vec in [ZERO_VECTOR, UP, DOWN, LEFT, RIGHT,
+            UPLEFT, UPRIGHT, DOWNLEFT, DOWNRIGHT]:
+    vec.flags.writeable = False

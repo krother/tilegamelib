@@ -7,8 +7,6 @@ from pygame import Rect
 from tilegamelib import EventGenerator
 from tilegamelib import ExitListener
 from tilegamelib import FigureMoveListener
-from tilegamelib import Frame
-from tilegamelib import Screen
 from tilegamelib import TiledMap
 from tilegamelib.game import Game
 from tilegamelib.draw_timer import draw_timer
@@ -33,11 +31,11 @@ config.RESOLUTION = (450, 400)
 
 class Boxes:
 
-    def __init__(self, screen, tile_factory):
-        self.frame = Frame(screen, Rect(64, 64, 320, 320))
-        tile_factory = TileFactory()
-        self.tm = TiledMap(self.frame, tile_factory)
-        self.player = Sprite(self.frame, tile_factory.get('b.tail'),
+    def __init__(self):
+        self.game = Game()
+        tf = self.game.tile_factory
+        self.tm = TiledMap(self.game.frame, tf)
+        self.player = Sprite(self.game.frame, tf.get('b.tail'),
                              (4, 1), speed=2)
         self.tm.set_map(BOXMAP)
         self.events = None
@@ -68,7 +66,7 @@ class Boxes:
                 moves.add(MapMove(self.tm, nearpos, direction, 1,
                           floor_tile=floor, insert_tile=insert))
 
-        wait_for_move(moves, self.frame.screen, self.draw, 0.01)
+        wait_for_move(moves, self.game.screen, self.draw, 0.01)
 
         self.draw()
         self.check_complete()
@@ -89,6 +87,6 @@ class Boxes:
 
 
 if __name__ == '__main__':
-    game = Game()
-    game.play(Boxes)
+    boxes = Boxes()
+    boxes.run()
     pygame.quit()
