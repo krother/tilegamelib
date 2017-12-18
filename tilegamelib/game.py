@@ -4,6 +4,7 @@ import pygame
 import time
 
 from tilegamelib import EventGenerator
+from tilegamelib import EventListener
 from tilegamelib import ExitListener
 from tilegamelib import FigureMoveListener
 from tilegamelib import TileFactory
@@ -26,6 +27,9 @@ class Game:
         self.tile_factory = TileFactory()
         self._exit = False
 
+    def get_tile(self, key):
+        return self.tile_factory.get(key)
+
     def parse_config(self, config_filename):
         """
         Adds contents of config file to config dictionary.
@@ -40,10 +44,12 @@ class Game:
         for name in after - before:
             self.config[name] = eval(name)
 
-    def event_loop(self, figure_moves=None, exit=True, draw_func=None):
+    def event_loop(self, figure_moves=None, exit=True, draw_func=None, keymap=None):
         self.events = EventGenerator()
         if figure_moves:
             self.events.add_listener(FigureMoveListener(figure_moves))
+        if keymap:
+            self.events.add_listener(EventListener(keymap=keymap))
         if exit:
             self.events.add_listener(ExitListener(self.events.exit_signalled))
         with draw_timer(draw_func, self.events):
