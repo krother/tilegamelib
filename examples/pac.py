@@ -8,14 +8,12 @@ from pygame import Rect
 from tilegamelib import EventGenerator
 from tilegamelib import ExitListener
 from tilegamelib import FigureMoveListener
-from tilegamelib import Frame
 from tilegamelib import TiledMap
-from tilegamelib import TileFactory
-from tilegamelib import Vector
 from tilegamelib.bar_display import BarDisplay
 from tilegamelib.basic_boxes import DictBox
 from tilegamelib.config import config
 from tilegamelib.draw_timer import draw_timer
+from tilegamelib.frame import Frame
 from tilegamelib.game import Game
 from tilegamelib.sprites import Sprite
 from tilegamelib.vector import DOWN
@@ -39,7 +37,7 @@ LEVEL = """####################
 #e****************e#
 ####################"""
 
-config.RESOLUTION = Vector(850, 450)
+config.RESOLUTION = (850, 450)
 
 config.HIGHSCORES = True
 config.HIGHSCORE_FILE = config.DATA_PATH + 'pac_scores.txt'
@@ -49,16 +47,16 @@ config.DEFAULT_GAME_DELAY = 30
 config.KEY_REPEAT = {}
 config.GAME_KEY_REPEAT = { 273:1, 274:1, 275:1, 276:1}
 
-PAC_START = Vector(1, 1)
-GHOST_POSITIONS = [Vector(18, 1),
-                   Vector(18, 10),
-                   Vector(1, 10)]
+PAC_START = (1, 1)
+GHOST_POSITIONS = [(18, 1),
+                   (18, 10),
+                   (1, 10)]
 
 PAC_TILES = {
-    UP: 'b.pac_up',
-    DOWN: 'b.pac_down',
-    LEFT: 'b.pac_left',
-    RIGHT: 'b.pac_right'
+    str(UP): 'b.pac_up',
+    str(DOWN): 'b.pac_down',
+    str(LEFT): 'b.pac_left',
+    str(RIGHT): 'b.pac_right'
 }
 
 GHOST_TILE = 'b.ghost'
@@ -98,7 +96,7 @@ class Ghost:
         result = []
         directions = [LEFT, RIGHT, UP, DOWN]
         for vector in directions:
-            if vector * -1 != self.direction:
+            if all(vector * -1 != self.direction):
                 newpos = self.sprite.pos + vector
                 tile = self.level.at(newpos)
                 if tile != '#':
@@ -139,12 +137,12 @@ class Pac:
         self.buffered_move = None
 
     def set_direction(self, direction):
-        self.sprite.tile = self.tile_factory.get(PAC_TILES[direction])
+        self.sprite.tile = self.tile_factory.get(PAC_TILES[str(direction)])
         self.direction = direction
         self.move()
 
     def move(self, direction=None):
-        if not direction:
+        if direction is None:
             direction = self.direction
         if not self.sprite.finished:
             self.buffered_move = direction
@@ -166,7 +164,7 @@ class Pac:
 
     def update(self):
         """Try eating dots and fruit"""
-        if self.sprite.finished and self.buffered_move:
+        if self.sprite.finished and not self.buffered_move is None:
             self.move(self.buffered_move)
             self.buffered_move = None
         if not self.sprite.finished:
@@ -179,7 +177,7 @@ class Pac:
 
     def collision(self, sprites):
         for sprite in sprites:
-            if self.sprite.pos == sprite.sprite.pos:
+            if all(self.sprite.pos == sprite.sprite.pos):
                 return True
 
     def die(self):
@@ -189,10 +187,8 @@ class Pac:
 
 class PacGame:
 
-    def __init__(self, screen):
-        self.screen = screen
-        self.frame = Frame(self.screen, Rect(10, 10, 640, 512))
-        self.tile_factory = TileFactory()
+    def __init__(self):
+        self.game = Game()
 
         self.level = None
         self.pac = None
@@ -204,25 +200,25 @@ class PacGame:
         self.create_pac()
         self.create_ghosts()
         self.create_status_box()
-        frame = Frame(self.screen, Rect(660, 220, 200, 200))
-        self.lives = BarDisplay(frame, self.tile_factory, 3, 'p')
+        frame = Frame(self.game.screen, Rect(660, 220, 200, 200))
+        self.lives = BarDisplay(frame, self.game.tile_factory, 3, 'p')
 
         self.collided = False
         self.mode = None
         self.update_mode = self.update_ingame
 
     def create_level(self):
-        tmap = TiledMap(self.frame, self.tile_factory)
+        tmap = TiledMap(self.game.frame, self.game.tile_factory)
         self.level = PacLevel(LEVEL, tmap)
 
     def create_pac(self):
-        self.pac = Pac(self.frame, self.tile_factory, PAC_START, self.level)
+        self.pac = Pac(self.game.frame, self.game.tile_factory, PAC_START, self.level)
         self.pac.set_direction(RIGHT)
 
     def create_ghosts(self):
         self.ghosts = []
         for pos in GHOST_POSITIONS:
-            self.ghosts.append(Ghost(self.frame, self.tile_factory,
+            self.ghosts.append(Ghost(self.game.frame, self.game.tile_factory,
                                pos, self.level))
 
     def reset_level(self):
@@ -230,7 +226,7 @@ class PacGame:
         self.create_ghosts()
 
     def create_status_box(self):
-        frame = Frame(self.screen, Rect(660, 20, 200, 200))
+        frame = Frame(self.game.screen, Rect(660, 20, 200, 200))
         data = {
             'score': 0,
             'level': 1,
@@ -293,6 +289,7 @@ class PacGame:
 
 
 if __name__ == '__main__':
-    game = Game()
-    game.play(PacGame)
+    config.FRAME = Rect(10, 10, 640, 512)
+    pac = PacGame()
+    pac.run()
     pygame.quit()
