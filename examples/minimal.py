@@ -1,15 +1,11 @@
 
-import time
-
 import pygame
 from pygame import Rect
 
 from tilegamelib import TiledMap
 from tilegamelib import Game
 from tilegamelib.move_group import MoveGroup
-from tilegamelib.map_move import MapMove, wait_for_move
 from tilegamelib.sprites import Sprite
-from tilegamelib.config import config
 
 
 class MiniGame:
@@ -24,18 +20,13 @@ class MiniGame:
     def draw(self):
         self.map.draw()
         self.player.draw()
-        pygame.display.update()
 
     def move(self, direction):
         nearpos = self.player.pos + direction
         near = self.map.at(nearpos)
             
-        moves = MoveGroup()
         self.player.add_move(direction)
-        moves.add(self.player)
-
-        wait_for_move(moves, self.game.screen, self.draw, 0.005)
-        self.draw()
+        self.game.wait_for_move(self.player, self.draw, 0.005)
 
     def run(self):
         self.game.event_loop(figure_moves=self.move, draw_func=self.draw)

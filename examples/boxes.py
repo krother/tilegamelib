@@ -7,8 +7,6 @@ from pygame import Rect
 from tilegamelib import TiledMap
 from tilegamelib.game import Game
 from tilegamelib.map_move import MapMove
-from tilegamelib.move import wait_for_move
-from tilegamelib.move_group import MoveGroup
 from tilegamelib.sprites import Sprite
 from tilegamelib.config import config
 
@@ -52,17 +50,15 @@ class Boxes:
             return
         else:
             # move possible
-            moves = MoveGroup()
             self.player.add_move(direction)
-            moves.add(self.player)
+            moves = [self.player]
             if near in 'xX':
                 # crate moved
                 floor = '.' if near == 'x' else '*'
                 insert = 'X' if far == '*' else 'x'
-                moves.add(MapMove(self.tm, nearpos, direction, 1,
+                moves.append(MapMove(self.tm, nearpos, direction, 1,
                           floor_tile=floor, insert_tile=insert))
-
-        wait_for_move(moves, self.game.screen, self.draw, 0.01)
+            self.game.wait_for_move(moves, self.draw, 0.01)
 
         self.draw()
         self.check_complete()

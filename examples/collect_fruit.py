@@ -6,7 +6,6 @@ from pygame import Rect
 
 from tilegamelib import TiledMap
 from tilegamelib.game import Game
-from tilegamelib.move import wait_for_move
 from tilegamelib.sprites import Sprite
 from tilegamelib.config import config
 
@@ -50,7 +49,7 @@ class CollectFruit:
         if near == WALL_TILE:
             return
         self.player.add_move(direction)
-        wait_for_move(self.player, self.game.screen, self.draw, 0.01)
+        self.game.wait_for_move(self.player, self.draw, 0.01)
         self.check_player_square()
 
     def check_player_square(self):

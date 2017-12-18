@@ -1,16 +1,8 @@
 
 import time
-from random import randint
-
 import pygame
-from pygame import Rect
 
-from .frame import Frame
-from .move import Move, wait_for_move
-from .screen import Screen
-from .tile_factory import TileFactory
-from .tiled_map import TiledMap
-from .vector import DOWN, LEFT, RIGHT, UP
+from .move import Move
 
 
 class MapMove:
@@ -41,37 +33,3 @@ class MapMove:
 
     def finish_move(self):
         self.map.set_tile(self.end_pos, self.tile_char)
-
-
-if __name__ == '__main__':
-    fruitmap = """############
-#..aa..bb..#
-#..aa..bb..#
-#cc..dd..ee#
-#cc..dd..ee#
-#..ff..gg..#
-#..ff..gg..#
-############"""
-
-    screen = Screen()
-    frame = Frame(screen, Rect(64, 64, 400, 320))
-    tile_factory = TileFactory()
-    tm = TiledMap(frame, tile_factory)
-
-    tm.set_map(fruitmap)
-    tm.draw()
-    pygame.display.update()
-
-    for i in range(40):
-        move = None
-        while move is None:
-            pos = Vector(randint(1, 10), randint(1, 6))
-            direction = [UP, DOWN, LEFT, RIGHT][randint(0, 3)]
-            newpos = pos + direction
-            if tm.at(pos) != '.' and tm.at(newpos) != '#':
-                move = MapMove(tm, pos, direction, 2)
-        wait_for_move(move, screen, tm.draw, 0.01)
-
-    tm.draw()
-    pygame.display.update()
-    time.sleep(1.0)

@@ -7,7 +7,6 @@ from pygame import Rect
 from tilegamelib import Game
 from tilegamelib import TiledMap
 from tilegamelib.map_move import MapMove
-from tilegamelib.move import wait_for_move
 from tilegamelib.config import config
 
 
@@ -38,7 +37,7 @@ class SlidingPuzzle:
         if self.tm.at(start) == '#':
             return
         move = MapMove(self.tm, start, direction, 2)
-        wait_for_move(move, self.game.screen, self.tm.draw, 0.01)
+        self.game.wait_for_move(move, self.tm.draw, 0.01)
         self.gap = start
         self.check_complete()
 

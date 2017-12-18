@@ -1,5 +1,7 @@
 
 import os
+import pygame
+import time
 
 from tilegamelib import EventGenerator
 from tilegamelib import ExitListener
@@ -7,6 +9,7 @@ from tilegamelib import FigureMoveListener
 from tilegamelib import TileFactory
 from tilegamelib.config import config
 from tilegamelib.draw_timer import draw_timer
+from tilegamelib.move_group import MoveGroup
 
 from .screen import Screen
 from .frame import Frame
@@ -48,3 +51,15 @@ class Game:
 
     def exit(self):
         self.events.exit_signalled()
+
+    def wait_for_move(self, move=None, draw_func=None, delay=0.01):
+        if type(move) is list:
+            move = MoveGroup(move)
+        while not move.finished:
+            move.move()
+            if draw_func:
+                self.screen.clear()
+                draw_func()
+            move.draw()
+            pygame.display.update()
+            time.sleep(delay)
