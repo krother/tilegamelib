@@ -17,12 +17,13 @@ class Tile:
         self.name = name
         self.size = size
         self.image = image
-        self.box = Rect(index.x * size.x, index.y * size.y, size.x, size.y)
+        pixel_pos = index * size
+        self.box = Rect(pixel_pos[0], pixel_pos[1], size[0], size[1])
 
     def draw(self, frame, pos):
         """Draws the tile on the given position into the bitmap."""
-        destrect = Rect(pos.x, pos.y, self.size.x, self.size.y)
+        destrect = Rect(pos[0], pos[1], self.size[0], self.size[1])
         frame.blit(self.image, destrect, self.box)
 
     def __repr__(self):
-        return "[Tile '{}' ({}x{})]".format(self.name, self.size.x, self.size.y)
+        return "[Tile '{}' ({}x{})]".format(self.name, self.size[0], self.size[1])

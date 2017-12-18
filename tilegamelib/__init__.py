@@ -10,4 +10,3 @@ from .sprites import Sprite
 from .tile_factory import TileFactory
 from .tiled_map import TiledMap
 from .tiles import Tile
-from .vector import Vector

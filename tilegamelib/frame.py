@@ -1,8 +1,8 @@
 
+import numpy as np
 from pygame import Rect
 
 from .config import config
-from .vector import Vector
 
 
 class Frame:
@@ -19,17 +19,17 @@ class Frame:
         self.font = font
 
     @property
-    def pos(self):
-        return Vector(self.rect.x, self.rect.y)
+    def position(self):
+        return np.array([self.rect[0], self.rect[1]])
 
     @property
     def size(self):
-        return Vector(self.rect.width, self.rect.height)
+        return np.array([self.rect.width, self.rect.height])
 
     def get_dest_rect(self, rect):
         """Calculate absolute position of the given rect."""
-        pos = self.pos + Vector(rect.x, rect.y)
-        return Rect(pos.x, pos.y, rect.width, rect.height)
+        pos = self.position + np.array([rect[0], rect[1]])
+        return Rect(pos[0], pos[1], rect.width, rect.height)
 
     def blit(self, bitmap, rect, sourcerect):
         """Copies graphics on the screen (quick)."""
@@ -47,7 +47,7 @@ class Frame:
     def clear(self):
         """Clears the area in the frame."""
         self.screen.blit(self.screen.background, self.rect,
-            Rect(0, 0, self.size.x, self.size.y))
+            Rect(0, 0, self.rect.width, self.rect.height))
 
     def __repr__(self):
         return "[Frame '%s']" % (str(self.rect))

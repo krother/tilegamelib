@@ -1,7 +1,6 @@
 
 import pygame
-# from pygame.locals import *
-from pygame.rect import Rect  # numpy import array
+from pygame.rect import Rect
 
 from .config import config
 
@@ -9,7 +8,7 @@ from .config import config
 class Screen:
     """Manages a display window."""
     def __init__(self):
-        self.rect = Rect(0, 0, config.RESOLUTION.x, config.RESOLUTION.y)
+        self.rect = Rect(0, 0, config.RESOLUTION[0], config.RESOLUTION[1])
         self.display = pygame.display.set_mode(tuple(config.RESOLUTION))
         self.display = pygame.display.get_surface()
         self.background = pygame.image.load(config.BACKGROUND_IMAGE).convert()

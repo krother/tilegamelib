@@ -7,10 +7,7 @@ from pygame import Rect
 from tilegamelib import EventGenerator
 from tilegamelib import ExitListener
 from tilegamelib import FigureMoveListener
-from tilegamelib import Frame
 from tilegamelib import TiledMap
-from tilegamelib import TileFactory
-from tilegamelib import Vector
 from tilegamelib.draw_timer import draw_timer
 from tilegamelib.game import Game
 from tilegamelib.move import wait_for_move
@@ -27,18 +24,21 @@ FRUITMAP = """##########
 #*..b..#g#
 ##########"""
 
-config.RESOLUTION = Vector(450, 370)
+config.RESOLUTION = (450, 370)
+
+FRUIT = 'abcdefgh'
+EXIT_TILE = '*'
+WALL_TILE = '#'
 
 
 class CollectFruit:
 
-    def __init__(self, screen):
-        self.screen = screen
-        self.frame = Frame(self.screen, Rect(64, 64, 320, 320))
-        tile_factory = TileFactory()
-        self.tm = TiledMap(self.frame, tile_factory)
-        self.player = Sprite(self.frame, tile_factory.get('b.pac_right'),
-                             Vector(4, 1), speed=4)
+    def __init__(self):
+        self.game = Game()
+        frame = self.game.frame
+        tf = self.game.tile_factory
+        self.tm = TiledMap(frame, tf)
+        self.player = Sprite(frame, tf.get('b.pac_right'), (4, 1), speed=4)
         self.tm.set_map(FRUITMAP)
         self.draw()
         self.events = None
@@ -52,18 +52,18 @@ class CollectFruit:
     def move(self, direction):
         nearpos = self.player.pos + direction
         near = self.tm.at(nearpos)
-        if near == '#':
+        if near == WALL_TILE:
             return
         self.player.add_move(direction)
-        wait_for_move(self.player, self.screen, self.draw, 0.01)
+        wait_for_move(self.player, self.game.screen, self.draw, 0.01)
         self.check_player_square()
 
     def check_player_square(self):
         field = self.tm.at(self.player.pos)
-        if field == '*':
+        if field == EXIT_TILE:
             time.sleep(1)
             self.events.exit_signalled()
-        elif field in 'abcdefgh':
+        elif field in FRUIT:
             self.score += 100
             self.tm.set_tile(self.player.pos, '.')
             self.draw()
@@ -77,5 +77,6 @@ class CollectFruit:
 
 
 if __name__ == '__main__':
-    game = Game()
-    game.play(CollectFruit)
+    config.FRAME = Rect(64, 64, 320, 320)
+    fruit = CollectFruit()
+    fruit.run()

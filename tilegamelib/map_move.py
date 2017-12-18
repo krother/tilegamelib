@@ -26,7 +26,6 @@ class MapMove:
         self._move = Move(tmap.frame, tile, tmap.pos_in_pixels(pos),
                           direction * 2, steps=16)
         self.map.set_tile(pos, floor_tile or '.')
-        self.map.cache_map()
 
     @property
     def finished(self):
@@ -42,7 +41,6 @@ class MapMove:
 
     def finish_move(self):
         self.map.set_tile(self.end_pos, self.tile_char)
-        self.map.cache_map()
 
 
 if __name__ == '__main__':
