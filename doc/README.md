@@ -29,8 +29,8 @@ Let's write a class for our own game that will contain all game data. We move th
 
 Of course, we need to instantiate the `MazeGame` class as well. A good practice is to use a `__main__` block at the end of the file:
 
-if __name__ == '__main__':
-    maze_game = MazeGame()
+    if __name__ == '__main__':
+        maze_game = MazeGame()
 
 
 ## 3. Drawing a Tile Map
