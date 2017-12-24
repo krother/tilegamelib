@@ -18,7 +18,7 @@ from .frame import Frame
 
 class Game:
 
-    def __init__(self, config_filename=None, **kwargs):
+    def __init__(self, config_filename=None, quit=True, **kwargs):
         self.config = {}  # deprecated!
         if config_filename:
             self.parse_config(config_filename)
@@ -26,6 +26,7 @@ class Game:
         self.frame = Frame(self.screen, config.FRAME)
         self.tile_factory = TileFactory()
         self._exit = False
+        self._quit = quit  # terminate PyGame when event loop expires
 
     def get_tile(self, key):
         return self.tile_factory.get(key)
@@ -57,6 +58,8 @@ class Game:
 
     def exit(self):
         self.events.exit_signalled()
+        if self._quit:
+            pygame.quit()
 
     def wait_for_move(self, move=None, draw_func=None, delay=0.01):
         if type(move) is list:
