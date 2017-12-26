@@ -6,7 +6,7 @@ from tilegamelib.screen import Screen
 from util import graphictest, next_frame
 
 
-class ScreenTests:
+class TestScreen:
     """
     Tests Screen wrapper.
     """
