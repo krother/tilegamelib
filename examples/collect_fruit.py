@@ -38,33 +38,33 @@ class CollectFruit:
         self.score = 0
 
     def draw(self):
+        self.player.move()
         self.tm.draw()
         self.player.draw()
-        pygame.display.update()
+        self.check_player_square()
 
     def move(self, direction):
-        nearpos = self.player.pos + direction
-        near = self.tm.at(nearpos)
-        if near == WALL_TILE:
-            return
-        self.player.add_move(direction)
-        self.game.wait_for_move(self.player, self.draw, 0.01)
-        self.check_player_square()
+        if self.player.finished:
+            nearpos = self.player.pos + direction
+            near = self.tm.at(nearpos)
+            if near == WALL_TILE:
+                return
+            self.player.add_move(direction)
 
     def check_player_square(self):
         field = self.tm.at(self.player.pos)
         if field == EXIT_TILE:
-            time.sleep(1)
             self.game.exit()
         elif field in FRUIT:
             self.score += 100
             self.tm.set_tile(self.player.pos, '.')
-            self.draw()
 
     def run(self):
         self.game.event_loop(figure_moves=self.move, draw_func=self.draw)
 
 
+
 if __name__ == '__main__':
     fruit = CollectFruit()
     fruit.run()
+    time.sleep(1)

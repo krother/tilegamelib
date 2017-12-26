@@ -58,8 +58,8 @@ class Game:
 
     def exit(self):
         self.events.exit_signalled()
-        if self._quit:
-            pygame.quit()
+        # if self._quit:
+        #    pygame.quit()
 
     def wait_for_move(self, move=None, draw_func=None, delay=0.01):
         if type(move) is list:

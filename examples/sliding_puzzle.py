@@ -4,8 +4,7 @@ from collections import Counter
 import pygame
 from pygame import Rect
 
-from tilegamelib import Game
-from tilegamelib import TiledMap
+from tilegamelib import Game, TiledMap, Vector
 from tilegamelib.map_move import MapMove
 from tilegamelib.config import config
 
@@ -25,7 +24,7 @@ class SlidingPuzzle:
     def __init__(self):
         self.game = Game()
         self.tm = TiledMap(self.game)
-        self.gap = (4, 4)
+        self.gap = Vector(4, 4)
         self.tm.set_map(PUZZLEMAP)
         self.tm.draw()
         self.events = None

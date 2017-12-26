@@ -69,7 +69,7 @@ class Boxes:
 
     def run(self):
         self.game.event_loop(figure_moves=self.move, draw_func=self.draw)
-        
+
 
 if __name__ == '__main__':
     boxes = Boxes()

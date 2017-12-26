@@ -1,3 +1,6 @@
+examples/puzzle/*
+examples/data/*scores.txt
+
 # Temporary and binary files
 *~
 *.py[cod]
