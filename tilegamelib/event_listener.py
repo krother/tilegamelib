@@ -92,11 +92,8 @@ ARROWS = [K_LEFT, K_RIGHT, K_UP, K_DOWN]
 class FigureMoveListener(EventListener):
     """Moves a figure according to pressed keys"""
     def __init__(self, callback, keys=ARROWS):
-        EventListener.__init__(self, keymap={
-            keys[0]: self.left,
-            keys[1]: self.right,
-            keys[2]: self.up,
-            keys[3]: self.down})
+        funcs = [self.left, self.right, self.up, self.down]
+        EventListener.__init__(self, keymap=dict(zip(ARROWS, funcs)))
         self.callback = callback
 
     def up(self):

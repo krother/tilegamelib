@@ -3,7 +3,6 @@ from pygame import Rect, image
 
 from test.conftest import TILE
 from tilegamelib.config import config
-from tilegamelib.frame import Frame
 # from util import graphictest, next_frame
 from util import next_frame
 

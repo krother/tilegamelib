@@ -3,8 +3,8 @@ import pytest
 
 from pygame import Rect
 
+from tilegamelib import Frame, Sprite
 from tilegamelib.config import config
-from tilegamelib import Frame, Game, Sprite
 from tilegamelib.tile_factory import TileFactory
 from util import TEST_GAME_CONTEXT
 

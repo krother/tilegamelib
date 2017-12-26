@@ -1,4 +1,6 @@
 
+import pygame
+
 from pygame import K_DELETE, K_RETURN
 
 from tilegamelib.event_listener import AnyKeyListener, EventListener, TextEnteringListener
@@ -13,7 +15,7 @@ COMMANDS = {
 }
 
 
-class EventTests:
+class TestEvent:
 
     def hel(self):
         self.result += "Hel"
@@ -27,13 +29,13 @@ class EventTests:
     def space(self):
         self.result += " "
 
-    def setUp(self):
+    def setup(self):
         self.egen = EventGenerator()
         keymap = {
-            'a': self.hel,
-            'b': self.lo,
-            'c': self.world,
-            'd': self.space
+            pygame.K_a: self.hel,
+            pygame.K_b: self.lo,
+            pygame.K_c: self.world,
+            pygame.K_d: self.space
         }
         self.elis = EventListener(keymap)
         self.egen.add_listener(self.elis)
@@ -50,7 +52,7 @@ class EventTests:
         self.egen.add_scripted_keys('acb')
         self.egen.add_scripted_event(QUIT_EVENT)
         self.egen.event_loop()
-        self.assertEqual(self.result, "HelWorldlo")
+        assert self.result == "HelWorldlo"
 
     def test_callback(self):
         """Pass scripted keys as a string."""
@@ -58,8 +60,8 @@ class EventTests:
         self.egen.add_scripted_keys('abdc')
         self.egen.add_scripted_event(QUIT_EVENT)
         self.egen.event_loop()
-        self.assertEqual(self.result, "Hello World")
-        self.assertEqual(self.updated, 5)
+        assert self.result == "Hello World"
+        assert self.updated == 5
 
     def test_scripted_repeat(self):
         """Pass scripted keys as a string."""
@@ -67,10 +69,10 @@ class EventTests:
         self.egen.add_scripted_keys('aaaa')
         self.egen.add_scripted_event(QUIT_EVENT)
         self.egen.event_loop()
-        self.assertEqual(self.updated, 5)
+        assert self.updated == 5
 
 
-class AnyKeyListenerTests:
+class TestAnyKeyListener:
 
     def callback(self):
         self.keypressed = True
@@ -82,7 +84,7 @@ class AnyKeyListenerTests:
         self.egen.add_listener(self.elis)
         self.egen.add_scripted_event(QUIT_EVENT)
         self.egen.event_loop()
-        self.assertFalse(self.keypressed)
+        assert not self.keypressed
 
     def test_anykey_positive(self):
         self.keypressed = False
@@ -92,11 +94,11 @@ class AnyKeyListenerTests:
         self.egen.add_scripted_keys('a')
         self.egen.add_scripted_event(QUIT_EVENT)
         self.egen.event_loop()
-        self.assertTrue(self.keypressed)
+        assert self.keypressed
 
 
-class TextEnteringListenerTests:
-    def setUp(self):
+class TestTextEnteringListener:
+    def setup(self):
         self.egen = EventGenerator()
         self.updated = 0
         self.result = ""
@@ -117,8 +119,8 @@ class TextEnteringListenerTests:
         self.egen.add_scripted_keys(chr(K_RETURN))
         self.egen.add_scripted_event(QUIT_EVENT)
         self.egen.event_loop()
-        self.assertEqual(self.result, "ACBD")
-        self.assertEqual(self.updated, 4)
+        assert self.result == "ACBD"
+        assert self.updated == 4
 
     def test_return_missing(self):
         """Generate some key events and check whether they arrive."""
@@ -127,7 +129,7 @@ class TextEnteringListenerTests:
         self.egen.add_scripted_keys('acbd')
         self.egen.add_scripted_event(QUIT_EVENT)
         self.egen.event_loop()
-        self.assertEqual(self.result, "")
+        assert self.result == ""
 
     def test_delete(self):
         """Generate some key events and check whether they arrive."""
@@ -139,8 +141,8 @@ class TextEnteringListenerTests:
         self.egen.add_scripted_keys(chr(K_RETURN))
         self.egen.add_scripted_event(QUIT_EVENT)
         self.egen.event_loop()
-        self.assertEqual(self.result, "ACBEFG")
-        self.assertEqual(self.updated, 8)
+        assert self.result == "ACBEFG"
+        assert self.updated == 8
 
     def test_no_upper(self):
         """Generate some key events and check whether they arrive."""
@@ -150,5 +152,5 @@ class TextEnteringListenerTests:
         self.egen.add_scripted_keys(chr(K_RETURN))
         self.egen.add_scripted_event(QUIT_EVENT)
         self.egen.event_loop()
-        self.assertEqual(self.result, "acbd")
-        self.assertEqual(self.updated, 4)
+        assert self.result == "acbd"
+        assert self.updated == 4
