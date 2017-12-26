@@ -8,6 +8,8 @@ from tilegamelib import Game, TiledMap, Vector
 from tilegamelib.map_move import MapMove
 from tilegamelib.config import config
 
+import time
+
 
 PUZZLEMAP = """######
 #abce#
@@ -28,7 +30,9 @@ class SlidingPuzzle:
         self.tm.set_map(PUZZLEMAP)
         self.tm.draw()
         self.events = None
+        self.game.frame.print_text("Build horizontal rows", (0, 220))
         pygame.display.update()
+        self.game.event_loop(figure_moves=self.move)
 
     def move(self, direction):
         start = self.gap - direction
@@ -48,14 +52,11 @@ class SlidingPuzzle:
         rows = s.split('\n')
         same = [self.get_same(row) for row in rows[1:5]]
         if sum(same) == 15:
-            print("\nCongratulations!\n")
+            self.game.frame.print_text("Congratulations", (0, 220))
+            pygame.display.update()
+            time.sleep(3)
             self.game.exit()
-
-    def run(self):
-        self.game.event_loop(figure_moves=self.move)
 
 
 if __name__ == '__main__':
     puzzle = SlidingPuzzle()
-    puzzle.run()
-    pygame.quit()

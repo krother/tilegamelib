@@ -67,8 +67,8 @@ class SnakeLevel:
             self.tmap.set_tile(pos, '.')
 
     def place_random_fruit(self):
-        x = random.randint(1, self.tmap.size[0] - 2)
-        y = random.randint(1, self.tmap.size[1] - 2)
+        x = random.randint(1, self.tmap.size.x - 2)
+        y = random.randint(1, self.tmap.size.y - 2)
         fruit = random.randint(0, 5)
         self.place_fruit((x, y), 'abcdef'[fruit])
 
@@ -104,7 +104,7 @@ class SnakeSprite:
 
     def set_direction(self, direction):
         # prevent reverse move
-        if len(self.tail) > 0 and all(direction == self.past_directions[0] * -1):
+        if len(self.tail) > 0 and direction == self.past_directions[0] * -1:
             return
         self.direction = direction
         headtile = HEAD_TILES[str(direction)]
@@ -135,8 +135,7 @@ class SnakeSprite:
     def move_forward(self):
         newpos = self.head.pos + self.direction
         tile = self.level.tmap.at(newpos)
-        position_in_tail = any((newpos == x).all() for x in self.positions)
-        if position_in_tail or tile == '#':
+        if newpos in self.positions or tile == '#':
             self.crashed = True
         else:
             self.head.add_move(self.direction)

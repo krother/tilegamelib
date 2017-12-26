@@ -1,7 +1,6 @@
 
 import random
 import time
-import numpy as np
 
 import pygame
 from pygame import Rect
@@ -13,10 +12,7 @@ from tilegamelib.config import config
 from tilegamelib.frame import Frame
 from tilegamelib.game import Game
 from tilegamelib.sprites import Sprite
-from tilegamelib.vector import DOWN
-from tilegamelib.vector import LEFT
-from tilegamelib.vector import RIGHT
-from tilegamelib.vector import UP
+from tilegamelib.vector import DOWN, LEFT, RIGHT, UP, Vector
 
 ONE_PLAYER_START_DELAY = 3000
 
@@ -43,7 +39,7 @@ config.BOX_IMAGE = config.DATA_PATH + 'frame_box.png'
 config.KEY_REPEAT = {}
 config.GAME_KEY_REPEAT = { 273:1, 274:1, 275:1, 276:1}
 
-PAC_START = np.array([1, 1])
+PAC_START = (1, 1)
 GHOST_POSITIONS = [(18, 1),
                    (18, 10),
                    (1, 10)]
@@ -84,14 +80,14 @@ class Ghost:
     def __init__(self, game, pos, level):
         self.sprite = Sprite(game, GHOST_TILE, pos, speed=2)
         self.level = level
-        self.direction = None
+        self.direction = RIGHT
         self.set_random_direction()
 
     def get_possible_moves(self):
         result = []
         directions = [LEFT, RIGHT, UP, DOWN]
         for vector in directions:
-            if not all(vector * -1 == self.direction):
+            if not vector * -1 == self.direction:
                 newpos = self.sprite.pos + vector
                 tile = self.level.at(newpos)
                 if tile != '#':
@@ -168,9 +164,9 @@ class Pac:
     def draw(self):
         self.sprite.draw()
 
-    def collision(self, sprites):
-        for sprite in sprites:
-            if all(self.sprite.pos == sprite.sprite.pos):
+    def collision(self, ghosts):
+        for g in ghosts:
+            if self.sprite.pos == g.sprite.pos:
                 return True
 
     def die(self):
@@ -213,7 +209,7 @@ class PacGame:
             self.ghosts.append(Ghost(self.game, pos, self.level))
 
     def reset_level(self):
-        self.pac.sprite.pos = np.array(PAC_START)  # TODO: create setter in Sprite
+        self.pac.sprite.pos = Vector(PAC_START)
         self.create_ghosts()
 
     def create_status_box(self):
