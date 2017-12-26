@@ -1,7 +1,10 @@
 
 import pytest
 
+from pygame import Rect
+
 from tilegamelib.config import config
+from tilegamelib import Frame, Game, Sprite
 from tilegamelib.tile_factory import TileFactory
 from util import TEST_GAME_CONTEXT
 
@@ -19,6 +22,11 @@ def screen():
 
 
 @pytest.fixture
+def frame(screen):
+    return Frame(screen, Rect(50, 50, 100, 100))
+
+
+@pytest.fixture
 def tile_factory():
     """Loads the default factory"""
     return TileFactory()
@@ -27,3 +35,13 @@ def tile_factory():
 @pytest.fixture
 def game():
     return TEST_GAME_CONTEXT.game
+
+
+@pytest.fixture
+def tile(tile_factory):
+    return tile_factory.get('g')
+
+
+@pytest.fixture
+def sprite(game):
+    return Sprite(game, 'g', (1, 1), speed=4)

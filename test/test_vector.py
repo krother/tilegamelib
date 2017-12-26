@@ -67,6 +67,12 @@ class TestVector:
         assert a == c
         assert a != b
 
+    def test_equal_tuple(self):
+        '''Vectors can be compared to tuples'''
+        a = Vector(1, 0)
+        assert a == (1, 0)
+        assert a != (0, 1)
+
     def test_hashable(self):
         d = {Vector(1, 0): 'a',
              Vector(0, 1): 'b'

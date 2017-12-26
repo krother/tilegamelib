@@ -69,6 +69,8 @@ class Vector:
         if type(other) == type(self):
             if self.x == other.x and self.y == other.y:
                 return True
+        else:
+            return Vector(self) == Vector(other)
 
     def __hash__(self):
         return str(self).__hash__()

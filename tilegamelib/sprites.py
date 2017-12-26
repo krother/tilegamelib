@@ -1,12 +1,12 @@
 
 import time
-import numpy as np
 
 import pygame
 from pygame import Rect
 
 from .move import Move
 from .tile_factory import TileFactory
+from .vector import Vector
 
 
 class Sprite:
@@ -14,14 +14,11 @@ class Sprite:
     Object that moves along a tile grid.
     Sprites have a queue of moves.
     """
-    def __init__(self, game, tile_name, pos=None, speed=1, frame=None):
+    def __init__(self, game, tile_name, pos=(0, 0), speed=1, frame=None):
         self.frame = frame or game.frame
         self.tile = game.get_tile(tile_name)
         self.size = self.tile.size
-        if pos is None:
-            pos = (0, 0)
-        self.pos = np.array(pos)  # position in tiles not pixels
-
+        self.pos = Vector(pos)  # position in tiles not pixels
 
         self.path = []  # Queue of moves
         self._move = None
@@ -44,8 +41,12 @@ class Sprite:
             start_vector = self.pos * self.size
             self._move = Move(self.frame, self.tile, start_vector,
                 self.direction * self.speed,
-                steps=self.size[0] // self.speed,
+                steps=self.size.x // self.speed,
                 when_finished=self.finalize_move)
+
+    @property
+    def is_moving(self):
+        return not self.finished
 
     @property
     def finished(self):
@@ -72,7 +73,7 @@ class Sprite:
         """Draw the sprite on the screen."""
         if not self._move:
             pos = self.pos * self.size
-            destrect = Rect(pos[0], pos[1], self.size[0], self.size[1])
+            destrect = Rect(pos.x, pos.y, self.size.x, self.size.y)
             self.tile.draw(self.frame, destrect)
         else:
             self._move.draw()

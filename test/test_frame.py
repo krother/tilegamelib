@@ -1,6 +1,4 @@
 
-import pytest
-
 from pygame import Rect, image
 
 from test.conftest import TILE
@@ -11,11 +9,6 @@ from util import next_frame
 
 
 CYAN = (0, 255, 255)
-
-
-@pytest.fixture
-def frame(screen):
-    return Frame(screen, Rect(50, 50, 100, 100))
 
 
 class TestFrame:
