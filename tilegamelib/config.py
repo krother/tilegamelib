@@ -1,6 +1,5 @@
 
 import os
-import numpy as np
 
 import pygame
 import pygame.font
@@ -31,8 +30,8 @@ class BasicConfig:
     VERY_SHORT_DELAY = 0.02
 
     # screen
-    RESOLUTION = np.array([800, 600])
-    TILE_SIZE = np.array([32, 32])
+    RESOLUTION = (800, 600)
+    TILE_SIZE = (32, 32)
     FRAME = Rect(64, 64, 320, 320)
     BACKGROUND_IMAGE = DATA_PATH + 'background.png'
 
@@ -54,12 +53,12 @@ class BasicConfig:
     HIGHSCORES = False
     HIGHSCORE_RECT = Rect(200, 100, 800, 550)
     HIGHSCORE_IMAGE = DATA_PATH + 'background.png'
-    HIGHSCORE_TEXT_POS = np.array([0, 0])
+    HIGHSCORE_TEXT_POS = (0, 0)
 
     GAME_OVER_IMAGE = DATA_PATH + 'frame_box.png'
     GAME_OVER_RECT = Rect(200, 150, 400, 100)
-    GAME_OVER_OFFSET = np.array([120, 30])
-    GAME_OVER_SHORT_OFFSET = np.array([50, 30])
+    GAME_OVER_OFFSET = (120, 30)
+    GAME_OVER_SHORT_OFFSET = (50, 30)
     GAME_OVER_RECT = Rect(200, 150, 400, 100)
     GAME_OVER_COLOR = (255, 255, 255, 0)
     GAME_OVER_DELAY = 1000
@@ -78,5 +77,6 @@ class BasicConfig:
                 name, value = line.split('=')
                 result[name.strip()] = eval(value.strip())
         return result
+
 
 config = BasicConfig()

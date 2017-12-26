@@ -1,5 +1,6 @@
 
 from pygame import Rect
+from .vector import Vector
 
 
 class Tile:
@@ -15,15 +16,15 @@ class Tile:
             image - bitmap where the tile is copied from.
         """
         self.name = name
-        self.size = size
+        self.size = Vector(size)
         self.image = image
-        pixel_pos = index * size
-        self.box = Rect(pixel_pos[0], pixel_pos[1], size[0], size[1])
+        pixel_pos = Vector(index) * self.size
+        self.box = Rect(pixel_pos.x, pixel_pos.y, self.size.x, self.size.y)
 
     def draw(self, frame, pos):
         """Draws the tile on the given position into the bitmap."""
-        destrect = Rect(pos[0], pos[1], self.size[0], self.size[1])
+        destrect = Rect(pos.x, pos.y, self.size.x, self.size.y)
         frame.blit(self.image, destrect, self.box)
 
     def __repr__(self):
-        return "[Tile '{}' ({}x{})]".format(self.name, self.size[0], self.size[1])
+        return "[Tile '{}' ({}x{})]".format(self.name, self.size.x, self.size.y)

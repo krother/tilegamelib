@@ -1,13 +1,11 @@
 
 import pygame
-from pygame import image
-from pygame import Rect
+from pygame import Rect, image
 
 from test.conftest import TILE
 from tilegamelib.tiles import Tile
 from tilegamelib.vector import Vector
-from util import showdoc
-from util import TEST_GAME_CONTEXT
+from util import TEST_GAME_CONTEXT, showdoc
 
 
 class TestTiles:
