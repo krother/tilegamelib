@@ -1,7 +1,6 @@
 
 import json
 import os
-import numpy as np
 
 from pygame import image
 
@@ -36,7 +35,7 @@ class TileFactory:
         """Loads tile graphics from a file."""
         img = image.load(self.path + tileset['filename']).convert_alpha()
         for xpos, ypos, name in tileset['tiles']:
-            index = np.array([int(xpos), int(ypos)])
+            index = (int(xpos), int(ypos))
             self.tiles[name] = Tile(name, index, self.tile_size, img)
 
     def add_tile_synonyms(self, synonyms):

@@ -5,7 +5,6 @@ from pygame import Rect
 
 from tilegamelib.tile_factory import NoTileError, TileFactory
 from tilegamelib.tiles import Tile
-from util import TEST_GAME_CONTEXT, showdoc
 
 
 class TestTileFactory:
@@ -30,11 +29,6 @@ class TestTileFactory:
         with pytest.raises(NoTileError):
             tfac.get('unkown_tile')
 
-    @pytest.fixture
-    def tile_factory(self):
-        """Loads the default factory"""
-        return TileFactory()
-
     def test_tile_identity(self, tile_factory):
         """Abbreviations for tiles match full name"""
         assert tile_factory.get('b.wall') == tile_factory.get('#')
@@ -50,10 +44,8 @@ class TestTileFactory:
         with pytest.raises(NoTileError):
             tile_factory.get('w')
 
-    @showdoc
-    def test_display_tiles(self):
+    def test_display_tiles(self, screen):
         """Display three tiles from factory"""
-        screen = TEST_GAME_CONTEXT.screen
         tfac = TileFactory()
         tfac.get('b.wall').draw(screen, Rect(32, 32, 32, 32))
         tfac.get('x').draw(screen, Rect(32, 64, 32, 32))

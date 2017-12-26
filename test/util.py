@@ -7,9 +7,7 @@ import time
 import pygame
 from pygame import Rect
 
-from tilegamelib import Frame
-from tilegamelib import Screen
-from tilegamelib import TileFactory
+from tilegamelib import Frame, Screen, TileFactory, Game
 from tilegamelib.basic_boxes import TextBox
 from tilegamelib.config import config
 
@@ -20,6 +18,7 @@ class TestGameContext:
         pygame.init()
         self.screen = Screen()
         self.tile_factory = TileFactory()
+        self.game = Game()
 
 
 TEST_GAME_CONTEXT = TestGameContext()
@@ -34,14 +33,14 @@ def showdoc(func):
     """
     decorator function showing a docstring
     """
-    def do_show(self):
+    def do_show(self, *args):
         """Clear screen, show docstring, run test."""
         TEST_GAME_CONTEXT.screen.clear()
         frame = Frame(TEST_GAME_CONTEXT.screen, Rect(10, 400, 400, 50))
         tb = TextBox(frame, func.__doc__)
         tb.draw()
         pygame.display.update()
-        func(self)
+        func(self, *args)
         next_frame()
     return do_show
 
