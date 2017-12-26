@@ -84,7 +84,7 @@ class TiledMap:
         return self.get_map()
 
     def get_map(self):
-        rows = '\n'.join(''.join(row) for row in zip(*self.map))
+        rows = '\n'.join(''.join(row) for row in self.map)
         return rows
 
     def set_map(self, data):
@@ -92,9 +92,9 @@ class TiledMap:
         rows = data.replace('\r', '').strip().split('\n')
         self.size = Vector(len(rows[0]), len(rows))
         self.fill_map('.')
-        for x in range(self.size.x):
-            for y in range(self.size.y):
-                self.map[x][y] = rows[y][x]
+        for y, row in enumerate(rows):
+            for x, char in enumerate(row):
+                self.map[y][x] = char
         self._cache_map()
 
     def fill_map(self, char, size=None):
@@ -124,7 +124,7 @@ class TiledMap:
     def set_tile(self, pos, tilename):
         """Sets the symbol at the given position"""
         pos = Vector(pos)
-        self.map[pos.x][pos.y] = tilename
+        self.map[pos.y][pos.x] = tilename
         self._modified = True
 
     def _cache_map(self):

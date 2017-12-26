@@ -70,6 +70,11 @@ class TestTiledMap:
         assert tiled_map.map_pos.x == 1
         assert tiled_map.map_pos.y == 1
 
+    def test_get_map(self, tiled_map):
+        tiled_map.set_map("ab\ncd")
+        s = tiled_map.get_map()
+        assert "ab\ncd" == s
+
     def test_draw(self, tiled_map):
         """Draws two 5x5 locations of a map with boxes."""
         tiled_map.set_map(open(SAMPLE_MAP_FILE).read())
