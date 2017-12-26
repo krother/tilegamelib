@@ -1,4 +1,5 @@
 
+from pygame import Rect
 from tilegamelib.config import config
 from tilegamelib.tile_factory import TileFactory
 from util import TEST_GAME_CONTEXT

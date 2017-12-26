@@ -47,6 +47,13 @@ class TestVector:
         assert c.x == 3
         assert c.y == 8
 
+    def test_floordiv(self):
+        """Vectors can be divided."""
+        a = Vector(3, 5)
+        c = a // (1, 2)
+        assert c.x == 3
+        assert c.y == 2
+
     def test_iter(self):
         """Vectors can be iterated."""
         b = Vector(5, 6)

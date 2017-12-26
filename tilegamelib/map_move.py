@@ -3,6 +3,7 @@ import time
 import pygame
 
 from .move import Move
+from .vector import Vector
 
 
 class MapMove:
@@ -11,6 +12,7 @@ class MapMove:
     """
     def __init__(self, tmap, pos, direction, speed=1, floor_tile=None, insert_tile=None):
         self.map = tmap
+        pos = Vector(pos)
         self.end_pos = pos + direction
         self.tile_char = insert_tile or tmap.at(pos)
 

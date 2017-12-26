@@ -6,6 +6,7 @@ from pygame import image
 
 from .config import config
 from .tiles import Tile
+from .vector import Vector
 
 
 class NoTileError(Exception):
@@ -18,7 +19,7 @@ class TileFactory:
     """
     def __init__(self):
         self.tiles = {}
-        self.tile_size = config.TILE_SIZE
+        self.tile_size = Vector(config.TILE_SIZE)
         self.path = ''
         self.parse_config(config.TILE_SPECS)
 

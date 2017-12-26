@@ -51,6 +51,17 @@ class Vector:
             y = self.y * other.y
         return Vector(x, y)
 
+    def __floordiv__(self, other):
+        if isinstance(other, int):
+            x = self.x // other
+            y = self.y // other
+        else:
+            if not isinstance(other, Vector):
+                other = Vector(other)
+            x = self.x // other.x
+            y = self.y // other.y
+        return Vector(x, y)
+
     def __iter__(self):
         return self.coord.__iter__()
 

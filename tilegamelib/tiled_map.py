@@ -1,7 +1,7 @@
 
 import pygame
-import numpy as np
 
+from .vector import Vector
 from .vector import ZERO_VECTOR
 
 
@@ -39,39 +39,45 @@ class TiledMap:
         """Returns the position in pixels (x,y) of the given tile pos."""
         return (pos - self.map_pos) * self.tile_factory.tile_size
 
-    def is_visible(self, pos):
+    def is_on_screen(self, pos):
         """
-        Checks if the referenced position is in the visible part of the screen.
-        Returns boolean.
+        Returns True if the referenced position is
+        in the visible part of the screen.
         """
-        return all(pos >= self.map_pos) and \
-               all(pos <= self.map_pos + self.win_size)
+        pos = Vector(pos)
+        boundary = self.map_pos + self.win_size
+        return self.map_pos.x <= pos.x <= boundary.x and \
+               self.map_pos.y <= pos.y <= boundary.y
 
-    def check_position(self, pos):
-        """Checks if the given position is on the map."""
-        return all(ZERO_VECTOR <= pos) and all(pos < self.size)
+    def is_on_map(self, pos):
+        """
+        Returns Checks if the given position is on the map."""
+        pos = Vector(pos)
+        return 0 <= pos.x < self.size.x and \
+               0 <= pos.y < self.size.y
 
     def at(self, pos):
         """Returns the symbol of the tile at the given position."""
-        if self.check_position(pos):
-            return self.map[pos[0]][pos[1]]
+        if self.is_on_map(pos):
+            return self.map[pos.y][pos.x]
 
     def check_move(self, vector):
         """
         Checks if the visible part of the map can be moved by
-        the given numpy 2D vector.
+        the given 2D vector.
         """
         newpos = self.map_pos + vector
-        return all(ZERO_VECTOR <= newpos) and \
-               all(newpos <= self.size - self.win_size)
+        boundary = self.size + self.win_size
+        return 0 <= newpos.x <= boundary.x and \
+               0 <= newpos.y <= boundary.y
 
     def zoom_to(self, pos):
         """
         Sets the position of the map that the window should zoom in on.
         pos (x,y) are integer indices on the tile map.
         """
-        self.map_pos = pos
-        self.offset = pos * self.tile_factory.tile_size
+        self.map_pos = Vector(pos)
+        self.offset = self.map_pos * self.tile_factory.tile_size
 
     def __str__(self):
         return self.get_map()
@@ -83,45 +89,46 @@ class TiledMap:
     def set_map(self, data):
         """Creates a 2D map with tiles from a multiline string."""
         rows = data.replace('\r', '').strip().split('\n')
-        self.size = np.array([len(rows[0]), len(rows)])
+        self.size = Vector(len(rows[0]), len(rows))
         self.fill_map('.')
-        for x in range(self.size[0]):
-            for y in range(self.size[1]):
+        for x in range(self.size.x):
+            for y in range(self.size.y):
                 self.map[x][y] = rows[y][x]
         self._cache_map()
 
     def fill_map(self, char, size=None):
         """Creates an empty map."""
-        if not size is None:
-            self.size = np.array(size)
-        self.map = np.chararray(self.size, unicode=True)
-        self.map[:] = char
+        if size is not None:
+            self.size = Vector(size)
+        self.map = [[char for x in range(self.size.x)] for y in range(self.size.y)]
+        # self.map = np.chararray(self.size, unicode=True)  # abandoned NumPy dependency
 
     def draw(self):
         """Draws the map."""
         if self._modified:
             self._cache_map()
         src = pygame.Rect(
-            self.offset[0], self.offset[1],
-            self.win_size_px[0], self.win_size_px[1]
+            self.offset.x, self.offset.y,
+            self.win_size_px.x, self.win_size_px.y
         )
         dest = pygame.Rect(
             0, 0,
-            self.win_size_px[0], self.win_size_px[1])
+            self.win_size_px.x, self.win_size_px.y)
         self.frame.blit(self.mapsurf, dest, src)
 
     def get_tile(self, pos):
         return self.tile_factory.get(self.at(pos))
 
     def set_tile(self, pos, tilename):
-        self.map[pos[0]][pos[1]] = tilename
+        self.map[pos.x][pos.y] = tilename
         self._modified = True
 
     def _cache_map(self):
         self.mapsurf = pygame.Surface(tuple(self.map_size_px))
-        for x in range(self.size[0]):
-            for y in range(self.size[1]):
-                tile = self.get_tile((x, y))
-                pos = np.array([tile.size[0] * x, tile.size[1] * y])
-                tile.draw(self.mapsurf, pos)
+        for x in range(self.size.x):
+            for y in range(self.size.y):
+                pos = Vector(x, y)
+                tile = self.get_tile(pos)
+                pixelpos = tile.size * pos
+                tile.draw(self.mapsurf, pixelpos)
         self._modified = False

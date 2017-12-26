@@ -1,14 +1,13 @@
 
 import time
-import numpy as np
 
 import pygame
 from pygame import Rect
 
 from tilegamelib.frame import Frame
-from tilegamelib.screen import Screen
-from tilegamelib.tile_factory import TileFactory
-from tilegamelib.vector import RIGHT, ZERO_VECTOR
+from .screen import Screen
+from .tile_factory import TileFactory
+from .vector import RIGHT, ZERO_VECTOR, Vector
 
 
 class Move:
@@ -19,8 +18,8 @@ class Move:
             steps=0, when_finished=None):
         self.frame = frame
         self.tile = tile
-        self.start_vector = start_vector 
-        self.current_vector = start_vector
+        self.start_vector = Vector(start_vector)
+        self.current_vector = Vector(start_vector)
         self.steps = steps
         self.direction = direction
         self.finished = False
@@ -37,7 +36,6 @@ class Move:
 
     def draw(self):
         self.tile.draw(self.frame, self.current_vector)
-
 
 
 if __name__ == '__main__':
