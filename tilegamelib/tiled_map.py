@@ -58,6 +58,7 @@ class TiledMap:
 
     def at(self, pos):
         """Returns the symbol of the tile at the given position."""
+        pos = Vector(pos)
         if self.is_on_map(pos):
             return self.map[pos.y][pos.x]
 
@@ -97,7 +98,7 @@ class TiledMap:
         self._cache_map()
 
     def fill_map(self, char, size=None):
-        """Creates an empty map."""
+        """Creates an empty map filled with a single character."""
         if size is not None:
             self.size = Vector(size)
         self.map = [[char for x in range(self.size.x)] for y in range(self.size.y)]
@@ -117,13 +118,17 @@ class TiledMap:
         self.frame.blit(self.mapsurf, dest, src)
 
     def get_tile(self, pos):
+        """Returns the symbol at the given position"""
         return self.tile_factory.get(self.at(pos))
 
     def set_tile(self, pos, tilename):
+        """Sets the symbol at the given position"""
+        pos = Vector(pos)
         self.map[pos.x][pos.y] = tilename
         self._modified = True
 
     def _cache_map(self):
+        """used internally to pre-calculate map graphics"""
         self.mapsurf = pygame.Surface(tuple(self.map_size_px))
         for x in range(self.size.x):
             for y in range(self.size.y):

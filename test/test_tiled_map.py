@@ -42,6 +42,11 @@ class TestTiledMap:
         assert not tiled_map.is_on_screen((1, 11))
         assert not tiled_map.is_on_screen((-5, -1))
 
+    def test_set_tile(self, tiled_map):
+        tiled_map.set_map(TEST_MAP)
+        tiled_map.set_tile((3, 3), 'x')
+        assert tiled_map.at((3, 3)) == 'x'
+
     def test_is_on_map(self, tiled_map):
         tiled_map.set_map(TEST_MAP)
         assert not tiled_map.is_on_map((-1, -1))
