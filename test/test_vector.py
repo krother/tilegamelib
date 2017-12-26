@@ -10,6 +10,12 @@ class TestVector:
         assert a.x == 1
         assert a.y == 2
 
+    def test_autocreate(self):
+        """Creating a Vector from a Vector."""
+        a = Vector(1, 2)
+        b = Vector(a)
+        assert b == a
+
     def test_add(self):
         """Vectors can be added."""
         a = Vector(1, 2)
@@ -18,12 +24,28 @@ class TestVector:
         assert c.x == 4
         assert c.y == 6
 
-    def test_mul(self):
-        """Vectors can be multiplied."""
+    def test_add_tuple(self):
+        """Tuples can be added to Vectors."""
+        a = Vector(1, 2)
+        b = (3, 4)
+        c = a + b
+        assert c.x == 4
+        assert c.y == 6
+
+    def test_multiply_scalar(self):
+        """Vectors can be multiplied by numbers."""
         a = Vector(1, 2)
         c = a * 3
         assert c.x == 3
         assert c.y == 6
+
+    def test_multiply_vec(self):
+        """Vectors can be multiplied by Vectors."""
+        a = Vector(1, 2)
+        b = Vector(3, 4)
+        c = a * b
+        assert c.x == 3
+        assert c.y == 8
 
     def test_iter(self):
         """Vectors can be iterated."""

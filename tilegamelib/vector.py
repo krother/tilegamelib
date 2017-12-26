@@ -10,10 +10,15 @@ class Vector:
     """
 
     def __init__(self, *args):
-        if len(args) == 1:  # tuple
-            self.coord = args[0]
+        if len(args) == 1:
+            if isinstance(args[0], Vector):
+                self.coord = args[0].coord
+            else:  # tuple or similar
+                self.coord = args[0]
         elif len(args) == 2:  # x, y
             self.coord = tuple(args)
+        else:
+            assert False
 
     @property
     def x(self):
@@ -24,6 +29,8 @@ class Vector:
         return self.coord[1]
 
     def __add__(self, other):
+        if not isinstance(other, Vector):
+            other = Vector(other)
         x = self.x + other.x
         y = self.y + other.y
         return Vector(x, y)
@@ -33,9 +40,15 @@ class Vector:
         y = self.y - other.y
         return Vector(x, y)
 
-    def __mul__(self, number):
-        x = self.x * number
-        y = self.y * number
+    def __mul__(self, other):
+        if isinstance(other, int):
+            x = self.x * other
+            y = self.y * other
+        elif not isinstance(other, Vector):
+            other = Vector(other)
+        else:
+            x = self.x * other.x
+            y = self.y * other.y
         return Vector(x, y)
 
     def __iter__(self):
@@ -53,12 +66,12 @@ class Vector:
         return '[%i;%i]' % (self.x, self.y)
 
 
-ZERO_VECTOR = Vector([0, 0])
-UP = Vector([0, -1])
-DOWN = Vector([0, 1])
-LEFT = Vector([-1, 0])
-RIGHT = Vector([1, 0])
-UPLEFT = Vector([-1, -1])
-DOWNLEFT = Vector([-1, 1])
-UPRIGHT = Vector([1, -1])
-DOWNRIGHT = Vector([1, 1])
+ZERO_VECTOR = Vector(0, 0)
+UP = Vector(0, -1)
+DOWN = Vector(0, 1)
+LEFT = Vector(-1, 0)
+RIGHT = Vector(1, 0)
+UPLEFT = Vector(-1, -1)
+DOWNLEFT = Vector(-1, 1)
+UPRIGHT = Vector(1, -1)
+DOWNRIGHT = Vector(1, 1)
