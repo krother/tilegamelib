@@ -44,9 +44,9 @@ class Vector:
         if isinstance(other, int):
             x = self.x * other
             y = self.y * other
-        elif not isinstance(other, Vector):
-            other = Vector(other)
         else:
+            if not isinstance(other, Vector):
+                other = Vector(other)
             x = self.x * other.x
             y = self.y * other.y
         return Vector(x, y)
