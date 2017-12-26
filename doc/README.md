@@ -113,12 +113,13 @@ And modify the call to `event_loop()` to:
 
     self.game.event_loop(figure_moves=self.move, draw_func=self.draw)
 
-Now you should see that `direction` contains a different vector for each arrow key. We can pass on that vector to `sprite`, so that it moves:
+Now you should see that `direction` contains a different vector for each arrow key. We can pass that vector to `sprite`, so that it moves:
 
     self.sprite.add_move(direction)
-    self.game.wait_for_move(self.sprite, self.draw, 0.01)
 
-The number at the end is for adjusting movement speed.
+To perform the moves, we need to call `self.sprite.move()` in regular intervals. Place the following command in the `draw()` method:
+
+    self.sprite.move()
 
 Now the figure should move through the maze!
 
