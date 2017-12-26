@@ -1,9 +1,9 @@
 
-from pygame import Rect
+import pytest
+
 from tilegamelib.config import config
 from tilegamelib.tile_factory import TileFactory
 from util import TEST_GAME_CONTEXT
-import pytest
 
 
 KEY_EVENT_QUEUE = [27]

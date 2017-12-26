@@ -58,7 +58,7 @@ class HighscoreBox:
         self.frame = frame
         self.egen = egen
 
-        self.textpos = textpos
+        self.textpos = Vector(textpos)
         self.highscores = highscores
         self.image = ImageBox(frame, highscore_image)
 

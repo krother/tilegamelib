@@ -3,7 +3,6 @@ import time
 
 import pygame
 import pytest
-from pygame import Rect
 
 from test.conftest import SAMPLE_MAP_FILE
 from tilegamelib.config import config
