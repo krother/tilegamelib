@@ -3,23 +3,26 @@
 import time
 
 import pygame
-from pygame import Rect
+import pytest
+
 from pygame.event import Event
 from pygame.locals import KEYDOWN
 
 from tilegamelib.config import config
 from tilegamelib.events import QUIT_EVENT, EventGenerator
-from tilegamelib.frame import Frame
 from tilegamelib.menu import VERTICAL_MOVES, MenuBox, TextMenuBox, TileMenuBox
-from util import TEST_GAME_CONTEXT, showdoc
 
 
-class MenuTests:
+@pytest.fixture
+def event_gen():
+    return EventGenerator()
 
-    def setUp(self):
+
+class TestMenu:
+
+    def setup(self):
         self.result = None
-        self.frame = Frame(TEST_GAME_CONTEXT.screen, Rect(100, 100, 260, 260))
-        self.egen = EventGenerator()
+        self.callbacks = [self.select_one, self.select_two, self.select_three]
 
     def select_one(self):
         self.result = 'one'
@@ -50,18 +53,13 @@ class MenuTests:
         time.sleep(config.DELAY)
 
 
-class TextMenuTests(MenuTests):
+class TestTextMenu(TestMenu):
 
-    def setUp(self):
-        MenuTests.setUp(self)
-        self.menu = [
-            ('first', self.select_one),
-            ('second', self.select_two),
-            ('third', self.select_three),
-        ]
+    labels = ['first', 'second', 'third']
 
-    def test_menu(self):
+    def test_menu(self, frame, event_gen):
         """menu mechanics work."""
+        text_menu = list(zip(self.labels, self.callbacks))
         events = [
             Event(KEYDOWN, {'key': 276}),
             Event(KEYDOWN, {'key': 273}),
@@ -74,42 +72,35 @@ class TextMenuTests(MenuTests):
             QUIT_EVENT,
         ]
         for evt in events:
-            self.egen.add_scripted_event(evt)
-        MenuBox(self.frame, self.menu, self.egen, VERTICAL_MOVES)
-        self.assertEqual(len(self.egen.listeners), 1)
-        self.assertEqual(self.result, None)
-        self.egen.event_loop()
-        self.assertEqual(self.result, 'three')
+            event_gen.add_scripted_event(evt)
+        MenuBox(frame, text_menu, event_gen, VERTICAL_MOVES)
+        assert len(event_gen.listeners) == 1
+        assert self.result is None
+        event_gen.event_loop()
+        assert self.result == 'three'
 
-    @showdoc
-    def test_text_menu(self):
+    def test_text_menu(self, frame, event_gen):
         """Displays a text menu plus navigation."""
-        menu = TextMenuBox(self.frame, self.menu, self.egen, VERTICAL_MOVES)
+        text_menu = list(zip(self.labels, self.callbacks))
+        menu = TextMenuBox(frame, text_menu, event_gen, VERTICAL_MOVES)
         self.run_menu(menu)
 
 
-class TileMenuTests(MenuTests):
+class TestTileMenu(TestMenu):
 
-    def setUp(self):
-        MenuTests.setUp(self)
-        self.menu = [
-            ('#', self.select_one),
-            ('*', self.select_two),
-            ('.', self.select_three),
-        ]
-
-    @showdoc
-    def test_tile_menu(self):
+    def test_tile_menu(self, frame, event_gen, tile_factory):
         """Displays a vertical tile menu plus navigation."""
-        factory = TEST_GAME_CONTEXT.tile_factory
-        menu = TileMenuBox(factory, self.frame, self.menu,
-            self.egen, VERTICAL_MOVES, horizontal=False)
+        tile_menu = list(zip('#*.', self.callbacks))
+        menu = TileMenuBox(
+            tile_factory, frame, tile_menu,
+            event_gen, VERTICAL_MOVES, horizontal=False)
         self.run_menu(menu)
 
-    def test_deactivate_menu(self):
-        factory = TEST_GAME_CONTEXT.tile_factory
-        menu = TileMenuBox(factory, self.frame, self.menu,
-            self.egen, VERTICAL_MOVES, horizontal=False)
-        self.assertEqual(len(self.egen.listeners), 1)
+    def test_deactivate_menu(self, frame, event_gen, tile_factory):
+        tile_menu = list(zip('#*.', self.callbacks))
+        menu = TileMenuBox(
+            tile_factory, frame, tile_menu,
+            event_gen, VERTICAL_MOVES, horizontal=False)
+        assert len(event_gen.listeners) == 1
         menu.deactivate()
-        self.assertEqual(len(self.egen.listeners), 0)
+        assert len(event_gen.listeners) == 0
