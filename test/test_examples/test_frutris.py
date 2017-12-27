@@ -2,10 +2,9 @@
 import time
 
 import pygame
-from pygame import Rect
 
 from examples.frutris.frutris import FrutrisBox
-from tilegamelib import Frame, Screen, TileFactory, Vector
+from tilegamelib import Vector
 from tilegamelib.config import config
 from tilegamelib.vector import LEFT, RIGHT
 
@@ -18,7 +17,7 @@ def wait(box):
         time.sleep(config.SHORT_DELAY)
 
 
-def test_frutris():
+def test_frutris(game):
     LEVEL = """#......#
 #......#
 #......#
@@ -29,13 +28,10 @@ def test_frutris():
 #cbbbaa#
 ########"""
 
-    screen = Screen()
-    frame = Frame(screen, Rect(64, 64, 320, 320))
-    tile_factory = TileFactory()
-    frutris = FrutrisBox(frame, tile_factory, LEVEL)
+    frutris = FrutrisBox(game, LEVEL)
 
     # draw screen
-    screen.clear()
+    game.screen.clear()
     frutris.draw()
     pygame.display.update()
     time.sleep(0.5)
