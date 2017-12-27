@@ -1,7 +1,7 @@
 
 # tilegamelib
 
-A Python/pygame library for games based on square tiles.
+A Python library for games based on square tiles.
 
 (c) 2015 Kristian Rother (krother@academis.eu)
 
@@ -10,41 +10,51 @@ Distributed under the conditions of the MIT license.
 
 ## Description
 
-tilegamelib makes it easier to create pygame-based games that have graphics consisting of small square-shaped tiles (think Sokoban, Pacman, Tetris, Atomix and their countless siblings).
+tilegamelib helps create pygame-based games that have graphics consisting of small square-shaped tiles (think Sokoban, Pacman, Tetris, Atomix and their countless siblings).
 
 
-## Installation for development
+## Installation
 
-### 1. Setting up virtualenv
+It is assumed that you have **Python 3.5** or higher. The instructions here work for
 
-    cd tilegamelib/
-    mkvirtualenv tilegamelib
-    setvirtualenvproject ~/.virtualenvs/tilegamelib/ .
- 
-### 2. Installing pygame
+### Step 1: Install pygame
 
 Just try:
 
     pip install pygame
 
-With older versions of `pip`, you need to install `pygame` manually:
+### Step 2: Tell Python where to find tilegamelib
+
+Set the `PYTHONPATH` environment variable to the directory in which this `README` file is (In Spyder, check the *"Tools"* menu).
+
+Alternatively, you can try a local installation using `pip`:
+
+    pip install --editable .
+
+
+### Setting up pygame with virtualenv
 
     hg clone https://bitbucket.org/pygame/pygame
     cd pygame
     python3 setup.py install --prefix="$HOME/.virtualenvs/tilegamelib"
 
-### 3. Installing tilegamelib
 
-    pip install --editable .
-
-
-## 4. Play example Games
+## Play example Games
 
 Run the programs in the `examples/` directory:
 
-    cd examples/
-    python __main__.py
+* `examples/sliding_puzzle.py`
+* `examples/collect_fruit.py`
+* `examples/boxes.py`
+* `examples/snake.py`
+* `examples/pac.py`
+* `examples/starscape/starscape.py`
+* `examples/frutris/frutris.py`
 
+
+## Write your own mini-game
+
+See the [Beginners Guide](doc/README.md)
 
 ## Running automated Tests
 
