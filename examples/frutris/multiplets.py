@@ -27,11 +27,11 @@ class FruitMultiplets:
 
     def get_positions(self):
         """Returns a flattened list containing all positions"""
-        result = set()
+        result = {}
         for multi in self.multiplets:
             for pos in multi:
-                result.add(pos)
-        return result
+                result[str(pos)] = pos
+        return list(result.values())
 
     def __len__(self):
         return len(self.multiplets)

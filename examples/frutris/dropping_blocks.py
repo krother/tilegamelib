@@ -64,7 +64,7 @@ class FruitPair(MovingBlocks):
         if len(self.sprites) != 2 or not self.finished:
             return
         first, second = self.sprites
-        if first.pos[0] == second.pos[0]:
+        if first.pos.x == second.pos.x:
             newpos = [first.pos + UP, second.pos + RIGHT]
             if self.level.are_positions_empty(newpos):
                 first.add_move(UP)
