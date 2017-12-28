@@ -4,7 +4,6 @@ import time
 import pygame
 import pytest
 
-from test.conftest import SAMPLE_MAP_FILE
 from tilegamelib.config import config
 from tilegamelib.map_move import MapMove
 from tilegamelib.move_group import MoveGroup
@@ -75,9 +74,9 @@ class TestTiledMap:
         s = tiled_map.get_map()
         assert "ab\ncd" == s
 
-    def test_draw(self, tiled_map):
+    def test_draw(self, tiled_map, sample_map):
         """Draws two 5x5 locations of a map with boxes."""
-        tiled_map.set_map(open(SAMPLE_MAP_FILE).read())
+        tiled_map.set_map(sample_map)
         tiled_map.draw()
         pygame.display.update()
         time.sleep(config.DELAY)
@@ -85,9 +84,9 @@ class TestTiledMap:
         tiled_map.draw()
         pygame.display.update()
 
-    def test_move_map_tile(self, tiled_map, game):
+    def test_move_map_tile(self, tiled_map, game, sample_map):
         """Moves two tiles smoothly."""
-        tiled_map.set_map(open(SAMPLE_MAP_FILE).read())
+        tiled_map.set_map(sample_map)
         tiled_map.draw()
         moves = MoveGroup([
             MapMove(tiled_map, (3, 1), DOWNLEFT, 1,

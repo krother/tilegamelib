@@ -1,11 +1,11 @@
 
-from .config import config
-
 import os
 import time
 
 import pygame
 import pygame.mixer
+
+from .config import config
 
 
 # sound muted during tests (required by Travis CI)

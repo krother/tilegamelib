@@ -19,6 +19,11 @@ TILE = TEST_DATA_PATH + 'test_tile.png'
 
 
 @pytest.fixture
+def sample_map():
+    return open(SAMPLE_MAP_FILE).read()
+
+
+@pytest.fixture
 def image_filename():
     return TILE
 
