@@ -2,20 +2,18 @@
 import pygame
 
 from tilegamelib.screen import Screen
-from util import graphictest, next_frame
+from util import next_frame
 
 
 class TestScreen:
     """
     Tests Screen wrapper.
     """
-    @graphictest
     def test_clear(self):
         """Screen can be cleared."""
         screen = Screen()
         screen.clear()
 
-    @graphictest
     def test_blit(self, tile_bitmap):
         """quadratic image is shown, then cleared."""
         screen = Screen()
