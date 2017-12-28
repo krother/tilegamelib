@@ -1,5 +1,6 @@
 
 from pygame import Rect
+
 from .vector import Vector
 
 

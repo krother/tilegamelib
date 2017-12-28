@@ -1,6 +1,5 @@
 
 import pytest
-
 from pygame import Rect, image
 
 from tilegamelib import Frame, Sprite

@@ -4,8 +4,8 @@ import time
 
 import pygame
 
-from tilegamelib import (EventGenerator, EventListener, ExitListener,
-                         FigureMoveListener, TileFactory)
+from tilegamelib import (EventGenerator, EventListener, ExitListener, FigureMoveListener,
+                         TileFactory)
 from tilegamelib.config import config
 from tilegamelib.draw_timer import draw_timer
 from tilegamelib.move_group import MoveGroup

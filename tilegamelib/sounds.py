@@ -1,6 +1,7 @@
 
 import os
 import time
+import warnings
 
 import pygame
 import pygame.mixer
@@ -49,23 +50,23 @@ class MusicPlayer:
     def play_music(self, filename, volume=1.0):
         """Starts a new music"""
         if not os.path.exists(filename):
-            raise IOError("File '%s' not found!" % filename)
-        filename = '/home/krother/projects/frutris/frutris/music/a1.ogg'
-        sound = pygame.mixer.Sound(filename)
-        c = pygame.mixer.Channel(1)
-        c.set_volume(volume)
-        c.play(sound)
-        MUSIC[0] = c
-        print('playing', filename)
-        STARTED_TIME[0] = 0
+            warnings.warn("File '{}' not found!".format(filename))
+        elif not config.MUTE_SOUND:
+            sound = pygame.mixer.Sound(filename)
+            c = pygame.mixer.Channel(1)
+            c.set_volume(volume)
+            c.play(sound)
+            MUSIC[0] = c
+            print('playing', filename)
+            STARTED_TIME[0] = 0
 
     def next_music(self, filename):
         if MUSIC[0].get_queue():
             print("QUEUE FULL")
-            return
-        sound = pygame.mixer.Sound(filename)
-        MUSIC[0].queue(sound)
-        STARTED_TIME[0] = 0
+        elif not config.MUTE_SOUND:
+            sound = pygame.mixer.Sound(filename)
+            MUSIC[0].queue(sound)
+            STARTED_TIME[0] = 0
 
     def stop_music(self):
         if 0 in MUSIC:
@@ -75,12 +76,12 @@ class MusicPlayer:
 
 def play_effect(filename):
     if not os.access(filename, os.F_OK):
-        print('file not found', filename)
-        return
-    channel = pygame.mixer.find_channel(2)
-    channel.stop()
-    channel.set_volume(1.0)
-    # channel.set_volume(1.0, 1.0)
-    sound = pygame.mixer.Sound(filename)
-    channel.play(sound)
-    CHANNELS[0] = channel
+        warnings.warn('file not found: {}'.format(filename))
+    elif not config.MUTE_SOUND:
+        channel = pygame.mixer.find_channel(2)
+        channel.stop()
+        channel.set_volume(1.0)
+        # channel.set_volume(1.0, 1.0)
+        sound = pygame.mixer.Sound(filename)
+        channel.play(sound)
+        CHANNELS[0] = channel
