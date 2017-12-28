@@ -45,6 +45,9 @@ class BasicConfig:
     CYAN = (128, 255, 255, 0)
     MAGENTA = (255, 128, 255, 0)
 
+    # Sound
+    MUTE_SOUND = False
+
     MAIN_MENU_RECT = Rect(0, 0, 750, 550)
     MAIN_MENU_IMAGE = DATA_PATH + 'title.png'
     MAIN_MENU_TEXTPOS = Rect(550, 380, 800, 550)
