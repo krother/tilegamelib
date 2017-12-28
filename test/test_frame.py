@@ -1,7 +1,6 @@
 
-from pygame import Rect, image
+from pygame import Rect
 
-from conftest import TILE
 from tilegamelib.config import config
 from util import next_frame
 
@@ -11,12 +10,11 @@ CYAN = (0, 255, 255)
 
 class TestFrame:
     """Tests for Frame objects"""
-    def test_blit(self, frame):
+    def test_blit(self, frame, tile_bitmap):
         """image drawn into frame, then cleared."""
-        bitmap = image.load(TILE).convert()
         dest = Rect(32, 16, 32, 32)
         source = Rect(0, 0, 32, 32)
-        frame.blit(bitmap, dest, source)
+        frame.blit(tile_bitmap, dest, source)
         next_frame()
         frame.clear()
 

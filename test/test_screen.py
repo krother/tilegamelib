@@ -1,7 +1,6 @@
 
 import pygame
 
-from test.conftest import TILE
 from tilegamelib.screen import Screen
 from util import graphictest, next_frame
 
@@ -17,12 +16,11 @@ class TestScreen:
         screen.clear()
 
     @graphictest
-    def test_blit(self):
+    def test_blit(self, tile_bitmap):
         """quadratic image is shown, then cleared."""
         screen = Screen()
-        bitmap = pygame.image.load(TILE).convert()
         dest = pygame.Rect(60, 60, 32, 32)
         source = pygame.Rect(0, 0, 32, 32)
-        screen.blit(bitmap, dest, source)
+        screen.blit(tile_bitmap, dest, source)
         next_frame()
         screen.clear()

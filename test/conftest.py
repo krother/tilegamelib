@@ -1,7 +1,7 @@
 
 import pytest
 
-from pygame import Rect
+from pygame import Rect, image
 
 from tilegamelib import Frame, Sprite
 from tilegamelib.config import config
@@ -14,6 +14,11 @@ TEST_DATA_PATH = config.BASE_PATH + '/../test/test_data/'
 SAMPLE_MAP_FILE = TEST_DATA_PATH + 'sample.map'
 
 TILE = TEST_DATA_PATH + 'test_tile.png'
+
+
+@pytest.fixture
+def tile_bitmap():
+    return image.load(TILE).convert()
 
 
 @pytest.fixture
