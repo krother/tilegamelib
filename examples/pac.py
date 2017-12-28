@@ -14,8 +14,12 @@ from tilegamelib.game import Game
 from tilegamelib.sprites import Sprite
 from tilegamelib.vector import DOWN, LEFT, RIGHT, UP, Vector
 
+from examples.generate_maze import create_maze
+
 ONE_PLAYER_START_DELAY = 3000
 
+
+RANDOM_LEVEL_SIZE = (20, 12)
 
 LEVEL = """####################
 #.****************e#
@@ -197,7 +201,8 @@ class PacGame:
 
     def create_level(self):
         tmap = TiledMap(self.game)
-        self.level = PacLevel(LEVEL, tmap)
+        level = create_maze(*RANDOM_LEVEL_SIZE)
+        self.level = PacLevel(level, tmap)
 
     def create_pac(self):
         self.pac = Pac(self.game, PAC_START, self.level)
