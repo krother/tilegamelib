@@ -1,2 +1,5 @@
+pytest-isort
+pytest-flakes
+pytest-pep8
 numpy
 pygame
