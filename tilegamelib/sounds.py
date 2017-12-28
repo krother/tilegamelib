@@ -8,6 +8,7 @@ import pygame
 import pygame.mixer
 
 
+# sound muted during tests (required by Travis CI)
 if not config.MUTE_SOUND:
     pygame.mixer.pre_init(44100, -16, 2, 2048)
     pygame.mixer.init()
