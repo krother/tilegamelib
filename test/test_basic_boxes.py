@@ -13,9 +13,9 @@ class TestBasicBoxes:
         tb.draw()
         pygame.display.update()
 
-    def test_image_box(self, frame):
+    def test_image_box(self, frame, image_filename):
         """Display image with colorful boxes."""
-        ib = ImageBox(frame, "test_data/test_tile.png")
+        ib = ImageBox(frame, image_filename)
         ib.draw()
         pygame.display.update()
 

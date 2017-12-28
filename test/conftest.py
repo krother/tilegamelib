@@ -17,6 +17,11 @@ TILE = TEST_DATA_PATH + 'test_tile.png'
 
 
 @pytest.fixture
+def image_filename():
+    return TILE
+
+
+@pytest.fixture
 def tile_bitmap():
     return image.load(TILE).convert()
 

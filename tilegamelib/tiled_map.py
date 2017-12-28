@@ -1,8 +1,7 @@
 
 import pygame
 
-from .vector import Vector
-from .vector import ZERO_VECTOR
+from .vector import ZERO_VECTOR, Vector
 
 
 class TiledMap:

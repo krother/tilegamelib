@@ -1,19 +1,17 @@
 
 import os
-import pygame
 import time
 
-from tilegamelib import EventGenerator
-from tilegamelib import EventListener
-from tilegamelib import ExitListener
-from tilegamelib import FigureMoveListener
-from tilegamelib import TileFactory
+import pygame
+
+from tilegamelib import (EventGenerator, EventListener, ExitListener,
+                         FigureMoveListener, TileFactory)
 from tilegamelib.config import config
 from tilegamelib.draw_timer import draw_timer
 from tilegamelib.move_group import MoveGroup
 
-from .screen import Screen
 from .frame import Frame
+from .screen import Screen
 
 
 class Game:

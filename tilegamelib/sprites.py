@@ -1,11 +1,7 @@
 
-import time
-
-import pygame
 from pygame import Rect
 
 from .move import Move
-from .tile_factory import TileFactory
 from .vector import Vector
 
 

@@ -11,4 +11,4 @@ install:
   - pip install --editable .
 # command to run tests
 script:
-  - pytest test/test_frame.py
+  - pytest

@@ -1,7 +1,4 @@
 
-import time
-import pygame
-
 from .move import Move
 from .vector import Vector
 
