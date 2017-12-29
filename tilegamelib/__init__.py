@@ -1,5 +1,6 @@
 
 from . import screen
+from .animation import AnimatedTile
 from .event_listener import EventListener
 from .event_listener import ExitListener
 from .event_listener import FigureMoveListener

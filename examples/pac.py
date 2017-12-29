@@ -5,7 +5,7 @@ import time
 import pygame
 from pygame import Rect
 
-from tilegamelib import TiledMap
+from tilegamelib import AnimatedTile, TiledMap
 from tilegamelib.bar_display import BarDisplay
 from tilegamelib.basic_boxes import DictBox
 from tilegamelib.config import config
@@ -49,13 +49,13 @@ GHOST_POSITIONS = [(18, 1),
                    (1, 10)]
 
 PAC_TILES = {
-    str(UP): 'b.pac_up',
-    str(DOWN): 'b.pac_down',
-    str(LEFT): 'b.pac_left',
-    str(RIGHT): 'b.pac_right'
+    UP: ['b.pac_up', 'b.pac_up+', 'b.pac_up*', 'b.pac_up+'],
+    DOWN: ['b.pac_down', 'b.pac_down+', 'b.pac_down*', 'b.pac_down+'],
+    LEFT: ['b.pac_left', 'b.pac_left+', 'b.pac_left*', 'b.pac_left+'],
+    RIGHT: ['b.pac_right', 'b.pac_right+', 'b.pac_right*', 'b.pac_right+']
 }
 
-GHOST_TILE = 'b.ghost'
+GHOST_TILES = ['b.ghost_d', 'b.ghost_l', 'b.ghost_u', 'b.ghost_r']
 
 
 class PacLevel:
@@ -82,10 +82,15 @@ class PacLevel:
 class Ghost:
 
     def __init__(self, game, pos, level):
-        self.sprite = Sprite(game, GHOST_TILE, pos, speed=2)
+        self.sprite = Sprite(game, GHOST_TILES[0], pos, speed=2)
+        self.sprite.tile = AnimatedTile(GHOST_TILES, game.tile_factory, game.frame, pos, loop=True)
         self.level = level
         self.direction = RIGHT
         self.set_random_direction()
+
+        #self.game = game
+        #self._tile_delay=10
+        #self._ani_index=0
 
     def get_possible_moves(self):
         result = []
@@ -109,9 +114,15 @@ class Ghost:
             self.set_random_direction()
             self.sprite.add_move(self.direction)
         else:
+            self.sprite.tile.move()
             self.sprite.move()
 
     def update(self):
+        #self._tile_delay -= 1
+        #if self._tile_delay == 0:
+        #    self._tile_delay = 10
+        #    self._ani_index = 1 - self._ani_index
+        #    self.sprite.tile = self.game.get_tile(GHOST_TILES[self._ani_index])
         self.move()
 
     def draw(self):
@@ -124,13 +135,15 @@ class Pac:
         self.game = game
         self.level = level
         self.sprite = Sprite(game, 'b.pac_right', pos, speed=4)
-        self.direction = RIGHT
+        self.set_direction(RIGHT)
         self.eaten = None
         self.score = 0
         self.buffered_move = None
 
     def set_direction(self, direction):
-        self.sprite.tile = self.game.get_tile(PAC_TILES[str(direction)])
+        tiles = PAC_TILES[direction]
+        tile = AnimatedTile(tiles, self.game.tile_factory, self.game.frame, self.sprite.pos, loop=True)
+        self.sprite.tile = tile
         self.direction = direction
         self.move()
 
@@ -157,6 +170,7 @@ class Pac:
 
     def update(self):
         """Try eating dots and fruit"""
+        self.sprite.tile.move()
         if self.sprite.finished and not self.buffered_move is None:
             self.move(self.buffered_move)
             self.buffered_move = None
