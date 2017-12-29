@@ -10,6 +10,14 @@ class TestVector:
         assert a.x == 1
         assert a.y == 2
 
+    def test_set_xy(self):
+        """x and y attributes can be set."""
+        a = Vector(1, 2)
+        a.x = 3
+        a.y = 4
+        assert a.x == 3
+        assert a.y == 4
+
     def test_autocreate(self):
         """Creating a Vector from a Vector."""
         a = Vector(1, 2)

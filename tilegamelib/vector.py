@@ -24,9 +24,17 @@ class Vector:
     def x(self):
         return self.coord[0]
 
+    @x.setter
+    def x(self, x):
+        self.coord = (x, self.y)
+
     @property
     def y(self):
         return self.coord[1]
+
+    @y.setter
+    def y(self, y):
+        self.coord = (self.x, y)
 
     def __add__(self, other):
         if not isinstance(other, Vector):
