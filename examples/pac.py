@@ -18,7 +18,6 @@ from examples.generate_maze import create_maze
 
 ONE_PLAYER_START_DELAY = 3000
 
-
 RANDOM_LEVEL_SIZE = (20, 12)
 
 LEVEL = """####################
@@ -88,10 +87,6 @@ class Ghost:
         self.direction = RIGHT
         self.set_random_direction()
 
-        #self.game = game
-        #self._tile_delay=10
-        #self._ani_index=0
-
     def get_possible_moves(self):
         result = []
         directions = [LEFT, RIGHT, UP, DOWN]
@@ -118,11 +113,6 @@ class Ghost:
             self.sprite.move()
 
     def update(self):
-        #self._tile_delay -= 1
-        #if self._tile_delay == 0:
-        #    self._tile_delay = 10
-        #    self._ani_index = 1 - self._ani_index
-        #    self.sprite.tile = self.game.get_tile(GHOST_TILES[self._ani_index])
         self.move()
 
     def draw(self):
