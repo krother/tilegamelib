@@ -15,8 +15,8 @@ from tilegamelib.game import Game
 from tilegamelib.vector import DOWN, LEFT, RIGHT, UP, Vector
 
 
-MIN_X = -16
-MAX_X = 764
+MIN_X = -8
+MAX_X = 772
 
 
 class Player(Sprite):
@@ -24,10 +24,9 @@ class Player(Sprite):
     def __init__(self, game):
         Sprite.__init__(self)
         self.game = game
-        self.tile = game.get_tile('rot.hoch')
-        self.image = self.tile.image.subsurface(self.tile.box)
+        self.image = game.get_tile_surface('rot.hoch')
         self.g = Group(self)
-        self.pos = Vector(300, 500)
+        self.pos = Vector(300, 510)
         self.speed = 4
         self.direction = RIGHT
 
@@ -55,8 +54,7 @@ class Alien(Sprite):
     def __init__(self, game, pos, speed=1, tile='b.ghost_d'):
         Sprite.__init__(self)
         self.game = game
-        self.tile = game.get_tile(tile)
-        self.image = self.tile.image.subsurface(self.tile.box)
+        self.image = game.get_tile_surface(tile)
         self.pos = pos
         self.speed = speed
         self.direction = RIGHT
@@ -88,8 +86,7 @@ class Shot(Sprite):
     def __init__(self, game, pos, speed=4):
         Sprite.__init__(self)
         self.game = game
-        self.tile = game.get_tile('b.dot')
-        self.image = self.tile.image.subsurface(self.tile.box)
+        self.image = game.get_tile_surface('b.dot')
         self.mask = mask.from_surface(self.image)
         self.pos = Vector(pos)
         self.speed = speed
@@ -124,19 +121,22 @@ class InvadersGame:
     def draw(self):
         self.game.screen.clear()
         self.floor.draw()
-        self.player.move()
         self.player.draw()
-        self.shots.update()
         self.shots.draw(self.game.screen.display)
-        self.aliens.update()
         self.aliens.draw(self.game.screen.display)
+
+    def update(self):
+        self.player.move()
+        self.shots.update()
+        self.aliens.update()
+        self.draw()
         groupcollide(self.shots, self.aliens, True, True, collided=collide_mask)
         if not self.aliens:
             self.game.exit()
 
     def run(self):
         self.game.event_loop(figure_moves=self.player.set_direction,
-            draw_func=self.draw, keymap={K_SPACE: self.shoot})
+            draw_func=self.update, keymap={K_SPACE: self.shoot})
 
 
 if __name__ == '__main__':

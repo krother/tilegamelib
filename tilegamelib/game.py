@@ -1,6 +1,7 @@
 
 import os
 import time
+import warnings
 
 import pygame
 
@@ -29,11 +30,15 @@ class Game:
     def get_tile(self, key):
         return self.tile_factory.get(key)
 
+    def get_tile_surface(self, key):
+        tile = self.get_tile(key)
+        return tile.image.subsurface(tile.box)
+
     def parse_config(self, config_filename):
         """
         Adds contents of config file to config dictionary.
         """
-        # deprecated!
+        warnings.warn('Game.parse_config has been deprecated!')
         path, fn = os.path.split(config_filename)
         self.path = path + os.sep
         before = set(dir())
