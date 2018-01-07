@@ -15,7 +15,7 @@ class MapMove:
 
         tile = self.map.get_tile(pos)
         self._move = Move(tmap.frame, tile, tmap.pos_in_pixels(pos),
-                          direction * 2, steps=16)
+                          direction * speed, steps=tile.size.x // speed)
         self.map.set_tile(pos, floor_tile or '.')
 
     @property

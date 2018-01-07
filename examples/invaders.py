@@ -159,7 +159,7 @@ class InvadersGame:
 
     def run(self):
         self.game.event_loop(figure_moves=self.player.set_direction,
-            draw_func=self.update, keymap={K_SPACE: self.shoot})
+            draw_func=self.update, keymap={K_SPACE: self.shoot}, delay=30)
 
 
 if __name__ == '__main__':

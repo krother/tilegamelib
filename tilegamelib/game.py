@@ -47,7 +47,7 @@ class Game:
         for name in after - before:
             self.config[name] = eval(name)
 
-    def event_loop(self, figure_moves=None, exit=True, draw_func=None, keymap=None):
+    def event_loop(self, figure_moves=None, exit=True, draw_func=None, keymap=None, delay=20):
         self.events = EventGenerator()
         if figure_moves:
             self.events.add_listener(FigureMoveListener(figure_moves))
@@ -55,7 +55,7 @@ class Game:
             self.events.add_listener(EventListener(keymap=keymap))
         if exit:
             self.events.add_listener(ExitListener(self.events.exit_signalled))
-        with draw_timer(draw_func, self.events):
+        with draw_timer(draw_func, self.events, delay=delay):
             self.events.event_loop()
 
     def exit(self):

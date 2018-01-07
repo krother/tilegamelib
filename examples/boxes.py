@@ -28,13 +28,12 @@ class Boxes:
     def __init__(self):
         self.game = Game()
         self.tm = TiledMap(self.game)
-        self.player = Sprite(self.game, 'b.tail', (4, 1), speed=2)
+        self.player = Sprite(self.game, 'b.tail', (4, 1), speed=4)
         self.tm.set_map(BOXMAP)
 
     def draw(self):
         self.tm.draw()
         self.player.draw()
-        pygame.display.update()
 
     def move(self, direction):
         nearpos = self.player.pos + direction
@@ -53,9 +52,9 @@ class Boxes:
                 # crate moved
                 floor = '.' if near == 'x' else '*'
                 insert = 'X' if far == '*' else 'x'
-                moves.append(MapMove(self.tm, nearpos, direction, 1,
+                moves.append(MapMove(self.tm, nearpos, direction, 4,
                           floor_tile=floor, insert_tile=insert))
-            self.game.wait_for_move(moves, self.draw, 0.01)
+            self.game.wait_for_move(moves, self.draw, 0.02)
 
         self.draw()
         self.check_complete()
