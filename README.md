@@ -17,7 +17,14 @@ tilegamelib helps create pygame-based games that have graphics consisting of sma
 
 ## Installation
 
-It is assumed that you have **Python 3.5** or higher. The instructions here work for
+It is assumed that you have **Python 3.5** or higher. The instructions here work for Linux and Windows.
+I have no idea how pygame works on MacOS.
+
+The installation should handle itself:
+
+    pip install tilegamelib
+
+However, *if this fails*, feel encouraged to download the source code and try the following steps:
 
 ### Step 1: Install pygame
 
