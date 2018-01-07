@@ -16,6 +16,7 @@ import time
 packages = ['tilegamelib']
 
 package_data ={
+    'tilegamelib': ['data/*.ttf', 'data/*.png', 'data/*.conf', 'data/*.xpm', 'data/*.txt'] 
     #'test.test_data':['file1',..],
     }
 
