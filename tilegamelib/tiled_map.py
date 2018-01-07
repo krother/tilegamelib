@@ -1,6 +1,8 @@
 
 import pygame
+from pygame import Rect
 
+from .config import config
 from .vector import ZERO_VECTOR, Vector
 
 
@@ -120,6 +122,10 @@ class TiledMap:
         """Returns the symbol at the given position"""
         return self.tile_factory.get(self.at(pos))
 
+    def get_tile_surface(self, pos):
+        """Returns the symbol at the given position"""
+        return self.tile_factory.get_surface(self.at(pos))
+
     def set_tile(self, pos, tilename):
         """Sets the symbol at the given position"""
         pos = Vector(pos)
@@ -132,7 +138,11 @@ class TiledMap:
         for x in range(self.size.x):
             for y in range(self.size.y):
                 pos = Vector(x, y)
-                tile = self.get_tile(pos)
-                pixelpos = tile.size * pos
-                tile.draw(self.mapsurf, pixelpos)
+                pixelpos = pos * config.TILE_SIZE
+                tile = self.get_tile_surface(pos)
+                rect = Rect(pixelpos.x, pixelpos.y, tile.get_width(), tile.get_height())
+                self.mapsurf.blit(tile, rect)
+                # tile = self.get_tile(pos)
+                # pixelpos = tile.size * pos
+                # tile.draw(self.mapsurf, pixelpos)
         self._modified = False

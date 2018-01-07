@@ -12,7 +12,7 @@ pygame.font.init()
 class BasicConfig:
 
     BASE_PATH = os.path.split(__file__)[0]
-    DATA_PATH = os.path.join(BASE_PATH, '..', 'examples', 'data') + os.sep
+    DATA_PATH = os.path.join(BASE_PATH, 'data') + os.sep
 
     # tiles
     TILE_SET = DATA_PATH + 'tiles.xpm'

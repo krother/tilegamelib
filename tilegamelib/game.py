@@ -31,8 +31,7 @@ class Game:
         return self.tile_factory.get(key)
 
     def get_tile_surface(self, key):
-        tile = self.get_tile(key)
-        return tile.image.subsurface(tile.box)
+        return self.tile_factory.get_surface(key)
 
     def parse_config(self, config_filename):
         """

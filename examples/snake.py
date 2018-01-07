@@ -48,9 +48,6 @@ EASY = False
 
 config.RESOLUTION = (800, 550)
 
-config.HIGHSCORES = True
-config.HIGHSCORE_FILE = config.DATA_PATH + '/snake_scores.txt'
-
 
 class SnakeLevel:
 

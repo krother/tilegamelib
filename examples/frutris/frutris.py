@@ -1,5 +1,7 @@
 #! /usr/bin/python
 
+import os
+
 from random import randint
 
 from pygame import Rect
@@ -27,7 +29,8 @@ DROP_DELAY_DECREASE_PER_LEVEL = 5
 ONE_PLAYER_START_DELAY = 7
 TWO_PLAYER_DELAY = 10
 LEVEL_COUNTER_INIT = 5000
-LEVEL = open(config.DATA_PATH + '/emptybox.map').read()
+BASE_PATH = os.path.split(__file__)[0]
+LEVEL = open(BASE_PATH + '/emptybox.map').read()
 MAX_FRUIT = 5
 
 
@@ -251,7 +254,7 @@ class TwoPlayerGame(FrutrisGame):
             field = 'player2_score'
             if sender == self.players[0]:
                 field = 'player1_score'
-            self.status_box[field] += params[0] * self.status_box.get('level',1)
+            self.status_box[field] += params[0] * self.status_box.get('level', 1)
 
     def win(self):
         play_effect('winner_first')

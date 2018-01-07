@@ -49,3 +49,8 @@ class TileFactory:
         if not result:
             raise NoTileError("No such tile: %s" % str(key))
         return result
+
+    def get_surface(self, key):
+        """Returns a pygame.Surface instance."""
+        tile = self.get(key)
+        return tile.image.subsurface(tile.box)

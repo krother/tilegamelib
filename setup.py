@@ -21,7 +21,7 @@ package_data ={
 
 setup(
         name = "tilegamelib",
-        version = "0.8",
+        version = "0.8.1",
         description = "helper classes for building games from square tiles",
         license = 'MIT',
         classifiers = [
@@ -29,13 +29,12 @@ setup(
             'Intended Audience :: Developers',
             'Topic :: Games/Entertainment',
             'License :: OSI Approved :: MIT License',
-            'Programming Language :: Python :: 3.3',
             'Programming Language :: Python :: 3.4',
             'Programming Language :: Python :: 3.5',
             'Programming Language :: Python :: 3.6',
         ],
         install_requires = ['pygame'],
-        python_requires='>=3.3',
+        python_requires='>=3.4',
         author="Kristian Rother",
         author_email="krother@academis.eu",
         extras_require={
@@ -48,7 +47,7 @@ setup(
             ]
         },
         #py_modules=['tilegamelib'],
-        packages=packages, 
-        package_data=package_data, 
+        packages=packages,
+        package_data=package_data,
         #data_files=[]#'RELEASE_NOTES.TXT', 'README.TXT', 'LICENSE_GPL.TXT']
         )
