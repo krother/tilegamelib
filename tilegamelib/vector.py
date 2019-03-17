@@ -1,7 +1,5 @@
 
-from typing import Union, Tuple, Iterable
-
-vector_or_tuple = Union[Vector, Tuple[int, int]]
+from typing import Type, Union, Tuple, Iterable, NewType
 
 
 class Vector:
@@ -40,7 +38,7 @@ class Vector:
     def y(self, y: int):
         self.coord = (self.x, y)
 
-    def __add__(self, other: vector_or_tuple) -> Vector:
+    def __add__(self, other: Union['Vector', Tuple[int, int]]) -> 'Vector':
         """return sum of two vectors"""
         if not isinstance(other, Vector):
             other = Vector(other)
@@ -48,13 +46,13 @@ class Vector:
         y = self.y + other.y
         return Vector(x, y)
 
-    def __sub__(self, other: vector_or_tuple) -> Vector:
+    def __sub__(self, other: Union['Vector', Tuple[int, int]]) -> 'Vector':
         """return difference of two vectors"""
         x = self.x - other.x
         y = self.y - other.y
         return Vector(x, y)
 
-    def __mul__(self, other: vector_or_tuple) -> str:
+    def __mul__(self, other: Union['Vector', Tuple[int, int]]) -> 'str':
         """return product of two vectors"""
         if isinstance(other, int):
             x = self.x * other
@@ -66,7 +64,7 @@ class Vector:
             y = self.y * other.y
         return Vector(x, y)
 
-    def __floordiv__(self, other: vector_or_tuple) -> Vector:
+    def __floordiv__(self, other: Union['Vector', Tuple[int, int]]) -> 'Vector':
         """divides two vectors"""
         if isinstance(other, int):
             x = self.x // other

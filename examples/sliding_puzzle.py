@@ -1,4 +1,7 @@
-
+"""
+simple puzzle game:
+arrange the fruits in rows
+"""
 import arcade
 from arcade.key import ESCAPE
 from collections import Counter
@@ -19,7 +22,9 @@ SIZEX, SIZEY = (350, 350)
 
 
 class SlidingPuzzle(arcade.Window):
-
+    """
+    main game class
+    """
     def __init__(self):
         """initialize everything"""
         super().__init__(SIZEX, SIZEY, "Sliding Puzzle")
@@ -29,7 +34,8 @@ class SlidingPuzzle(arcade.Window):
         self.gap = Vector(4, 4)
         self.moving = None
 
-    def count_same(self, row):
+    @staticmethod
+    def count_same(row):
         """counts most frequent char in a string"""
         counter = Counter(row)
         return counter.most_common(1)[0][1]
