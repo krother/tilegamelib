@@ -1,6 +1,9 @@
 examples/puzzle/*
 examples/data/*scores.txt
 
+tilegamelib/.mypy_cache/*
+examples/.mypy_cache/*
+
 # Temporary and binary files
 *~
 *.py[cod]

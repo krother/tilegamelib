@@ -1,4 +1,9 @@
 
+from typing import Union, Tuple, Iterable
+
+vector_or_tuple = Union[Vector, Tuple[int, int]]
+
+
 class Vector:
     """
     Direction vectors for moves, positions etc.
@@ -8,7 +13,6 @@ class Vector:
 
     They are hashable, unlike NumPy arrays.
     """
-
     def __init__(self, *args):
         if len(args) == 1:
             if isinstance(args[0], Vector):
@@ -21,34 +25,37 @@ class Vector:
             assert False
 
     @property
-    def x(self):
+    def x(self) -> int:
         return self.coord[0]
 
     @x.setter
-    def x(self, x):
+    def x(self, x: int):
         self.coord = (x, self.y)
 
     @property
-    def y(self):
+    def y(self) -> int:
         return self.coord[1]
 
     @y.setter
-    def y(self, y):
+    def y(self, y: int):
         self.coord = (self.x, y)
 
-    def __add__(self, other):
+    def __add__(self, other: vector_or_tuple) -> Vector:
+        """return sum of two vectors"""
         if not isinstance(other, Vector):
             other = Vector(other)
         x = self.x + other.x
         y = self.y + other.y
         return Vector(x, y)
 
-    def __sub__(self, other):
+    def __sub__(self, other: vector_or_tuple) -> Vector:
+        """return difference of two vectors"""
         x = self.x - other.x
         y = self.y - other.y
         return Vector(x, y)
 
-    def __mul__(self, other):
+    def __mul__(self, other: vector_or_tuple) -> str:
+        """return product of two vectors"""
         if isinstance(other, int):
             x = self.x * other
             y = self.y * other
@@ -59,7 +66,8 @@ class Vector:
             y = self.y * other.y
         return Vector(x, y)
 
-    def __floordiv__(self, other):
+    def __floordiv__(self, other: vector_or_tuple) -> Vector:
+        """divides two vectors"""
         if isinstance(other, int):
             x = self.x // other
             y = self.y // other
@@ -70,20 +78,20 @@ class Vector:
             y = self.y // other.y
         return Vector(x, y)
 
-    def __iter__(self):
+    def __iter__(self) -> Iterable:
         return self.coord.__iter__()
 
-    def __eq__(self, other):
+    def __eq__(self, other) -> bool:
         if type(other) == type(self):
             if self.x == other.x and self.y == other.y:
                 return True
         else:
             return Vector(self) == Vector(other)
 
-    def __hash__(self):
+    def __hash__(self) -> int:
         return str(self).__hash__()
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return '[%i;%i]' % (self.x, self.y)
 
 
