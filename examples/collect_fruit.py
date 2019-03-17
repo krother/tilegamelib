@@ -1,13 +1,12 @@
 
 import time
 
-import pygame
-from pygame import Rect
-
-from tilegamelib import TiledMap
-from tilegamelib.game import Game
-from tilegamelib.sprites import Sprite
-from tilegamelib.config import config
+import arcade
+from arcade.key import ESCAPE
+from tilegamelib import TiledMap, load_tiles
+from tilegamelib import MapMove
+from tilegamelib import PLAYER_MOVES
+from tilegamelib import Vector
 
 
 FRUITMAP = """##########
@@ -19,52 +18,49 @@ FRUITMAP = """##########
 #*..b..#g#
 ##########"""
 
-config.RESOLUTION = (450, 370)
+SIZEX, SIZEY = (450, 370)
 
 FRUIT = 'abcdefgh'
 EXIT_TILE = '*'
 WALL_TILE = '#'
 
 
-class CollectFruit:
+class CollectFruit(arcade.Window):
 
     def __init__(self):
-        self.game = Game()
-        self.tm = TiledMap(self.game)
-        self.player = Sprite(self.game, 'b.pac_right', (4, 1), speed=4)
-        self.tm.set_map(FRUITMAP)
-        self.draw()
-        self.events = None
-        self.score = 0
+        super().__init__(SIZEX, SIZEY, "Collect Fruit")
+        arcade.set_background_color(arcade.color.BLACK)
+        self.tiles = load_tiles('fruit.csv')
+        self.tm = TiledMap(self.tiles, FRUITMAP, offset=Vector(100, 100))
+        self.pos = Vector(2, 1)
 
-    def draw(self):
-        self.player.move()
+    def on_draw(self):
+        arcade.start_render()
         self.tm.draw()
-        self.player.draw()
-        self.check_player_square()
+        px = self.tm.pos_in_pixels(self.pos)
+        self.tiles['p'].draw(px.x, px.y, 32, 32)
 
-    def move(self, direction):
-        if self.player.finished:
-            nearpos = self.player.pos + direction
-            near = self.tm.at(nearpos)
-            if near == WALL_TILE:
-                return
-            self.player.add_move(direction)
-
-    def check_player_square(self):
-        field = self.tm.at(self.player.pos)
+    def move(self, vec):
+        """starts a move"""
+        dest = self.pos + vec
+        field = self.tm.at(dest)
+        if self.tm.at(dest) == '#':
+            return
+        self.pos = dest
         if field == EXIT_TILE:
-            self.game.exit()
+            arcade.window_commands.close_window()
         elif field in FRUIT:
-            self.score += 100
-            self.tm.set_tile(self.player.pos, '.')
+            self.tm.set(dest, '.')
 
-    def run(self):
-        self.game.event_loop(figure_moves=self.move, draw_func=self.draw)
-
+    def on_key_press(self, symbol, mod):
+        """Handle player movement"""
+        vec = PLAYER_MOVES.get(symbol)
+        if vec:
+            self.move(vec)
+        elif symbol == ESCAPE:
+            arcade.window_commands.close_window()
 
 
 if __name__ == '__main__':
     fruit = CollectFruit()
-    fruit.run()
-    time.sleep(1)
+    arcade.run()

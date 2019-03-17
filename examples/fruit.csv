@@ -1,7 +1,13 @@
 tile,path,x,y,w,h
 #,images/tiles.png,0,0,32,32
 .,images/tiles.png,0,32,32,32
-a,images/fruit.png,0,32,32,32
-b,images/fruit.png,0,64,32,32
-c,images/fruit.png,0,96,32,32
+*,images/tiles.png,0,64,32,32
+p,images/tiles.png,0,96,32,32
+a,images/fruit.png,0,0,32,32
+b,images/fruit.png,0,32,32,32
+c,images/fruit.png,0,64,32,32
+d,images/fruit.png,0,96,32,32
 e,images/fruit.png,0,128,32,32
+f,images/fruit.png,0,160,32,32
+g,images/fruit.png,0,192,32,32
+h,images/fruit.png,0,224,32,32

@@ -69,10 +69,11 @@ Create a new map in `__init__` and fill it with a sample level (given as a strin
 
 At this point, you won't see anything yet. First, you need to add a method to your class that draws the map:
 
-    def draw(self):
+    def on_draw(self):
+        arcade.start_render()
         self.map.draw()
 
-Fortunately, `arcade` calls this method in short intervals automatically. You won't have to call it yourself.
+Fortunately, `arcade` calls the `on_draw()` method in short intervals automatically. You won't have to call it yourself.
 
 ## 7. More tiles
 
