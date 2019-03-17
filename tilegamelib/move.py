@@ -1,5 +1,5 @@
 
-from .vector import RIGHT, ZERO_VECTOR, Vector
+from .vector import RIGHT, ZERO_VECTOR, INVERSE_Y, Vector
 from .config import config
 
 
@@ -8,11 +8,9 @@ class Move:
     Moves a tile over a certain amount of steps in one direction.
     """
     def __init__(self, tile, start=ZERO_VECTOR, direction=RIGHT,
-                 speed=1,
-                 offset=ZERO_VECTOR, on_finish=None):
+                 speed=1, on_finish=None):
         self.tile = tile
         self.pos = start
-        self.ofs = offset
         self.speed = speed
         self.steps = config.TILE_SIZE
         self.direction = direction
@@ -34,7 +32,7 @@ class Move:
             self.callback()
 
     def draw(self):
-        self.tile.draw(self.pos.x + self.ofs.x, self.pos.y + self.ofs.x, config.TILE_SIZE, config.TILE_SIZE)
+        self.tile.draw(self.pos.x, self.pos.y, config.TILE_SIZE, config.TILE_SIZE)
 
 
 class MapMove(Move):
@@ -45,15 +43,14 @@ class MapMove(Move):
     """
     def __init__(self, tmap, pos, direction, speed=2,
                  floor_tile='.', insert_tile=None,
-                 offset=ZERO_VECTOR, on_finish=None):
+                 on_finish=None):
         self.map = tmap
         self.end_pos = pos + direction
         self.tile_char = insert_tile or tmap.at(pos)
 
         super().__init__(self.map.get_tile(pos),
-                         tmap.pos_in_pixels(pos), direction,
+                         tmap.pos_in_pixels(pos), direction * INVERSE_Y,
                          speed=speed,
-                         offset=offset,
                          on_finish=on_finish)
         self.map.set(pos, floor_tile)
 

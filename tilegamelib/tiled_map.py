@@ -34,7 +34,9 @@ class TiledMap:
 
     def pos_in_pixels(self, pos):
         """Returns the position in pixels (x,y) of the given tile pos."""
-        return (pos - self.map_pos) * config.TILE_SIZE
+        #(pos - self.map_pos) * config.TILE_SIZE
+        pixelpos = Vector(pos.x * 32, (self.size.y - pos.y - 1) * 32)
+        return pixelpos + self.offset
 
     def is_on_screen(self, pos):
         """
@@ -109,9 +111,10 @@ class TiledMap:
         for x in range(self.size.x):
             for y in range(self.size.y):
                 pos = Vector(x, y)
-                pixelpos = pos * 32
+                # reverse pixel y axis, because arcade starts counting at bot left
+                pxpos = self.pos_in_pixels(pos)
                 tile = self.tiles[self.map[pos.y][pos.x]]
-                tile.draw(pixelpos.x + self.offset.x, pixelpos.y + self.offset.y, 32, 32)
+                tile.draw(pxpos.x, pxpos.y, config.TILE_SIZE, config.TILE_SIZE)
 
     def set(self, pos, tile):
         """Sets the symbol at the given position"""

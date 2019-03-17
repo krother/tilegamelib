@@ -52,7 +52,7 @@ class SlidingPuzzle(arcade.Window):
         source = self.gap - vec
         if self.map.at(source) == '#' or self.moving:
             return
-        self.moving = MapMove(self.map, source, vec, offset=self.map.offset)
+        self.moving = MapMove(self.map, source, vec)
         self.gap = source
 
     def update(self, delta_time):
