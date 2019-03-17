@@ -1,63 +1,56 @@
 
 # Writing a Mini-Game with tilegamelib
 
-The Python library **tilegamelib** is a wrapper around the popular library **pygame**. It is meant to facilitate creating simple games. Let's see whether we can build a simple maze game with a few lines of Python code.
+The Python library **tilegamelib** is a wrapper around the `arcade` library. It is meant to facilitate creating simple games. Let's see whether we can build a simple maze game with a few lines of Python code.
 
-## 1. Create a Game Object
+## 1. Import arcade
 
-The base for developing games is the class `tilegamelib.Game`. We first need to import it:
+Let's import the library first:
 
-    from tilegamelib import Game
-
-Now we can create a `Game` object and runs its *event loop*:
-
-    game = Game()
-    game.event_loop()
-
-When you run the program, you should see a black window that closes when you press the *escape* key. (With some GUIs like Anaconda Spyder on Windows, the window may appear in the background, so press Alt-Tab to focus it).
+    import arcade
 
 ## 2. A class for the game
 
-Let's write a class for our own game that will contain all game data. We move the `Game` object into that class. Note that we make it an **attribute** of the class by the `self` prefix:
+The base for developing games is the class `arcade.Window`.
+We can create our own subclass and run it in the arcade *event loop*:
 
-    class MazeGame:
+    class MyGame(arcade.Window):
 
         def __init__(self):
-            self.game = Game()
-            self.game.event_loop()
+            super().__init__(600, 400, "my game")
 
-
-Of course, we need to instantiate the `MazeGame` class as well. A good practice is to use a `__main__` block at the end of the file:
+Of course, we need to instantiate our class as well. A good practice is to use a `__main__` block at the end of the file:
 
     if __name__ == '__main__':
-        maze_game = MazeGame()
+        window = MyGame()
+        arcade.run()
 
 
-## 3. Drawing a Tile Map
+When you run the program, you should see a black window that forever. In some environments the window may appear in the background, so press Alt-Tab to focus it.
 
-The class `tilegamelib.TiledMap` is responsible for drawing 2D-maps composed of square tiles. Let's import it:
+
+## 3. Adding state
+
+We can keep game data inside the class. To do so, add attributes inside the `__init__` function. E.g. to store the score, we could define an integer:
+
+    self.score = 0
+
+
+## 4. Load a tileset
+
+For the graphics, we need to load a set of tiles. You find images and a specification CSV file in the `examples` folder:
+
+    from tilegamelib import load_tiles
+
+    tiles = load_tiles('fruit.csv')
+
+## 5. Create a Tile Map
+
+The class `tilegamelib.TiledMap` draws 2D-maps composed of the tiles we just loaded. Let's import it:
 
     from tilegamelib import TiledMap
 
-In `__init__` we create a new map and fill it with wall tiles:
-
-    self.map = TiledMap(self.game)
-    self.map.fill_map('#', (10, 10))
-
-At this point, we won't see anything yet. First, we need to write a method in `MazeGame` that draws the map:
-
-    def draw(self):
-        self.map.draw()
-
-We also need to modify the call of `event_loop()`, so that it calls our `draw()` method in regular intervals. Note that **`event_loop()` must be called in the last line of the `__init__()` method.**
-
-    self.game.event_loop(draw_func=self.draw)
-
-Now you should see a blue kind of chessboard.
-
-## 4. Map Contents
-
-To let a bit more happen on the screen, we can set the contents of the map to a string containing 10 x 10 characters:
+Create a new map in `__init__` and fill it with a sample level (given as a string):
 
     MAZE = """##########
     #........#
@@ -70,11 +63,20 @@ To let a bit more happen on the screen, we can set the contents of the map to a 
     #........#
     ##########"""
 
-And set the `TiledMap` to use this data:
+    self.map = TiledMap(tiles, MAZE)
 
-    self.map.set_map(MAZE)
+## 6. Draw the map
 
-There are several characters encoding for predefined graphic tiles:
+At this point, you won't see anything yet. First, you need to add a method to your class that draws the map:
+
+    def draw(self):
+        self.map.draw()
+
+Fortunately, `arcade` calls this method in short intervals automatically. You won't have to call it yourself.
+
+## 7. More tiles
+
+Experiment with the symbols in the map. For some of them, you may have to edit the CSV file.
 
 | characters | graphics |
 |------------|----------|
@@ -88,71 +90,76 @@ There are several characters encoding for predefined graphic tiles:
 | `+`        | star      |
 | `@`        | blue dot  |
 
-## 5. Sprites
+## 8. Sprites
 
-Another possibility to draw tiles are **sprites**, moveable objects:
+Another possibility to draw tiles explicitly. The loaded tiles bring their own method for it. Let's draw some fruit in the `draw()` method:
 
-    from tilegamelib.sprites import Sprite
+    tiles['a'].draw(100, 100, 32, 32)
 
-Of course, sprites need to be created in `__init__` as well (again, **before** calling `event_loop`). We will give our sprite a well-known *"face"*:
+Make sure this line occurs **after** drawing the tiled map, otherwise the map might occlude the fruit of your work (**pun :-)**).
 
-    self.sprite = Sprite(self.game, 'b.pac_right', (1, 1), speed=2)
+The parameters are the x and y position and the size. Note that `arcade` allows you to zoom and shrink textures.
 
-And we need to draw the sprite in `draw()`:
+**Note:** `arcade` has its own sprite class, but I haven't explored it yet.
 
-    self.sprite.draw()
+## 9. Action!
 
-## 6. Action!
+To move the object, we need keyboard controls. If you want the
+keys to our own method, use:
 
-Now we will move our sprite. The `Game` class is taking care of reading from the keyboard. All we need to do is to redirect the arrow keys to our own method. As this is a very common thing, this is rather straightforward:
+    from tilegamelib import PLAYER_MOVES
 
-    def move(self, direction):
-        print(direction)
+    ...
+        def on_key_press(self, symbol, mod):
+            vec = PLAYER_MOVES.get(symbol)
+            if vec:
+                self.move(vec)
+            elif symbol == ESCAPE:
+                arcade.window_commands.close_window()
 
-And modify the call to `event_loop()` to:
 
-    self.game.event_loop(figure_moves=self.move, draw_func=self.draw)
+The `arcade.key` module contains constants to access all kinds of keys.
 
-Now you should see that `direction` contains a different vector for each arrow key. We can pass that vector to `sprite`, so that it moves:
+## 10. Vectors
 
-    self.sprite.add_move(direction)
+The `tilegamelib.vector` class allows you to conveniently define positions that you can add together:
 
-To perform the moves, we need to call `self.sprite.move()` in regular intervals. Place the following command in the `draw()` method:
+    from tilegamelib import Vector
+    from tilegamelib.vector import UP, DOWN, LEFT, RIGHT
 
-    self.sprite.move()
+    position = Vector(3, 4)
+    position += LEFT
 
-Now the figure should move through the maze!
+## 11. Questions you might have at this point
 
-## 7. Questions you might have at this point
-
-### 7.1 How can I check the tile at the sprite position?
+### 11.1 How can I check the tile at a given position?
 
     print(self.map.at(self.sprite.pos))
 
-### 7.2 How can I check the position where the sprite is moving?
+### 11.2 How can I check the position where I am moving?
 
     print(self.sprite.pos + direction)
 
-### 7.3 How can I place something on the map?
+### 11.3 How can I place something on the map?
 
     self.map.set_tile((4,4), 'a')
 
-### 7.4 What other tiles are there?
+### 11.4 What other tiles are there?
 
-See the file [`tiles.conf`](https://github.com/krother/tilegamelib/blob/master/examples/data/tiles.conf).
+See the `examples/images` folder.
 
-### 7.5 Can I draw text?
+### 11.5 Can I draw text?
 
-    self.game.frame.print_text("Hello World", (50, 400))
+Yes, but I have to look it up.
 
-### 7.6 I want a ghost that moves randomly. How?
+### 11.6 I want a ghost that moves randomly. How?
 
 You can find all movement vectors by importing
 
     from tilegamelib.vector import UP, DOWN, LEFT, RIGHT
 
-Place the code moving the ghost sprite at the beginning of `draw()`.
+To manage the movement, define an `update()` method that is also calle automatically.
 
-## 8. Go create!
+## 12. Go create!
 
 The documentation of `tilegamelib` is still very immature, in particular the details of how to plug in your own graphics, keys and sound effects. Please report any questions and issues on [GitHub](https://github.com/krother/tilegamelib) or by e-mail to `krother@academis.eu`.
