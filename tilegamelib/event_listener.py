@@ -1,5 +1,6 @@
 
-from pygame import K_DELETE, K_DOWN, K_ESCAPE, K_LEFT, K_RETURN, K_RIGHT, K_UP
+# disabled
+#from pygame import K_DELETE, K_DOWN, K_ESCAPE, K_LEFT, K_RETURN, K_RIGHT, K_UP
 
 from .vector import DOWN, LEFT, RIGHT, UP
 

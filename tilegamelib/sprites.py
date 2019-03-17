@@ -5,7 +5,7 @@ from .move import Move
 from .vector import Vector
 
 
-class Sprite:
+class TileSprite:
     """
     Object that moves along a tile grid.
     Sprites have a queue of moves.

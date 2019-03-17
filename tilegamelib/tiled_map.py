@@ -1,9 +1,15 @@
 
-import pygame
-from pygame import Rect
-
+import arcade
+from arcade import load_texture
+import pandas as pd
+from .vector import Vector, ZERO_VECTOR
 from .config import config
-from .vector import ZERO_VECTOR, Vector
+
+
+def load_tiles(filename):
+    df = pd.read_csv(filename)
+    tiles = {name: load_texture(*cols) for name, *cols in df.values}
+    return tiles
 
 
 class TiledMap:
@@ -11,34 +17,24 @@ class TiledMap:
     A map consisting of 2D-tiles. The map can be scrolled
     in a way that only a part of the map is displayed.
     """
-    def __init__(self, game, frame=None):
-        self.frame = frame or game.frame
-        self.tile_factory = game.tile_factory
-        self.offset = ZERO_VECTOR
+    def __init__(self, tiles, map_str, offset=ZERO_VECTOR):
+        self.tiles = tiles
+        self.map = [list(row) for row in map_str.split('\n')]
+        self.offset = Vector(offset)
         self.map_pos = ZERO_VECTOR
-        self.size = ZERO_VECTOR
-        self.map = []
-        self.mapsurf = None
-        self._modified = True
 
     @property
-    def win_size_px(self):
-        """size of the map window in pixels (x,y)."""
-        return self.win_size * self.tile_factory.tile_size
+    def size(self):
+        return Vector(len(self.map[0]), len(self.map))
 
     @property
     def map_size_px(self):
         """size of the map in pixels (x,y)."""
-        return self.size * self.tile_factory.tile_size
-
-    @property
-    def win_size(self):
-        """size of the window in tiles (rounded down)."""
-        return self.frame.size // self.tile_factory.tile_size
+        return self.size * config.TILE_SIZE
 
     def pos_in_pixels(self, pos):
         """Returns the position in pixels (x,y) of the given tile pos."""
-        return (pos - self.map_pos) * self.tile_factory.tile_size
+        return (pos - self.map_pos) * config.TILE_SIZE
 
     def is_on_screen(self, pos):
         """
@@ -63,6 +59,10 @@ class TiledMap:
         if self.is_on_map(pos):
             return self.map[pos.y][pos.x]
 
+    def get_tile(self, pos):
+        """Returns texture at given position"""
+        return self.tiles[self.at(pos)]
+
     def check_move(self, vector):
         """
         Checks if the visible part of the map can be moved by
@@ -79,7 +79,7 @@ class TiledMap:
         pos (x,y) are integer indices on the tile map.
         """
         self.map_pos = Vector(pos)
-        self.offset = self.map_pos * self.tile_factory.tile_size
+        self.offset = self.map_pos * config.TILE_SIZE
 
     def __str__(self):
         return self.get_map()
@@ -103,46 +103,17 @@ class TiledMap:
         if size is not None:
             self.size = Vector(size)
         self.map = [[char for x in range(self.size.x)] for y in range(self.size.y)]
-        # self.map = np.chararray(self.size, unicode=True)  # abandoned NumPy dependency
 
     def draw(self):
         """Draws the map."""
-        if self._modified:
-            self._cache_map()
-        src = pygame.Rect(
-            self.offset.x, self.offset.y,
-            self.win_size_px.x, self.win_size_px.y
-        )
-        dest = pygame.Rect(
-            0, 0,
-            self.win_size_px.x, self.win_size_px.y)
-        self.frame.blit(self.mapsurf, dest, src)
-
-    def get_tile(self, pos):
-        """Returns the symbol at the given position"""
-        return self.tile_factory.get(self.at(pos))
-
-    def get_tile_surface(self, pos):
-        """Returns the symbol at the given position"""
-        return self.tile_factory.get_surface(self.at(pos))
-
-    def set_tile(self, pos, tilename):
-        """Sets the symbol at the given position"""
-        pos = Vector(pos)
-        self.map[pos.y][pos.x] = tilename
-        self._modified = True
-
-    def _cache_map(self):
-        """used internally to pre-calculate map graphics"""
-        self.mapsurf = pygame.Surface(tuple(self.map_size_px))
         for x in range(self.size.x):
             for y in range(self.size.y):
                 pos = Vector(x, y)
-                pixelpos = pos * config.TILE_SIZE
-                tile = self.get_tile_surface(pos)
-                rect = Rect(pixelpos.x, pixelpos.y, tile.get_width(), tile.get_height())
-                self.mapsurf.blit(tile, rect)
-                # tile = self.get_tile(pos)
-                # pixelpos = tile.size * pos
-                # tile.draw(self.mapsurf, pixelpos)
-        self._modified = False
+                pixelpos = pos * 32
+                tile = self.tiles[self.map[pos.y][pos.x]]
+                tile.draw(pixelpos.x + self.offset.x, pixelpos.y + self.offset.y, 32, 32)
+
+    def set(self, pos, tile):
+        """Sets the symbol at the given position"""
+        pos = Vector(pos)
+        self.map[pos.y][pos.x] = tile

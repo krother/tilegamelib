@@ -8,7 +8,7 @@ from tilegamelib.vector import LEFT
 from tilegamelib.vector import RIGHT
 from tilegamelib.vector import UP, Vector
 
-from .multiplets import FruitMultiplets
+from multiplets import FruitMultiplets
 
 EXPLOSION = ['b.explo_1', 'b.explo_2', 'b.explo_3', 'b.explo_4',
              'b.explo_5', 'b.explo_6', 'b.empty']

@@ -18,10 +18,10 @@ from tilegamelib.vector import LEFT
 from tilegamelib.vector import RIGHT
 from tilegamelib.vector import UP
 
-from examples.frutris.dropping_blocks import Diamond
-from examples.frutris.dropping_blocks import FruitPair
-from examples.frutris.frutris_level import FrutrisLevel
-from examples.frutris.multiplets import MultipletCounter
+from dropping_blocks import Diamond
+from dropping_blocks import FruitPair
+from frutris_level import FrutrisLevel
+from multiplets import MultipletCounter
 
 START_DROP_DELAY = 50
 MIN_DROP_DELAY = 5

@@ -1,0 +1,3 @@
+pytest-isort
+pytest-flakes
+pytest-pep8

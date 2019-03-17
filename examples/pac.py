@@ -14,7 +14,7 @@ from tilegamelib.game import Game
 from tilegamelib.sprites import Sprite
 from tilegamelib.vector import DOWN, LEFT, RIGHT, UP, Vector
 
-from examples.generate_maze import create_maze
+from generate_maze import create_maze
 
 ONE_PLAYER_START_DELAY = 3000
 

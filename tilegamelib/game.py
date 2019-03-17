@@ -3,16 +3,10 @@ import os
 import time
 import warnings
 
-import pygame
-
-from tilegamelib import (EventGenerator, EventListener, ExitListener, FigureMoveListener,
-                         TileFactory)
+from tilegamelib import EventListener, ExitListener, FigureMoveListener
 from tilegamelib.config import config
 from tilegamelib.draw_timer import draw_timer
 from tilegamelib.move_group import MoveGroup
-
-from .frame import Frame
-from .screen import Screen
 
 
 class Game:
@@ -21,17 +15,9 @@ class Game:
         self.config = {}  # deprecated!
         if config_filename:
             self.parse_config(config_filename)
-        self.screen = Screen()
-        self.frame = Frame(self.screen, config.FRAME)
-        self.tile_factory = TileFactory()
+        self.tiles _factory = TileFactory()
         self._exit = False
         self._quit = quit  # terminate PyGame when event loop expires
-
-    def get_tile(self, key):
-        return self.tile_factory.get(key)
-
-    def get_tile_surface(self, key):
-        return self.tile_factory.get_surface(key)
 
     def parse_config(self, config_filename):
         """

@@ -1,30 +1,62 @@
 
 from .vector import RIGHT, ZERO_VECTOR, Vector
+from .config import config
 
 
 class Move:
     """
     Moves a tile over a certain amount of steps in one direction.
     """
-    def __init__(self, frame, tile, start_vector=ZERO_VECTOR, direction=RIGHT,
-            steps=0, when_finished=None):
-        self.frame = frame
+    def __init__(self, tile, start=ZERO_VECTOR, direction=RIGHT,
+                 speed=1,
+                 offset=ZERO_VECTOR, on_finish=None):
         self.tile = tile
-        self.start_vector = Vector(start_vector)
-        self.current_vector = Vector(start_vector)
-        self.steps = steps
+        self.pos = start
+        self.ofs = offset
+        self.speed = speed
+        self.steps = config.TILE_SIZE
         self.direction = direction
-        self.finished = False
-        self.callback = when_finished
+        self.callback = on_finish
 
-    def move(self):
+    @property
+    def finished(self):
+        return self.steps <= 0
+
+    def update(self):
         if self.steps > 0:
-            self.current_vector += self.direction
-            self.steps -= 1
+            self.pos += self.direction * self.speed
+            self.steps -= self.speed
         if self.steps <= 0:
-            self.finished = True
-            if self.callback:
-                self.callback()
+            self.finish_move()
+
+    def finish_move(self):
+        if self.callback:
+            self.callback()
 
     def draw(self):
-        self.tile.draw(self.frame, self.current_vector)
+        self.tile.draw(self.pos.x + self.ofs.x, self.pos.y + self.ofs.x, config.TILE_SIZE, config.TILE_SIZE)
+
+
+class MapMove(Move):
+    """
+    Moves a tile on a map.
+    First removes the tile, moves it and puts it back in a new position.
+    Not that the tile does not exist on the map while moving.
+    """
+    def __init__(self, tmap, pos, direction, speed=2,
+                 floor_tile='.', insert_tile=None,
+                 offset=ZERO_VECTOR, on_finish=None):
+        self.map = tmap
+        self.end_pos = pos + direction
+        self.tile_char = insert_tile or tmap.at(pos)
+
+        super().__init__(self.map.get_tile(pos),
+                         tmap.pos_in_pixels(pos), direction,
+                         speed=speed,
+                         offset=offset,
+                         on_finish=on_finish)
+        self.map.set(pos, floor_tile)
+
+    def finish_move(self):
+        self.map.set(self.end_pos, self.tile_char)
+        super().finish_move()
