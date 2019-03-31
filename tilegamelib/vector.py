@@ -52,7 +52,7 @@ class Vector:
         y = self.y - other.y
         return Vector(x, y)
 
-    def __mul__(self, other: Union['Vector', Tuple[int, int]]) -> 'str':
+    def __mul__(self, other: Union['Vector', Tuple[int, int]]) -> 'Vector':
         """return product of two vectors"""
         if isinstance(other, int):
             x = self.x * other
@@ -83,6 +83,8 @@ class Vector:
         if type(other) == type(self):
             if self.x == other.x and self.y == other.y:
                 return True
+            else:
+                return False
         else:
             return Vector(self) == Vector(other)
 
