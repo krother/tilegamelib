@@ -22,6 +22,8 @@ class TiledMap:
         self.map = [list(row) for row in map_str.split('\n')]
         self.offset = Vector(offset)
         self.map_pos = ZERO_VECTOR
+        self._sprites = arcade.SpriteList()
+        self._cache_map()
 
     @property
     def size(self):
@@ -83,6 +85,8 @@ class TiledMap:
         self.map_pos = Vector(pos)
         self.offset = self.map_pos * config.TILE_SIZE
 
+
+
     def __str__(self):
         return self.get_map()
 
@@ -105,18 +109,30 @@ class TiledMap:
         if size is not None:
             self.size = Vector(size)
         self.map = [[char for x in range(self.size.x)] for y in range(self.size.y)]
+        self._cache_map()
 
-    def draw(self):
-        """Draws the map."""
+    def _cache_map(self):
+        self._sprites = arcade.SpriteList()
         for x in range(self.size.x):
             for y in range(self.size.y):
                 pos = Vector(x, y)
                 # reverse pixel y axis, because arcade starts counting at bot left
                 pxpos = self.pos_in_pixels(pos)
+                # UNKNOWN: does not work without loading dummy image
+                sprite = arcade.Sprite('stonesoup/dungeon/dry_fountain.png', 1) # "images/character.png", 1)
                 tile = self.tiles[self.map[pos.y][pos.x]]
-                tile.draw(pxpos.x, pxpos.y, config.TILE_SIZE, config.TILE_SIZE)
+                sprite.append_texture(tile)
+                sprite.set_texture(1)
+                sprite.center_x = pxpos.x
+                sprite.center_y = pxpos.y
+                self._sprites.append(sprite)
+
+    def draw(self):
+        """Draws the map."""
+        self._sprites.draw()
 
     def set(self, pos, tile):
         """Sets the symbol at the given position"""
         pos = Vector(pos)
         self.map[pos.y][pos.x] = tile
+        self._cache_map()
