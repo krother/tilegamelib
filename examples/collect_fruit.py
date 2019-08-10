@@ -1,6 +1,5 @@
 
 import time
-
 import arcade
 from arcade.key import ESCAPE
 from tilegamelib import TiledMap, load_tiles
