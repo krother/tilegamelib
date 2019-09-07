@@ -1,21 +1,21 @@
-#! /usr/bin/python
 
 import random
 import time
+import arcade
+from arcade.key import ESCAPE
 
-import pygame
-from pygame import Rect
-
-from tilegamelib import Frame
-from tilegamelib import TiledMap
-from tilegamelib.basic_boxes import DictBox
-from tilegamelib.game import Game
-from tilegamelib.sprites import Sprite
+from tilegamelib import TiledMap, load_tiles
+#from tilegamelib.basic_boxes import DictBox
+#from tilegamelib.game import Game
+from tilegamelib.sprites import TileSprite
 from tilegamelib.vector import DOWN
 from tilegamelib.vector import LEFT
 from tilegamelib.vector import RIGHT
 from tilegamelib.vector import UP
 from tilegamelib.config import config
+from tilegamelib import MapMove
+from tilegamelib import PLAYER_MOVES
+from tilegamelib import Vector
 
 MOVE_DELAY = 15
 
@@ -47,21 +47,22 @@ HEAD_TILES = {
 EASY = False
 
 config.RESOLUTION = (800, 550)
+SIZEX, SIZEY = config.RESOLUTION
+START_POS = (5, 5)
 
 
 class SnakeLevel:
 
-    def __init__(self, data, tmap):
-        self.tmap = tmap
-        self.tmap.set_map(str(data))
+    def __init__(self, tiles):
+        self.tmap = TiledMap(tiles, LEVEL, offset=Vector(96, 96))
 
     def place_fruit(self, pos, fruit):
-        self.tmap.set_tile(pos, fruit)
+        self.tmap.set(pos, fruit)
 
     def remove_fruit(self, pos):
         tile = self.tmap.at(pos)
         if tile != '.':
-            self.tmap.set_tile(pos, '.')
+            self.tmap.set(pos, '.')
 
     def place_random_fruit(self):
         x = random.randint(1, self.tmap.size.x - 2)
@@ -75,13 +76,13 @@ class SnakeLevel:
 
 class SnakeSprite:
 
-    def __init__(self, game, pos, level):
-        self.game = game
+    def __init__(self, tiles, pos, level):
+        self.tiles = tiles
         self.level = level
         self.head = None
         self.tail = []
         self.tail_waiting = []
-        self.head = Sprite(self.game, 'b.pac_right', pos, HEAD_SPEED)
+        self.head = TileSprite(self.tiles['b.pac_right'], pos, HEAD_SPEED, offset=Vector(96, 448))
         self.direction = RIGHT
         self.past_directions = []
         self.crashed = False
@@ -105,7 +106,7 @@ class SnakeSprite:
             return
         self.direction = direction
         headtile = HEAD_TILES[str(direction)]
-        self.head.tile = self.game.get_tile(headtile)
+        self.head.tile = self.tiles[headtile]
         if EASY:
             self.move_forward()
 
@@ -116,14 +117,14 @@ class SnakeSprite:
     def move(self):
         if self.is_moving():
             for s in self.sprites:
-                s.move()
+                s.update()
 
     @property
     def positions(self):
         return [self.head.pos] + [seg.pos for seg in self.tail]
 
     def grow(self):
-        self.tail_waiting.append(Sprite(self.game, 'b.tail', self.positions[-1], HEAD_SPEED))
+        self.tail_waiting.append(TileSprite(self.tiles['b.tail'], self.positions[-1], HEAD_SPEED, offset=Vector(96, 448)))
         if not self.past_directions:
             self.past_directions.append(self.direction)
         else:
@@ -147,45 +148,35 @@ class SnakeSprite:
                 self.past_directions = [self.direction] + self.past_directions[:-1]
 
 
-class SnakeGame:
+class SnakeGame(arcade.Window):
 
     def __init__(self):
-        self.game = Game()
-
-        self.level = None
-        self.snake = None
+        super().__init__(SIZEX, SIZEY, "Snake")
+        arcade.set_background_color(arcade.color.BLACK)
+        self.tiles = load_tiles('fruit.csv')
+        self.level = SnakeLevel(self.tiles)
+        self.level.place_random_fruit()
+        self.snake = SnakeSprite(self.tiles, START_POS, self.level)
+        self.snake.set_direction(RIGHT)
         self.status_box = None
         self.events = None
         self.score = 0
-
-        self.create_level()
-        self.create_snake()
         self.create_status_box()
 
         self.update_mode = self.update_ingame
         self.move_delay = MOVE_DELAY
         self.delay = MOVE_DELAY
 
-    def create_snake(self):
-        start_pos = (5, 5)
-        self.snake = SnakeSprite(self.game, start_pos, self.level)
-        self.snake.set_direction(RIGHT)
-
-    def create_level(self):
-        tmap = TiledMap(self.game)
-        self.level = SnakeLevel(LEVEL, tmap)
-        self.level.place_random_fruit()
-
     def create_status_box(self):
-        frame = Frame(self.game.screen, Rect(660, 20, 200, 200))
-        self.status_box = DictBox(frame, {'score': 0})
+        ...
+        #frame = Frame(self.game.screen, Rect(660, 20, 200, 200))
+        #self.status_box = DictBox(frame, {'score': 0})
 
     def update_finish_moves(self):
         """finish movements before Game Over"""
         if not self.snake.is_moving():
-            pygame.display.update()
-            time.sleep(1)
-            self.game.exit()
+            time.sleep(2)
+            arcade.window_commands.close_window()
 
     def update_ingame(self):
         self.delay -= 1
@@ -196,28 +187,30 @@ class SnakeGame:
         if self.snake.eaten and not self.snake.is_moving():
             self.level.remove_fruit(self.snake.head.pos)
             self.level.place_random_fruit()
-            self.status_box.data['score'] += 100
+            #self.status_box.data['score'] += 100
             self.snake.eaten = None
         if self.snake.crashed:
             self.update_mode = self.update_finish_moves
-            self.score = self.status_box.data['score']
+            #self.score = self.status_box.data['score']
 
-    def update(self):
+    def update(self, time_delta):
         self.update_mode()
         self.snake.move()
 
-    def draw(self):
-        self.update()
+    def on_draw(self):
         self.level.draw()
         self.snake.draw()
-        self.status_box.draw()
+        #self.status_box.draw()
 
-    def run(self):
-        self.game.event_loop(figure_moves=self.snake.set_direction, draw_func=self.draw)
+    def on_key_press(self, symbol, mod):
+        """Handle player movement"""
+        vec = PLAYER_MOVES.get(symbol)
+        if vec:
+            self.snake.set_direction(vec)
+        elif symbol == ESCAPE:
+            arcade.window_commands.close_window()
 
 
 if __name__ == '__main__':
-    config.FRAME = Rect(10, 10, 640, 512)
     snake = SnakeGame()
-    snake.run()
-    pygame.quit()
+    arcade.run()
