@@ -5,14 +5,13 @@ import arcade
 from arcade.key import ESCAPE
 
 from tilegamelib import TiledMap, load_tiles
-#from tilegamelib.game import Game
+from tilegamelib.game import Game
 from tilegamelib.sprites import TileSprite
 from tilegamelib.vector import DOWN
 from tilegamelib.vector import LEFT
 from tilegamelib.vector import RIGHT
 from tilegamelib.vector import UP
 from tilegamelib.config import config
-from tilegamelib import PLAYER_MOVES
 from tilegamelib import Vector
 
 MOVE_DELAY = 15
@@ -45,7 +44,9 @@ HEAD_TILES = {
 EASY = False
 
 config.RESOLUTION = (800, 550)
-SIZEX, SIZEY = config.RESOLUTION
+config.TILE_FILE = 'fruit.csv'
+config.GAME_NAME = 'Snake'
+
 START_POS = (5, 5)
 MAP_OFS = Vector(96, 96)
 PLAYER_OFS = Vector(96, 448)
@@ -151,12 +152,11 @@ class SnakeSprite:
                 self.past_directions = [self.direction] + self.past_directions[:-1]
 
 
-class SnakeGame(arcade.Window):
+class SnakeGame(Game):
 
     def __init__(self):
-        super().__init__(SIZEX, SIZEY, "Snake")
+        super().__init__()
         arcade.set_background_color(arcade.color.BLACK)
-        self.tiles = load_tiles('fruit.csv')
         self.level = SnakeLevel(self.tiles)
         self.snake = SnakeSprite(self.tiles, START_POS, self.level)
         self.update_mode = self.update_ingame
@@ -165,8 +165,7 @@ class SnakeGame(arcade.Window):
     def update_finish_moves(self):
         """finish movements before Game Over"""
         if not self.snake.is_moving():
-            time.sleep(2)
-            arcade.window_commands.close_window()
+            self.exit()
 
     def update_ingame(self):
         """game is running"""
@@ -192,14 +191,8 @@ class SnakeGame(arcade.Window):
         self.level.draw()
         self.snake.draw()
 
-    def on_key_press(self, symbol, mod):
-        """Handle player movement"""
-        vec = PLAYER_MOVES.get(symbol)
-        if vec:
-            self.snake.set_direction(vec)
-        elif symbol == ESCAPE:
-            arcade.window_commands.close_window()
-
+    def move(self, vec):
+        self.snake.set_direction(vec)
 
 if __name__ == '__main__':
     snake = SnakeGame()

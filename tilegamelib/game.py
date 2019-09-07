@@ -2,30 +2,28 @@
 import os
 import time
 
-#from tilegamelib import EventListener, ExitListener, FigureMoveListener
 from tilegamelib.config import config
-from tilegamelib.move_group import MoveGroup
-from
+from tilegamelib import PLAYER_MOVES
+from tilegamelib.tiled_map import load_tiles
+import arcade
 
 
-class Game:
+class Game(arcade.Window):
     """
-    Simple game class
+    Simple game class for tile-based games
     """
-    def __init__(self, quit=True):
-        self.tiles = load_tiles(config.tile_file)
-        self.exit = False
-
-    def event_loop(self, figure_moves=None, exit=True, draw_func=None, keymap=None, delay=20):
-        self.events = EventGenerator()
-        if figure_moves:
-            self.events.add_listener(FigureMoveListener(figure_moves))
-        if keymap:
-            self.events.add_listener(EventListener(keymap=keymap))
-        if exit:
-            self.events.add_listener(ExitListener(self.events.exit_signalled))
-        with draw_timer(draw_func, self.events, delay=delay):
-            self.events.event_loop()
+    def __init__(self):
+        super().__init__(config.RESOLUTION[0], config.RESOLUTION[1], config.GAME_NAME)
+        self.tiles = load_tiles(config.TILE_FILE)
 
     def exit(self):
-        self.events.exit_signalled()
+        time.sleep(2)
+        arcade.window_commands.close_window()
+
+    def on_key_press(self, symbol, mod):
+        """Handle player movement"""
+        vec = PLAYER_MOVES.get(symbol)
+        if vec:
+            self.move(vec)
+        elif symbol == ESCAPE:
+            arcade.window_commands.close_window()
