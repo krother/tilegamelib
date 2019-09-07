@@ -6,6 +6,7 @@ from tilegamelib.config import config
 from tilegamelib import PLAYER_MOVES
 from tilegamelib.tiled_map import load_tiles
 import arcade
+from arcade.key import ESCAPE
 
 
 class Game(arcade.Window):

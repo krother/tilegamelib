@@ -1,10 +1,8 @@
 
 import random
-import time
 import arcade
-from arcade.key import ESCAPE
 
-from tilegamelib import TiledMap, load_tiles
+from tilegamelib import TiledMap
 from tilegamelib.game import Game
 from tilegamelib.sprites import TileSprite
 from tilegamelib.vector import DOWN
