@@ -12,40 +12,33 @@ Distributed under the conditions of the MIT license.
 
 ## Description
 
-tilegamelib helps create pygame-based games that have graphics consisting of small square-shaped tiles (think Sokoban, Pacman, Tetris, Atomix and their countless siblings).
+tilegamelib helps create mini-games that have graphics consisting of square-shaped tiles (think Sokoban, Pacman, Tetris, Atomix and their countless siblings).
 
 
 ## Installation
 
-It is assumed that you have **Python 3.5** or higher. The instructions here work for Linux and Windows.
+It is assumed that you have **Python 3.6** or higher. The instructions here work for Linux and Windows.
 I have no idea how pygame works on MacOS.
 
-The installation should handle itself:
+### Step 1: Install arcade
+
+Follow the documentation of the `arcade` library
+(requires C libraries, pip might not handle this).
+
+### Step 2: Install tilegamelib
+
+Next, install tilegamelib:
 
     pip install tilegamelib
 
-However, *if this fails*, feel encouraged to download the source code and try the following steps:
 
-### Step 1: Install pygame
+### Development installation
 
-Just try:
-
-    pip install pygame
-
-### Step 2: Tell Python where to find tilegamelib
-
-Set the `PYTHONPATH` environment variable to the directory in which this `README` file is (In Spyder, check the *"Tools"* menu).
+Set the `PYTHONPATH` environment variable to the directory in which this `README` file is.
 
 Alternatively, you can try a local installation using `pip`:
 
     pip install --editable .
-
-
-### Setting up pygame with virtualenv
-
-    hg clone https://bitbucket.org/pygame/pygame
-    cd pygame
-    python3 setup.py install --prefix="$HOME/.virtualenvs/tilegamelib"
 
 
 ## Play example Games
@@ -79,8 +72,7 @@ Here is an overview of the most important classes
 |-------|-------------|
 | tilegamelib.Game | Facade for frequently used functions |
 | tilegamelib.TiledMap | 2D map composed of tiles |
-| tilegamelib.Sprite   | moving object |
-| tilegamelib.Screen   | manages screen window |
-| tilegamelib.EventGenerator | main event loop |
-| tilegamelib.Frame | rectangular area on screen |
-| tilegamelib.TileFactory | loads tile graphics |
+| tilegamelib.TileSprite | moving object |
+| tilegamelib.Vector | x/y coordinates |
+| tilegamelib.load_tiles | loads tile graphics |
+| tilegamelib.config | global settings |
