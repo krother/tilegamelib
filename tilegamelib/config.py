@@ -1,5 +1,6 @@
 
 import os
+import arcade
 
 
 class BasicConfig:
@@ -21,9 +22,11 @@ class BasicConfig:
     VERY_SHORT_DELAY = 0.02
 
     # screen
+    GAME_NAME = "Dummy"
     RESOLUTION = (800, 600)
     TILE_SIZE = 32  # changing this will probably break things
     #FRAME = Rect(64, 64, 320, 320)
+    BG_COLOR = arcade.color.BLACK
     BACKGROUND_IMAGE = DATA_PATH + 'background.png'
 
     # Sound

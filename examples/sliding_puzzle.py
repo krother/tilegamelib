@@ -3,12 +3,12 @@ simple puzzle game:
 arrange the fruits in rows
 """
 import arcade
-from arcade.key import ESCAPE
 from collections import Counter
-from tilegamelib import TiledMap, load_tiles
+from tilegamelib import TiledMap
 from tilegamelib import MapMove
-from tilegamelib import PLAYER_MOVES
 from tilegamelib import Vector
+from tilegamelib import Game
+from tilegamelib.config import config
 
 
 PUZZLEMAP = """######
@@ -18,18 +18,16 @@ PUZZLEMAP = """######
 #acb.#
 ######"""
 
-SIZEX, SIZEY = (350, 350)
+config.RESOLUTION = (350, 350)
+config.TILE_FILE = 'fruit.csv'
+config.GAME_NAME = "Sliding Puzzle"
 
 
-class SlidingPuzzle(arcade.Window):
-    """
-    main game class
-    """
+class SlidingPuzzle(Game):
+    """Sort equal items into rows"""
     def __init__(self):
         """initialize everything"""
-        super().__init__(SIZEX, SIZEY, "Sliding Puzzle")
-        arcade.set_background_color(arcade.color.BLACK)
-        self.tiles = load_tiles('fruit.csv')
+        super().__init__()
         self.map = TiledMap(self.tiles, PUZZLEMAP, offset=Vector(100, 100))
         self.gap = Vector(4, 4)
         self.moving = None
@@ -44,7 +42,7 @@ class SlidingPuzzle(arcade.Window):
         """exit if all fruit sorted into rows"""
         same = [self.count_same(row) for row in self.map.map[1:5]]
         if sum(same) == 15:
-            arcade.window_commands.close_window()
+            self.exit()
 
     def on_draw(self):
         """automatically called to draw everything"""
@@ -68,14 +66,6 @@ class SlidingPuzzle(arcade.Window):
             if self.moving.finished:
                 self.moving = None
                 self.check_complete()
-
-    def on_key_press(self, symbol, mod):
-        """Handle player movement"""
-        vec = PLAYER_MOVES.get(symbol)
-        if vec:
-            self.move(vec)
-        elif symbol == ESCAPE:
-            arcade.window_commands.close_window()
 
 
 if __name__ == '__main__':

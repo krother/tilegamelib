@@ -15,6 +15,7 @@ class Game(arcade.Window):
     """
     def __init__(self):
         super().__init__(config.RESOLUTION[0], config.RESOLUTION[1], config.GAME_NAME)
+        arcade.set_background_color(config.BG_COLOR)
         self.tiles = load_tiles(config.TILE_FILE)
 
     def exit(self):

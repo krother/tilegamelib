@@ -1,10 +1,8 @@
 
-import time
 import arcade
-from arcade.key import ESCAPE
-from tilegamelib import TiledMap, load_tiles
+from tilegamelib.game import Game
+from tilegamelib import TiledMap
 from tilegamelib import MapMove
-from tilegamelib import PLAYER_MOVES
 from tilegamelib import Vector
 from tilegamelib.sprites import TileSprite
 from tilegamelib.config import config
@@ -19,15 +17,15 @@ BOXMAP = """##########
 #........#
 ##########"""
 
-SIZEX, SIZEY = (450, 400)
+config.RESOLUTION = (450, 400)
+config.TILE_FILE = 'fruit.csv'
+config.GAME_NAME = "Boxes"
 
 
-class Boxes(arcade.Window):
+class Boxes(Game):
 
     def __init__(self):
-        super().__init__(SIZEX, SIZEY, "Collect Fruit")
-        arcade.set_background_color(arcade.color.BLACK)
-        self.tiles = load_tiles('fruit.csv')
+        super().__init__()
         self.tm = TiledMap(self.tiles, BOXMAP, offset=Vector(96, 96))
         self.player = TileSprite(self.tiles['b.tail'], (4, 1), speed=4, offset=Vector(96, 320))
         self.moves = None
@@ -72,16 +70,7 @@ class Boxes(arcade.Window):
         s = self.tm.get_map()
         if s.count('X') == 4:
             print("\nCongratulations!\n")
-            time.sleep(2)
-            arcade.window_commands.close_window()
-
-    def on_key_press(self, symbol, mod):
-        """Handle player movement"""
-        vec = PLAYER_MOVES.get(symbol)
-        if vec:
-            self.move(vec)
-        elif symbol == ESCAPE:
-            arcade.window_commands.close_window()
+            self.exit()
 
 
 if __name__ == '__main__':

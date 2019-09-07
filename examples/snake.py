@@ -154,7 +154,6 @@ class SnakeGame(Game):
 
     def __init__(self):
         super().__init__()
-        arcade.set_background_color(arcade.color.BLACK)
         self.level = SnakeLevel(self.tiles)
         self.snake = SnakeSprite(self.tiles, START_POS, self.level)
         self.update_mode = self.update_ingame
