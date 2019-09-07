@@ -2,19 +2,16 @@
 import random
 import time
 
-import pygame
-from pygame import Rect
-
-from tilegamelib import AnimatedTile, TiledMap
-from tilegamelib.bar_display import BarDisplay
-from tilegamelib.basic_boxes import DictBox
+from tilegamelib import TiledMap #AnimatedTile
+#from tilegamelib.bar_display import BarDisplay
+#from tilegamelib.basic_boxes import DictBox
 from tilegamelib.config import config
-from tilegamelib.frame import Frame
 from tilegamelib.game import Game
-from tilegamelib.sprites import Sprite
+from tilegamelib.sprites import TileSprite
 from tilegamelib.vector import DOWN, LEFT, RIGHT, UP, Vector
 
 from generate_maze import create_maze
+import arcade
 
 ONE_PLAYER_START_DELAY = 3000
 
@@ -33,7 +30,11 @@ LEVEL = """####################
 #e****************e#
 ####################"""
 
-config.RESOLUTION = (850, 450)
+config.RESOLUTION = (850, 512)
+#     config.FRAME = Rect(10, 10, 640, 512)
+#         frame = Frame(self.game.screen, Rect(660, 220, 200, 200))
+config.TILE_FILE = 'fruit.csv'
+config.GAME_NAME = 'Pac'
 
 config.KEY_REPEAT = {}
 config.GAME_KEY_REPEAT = { 273:1, 274:1, 275:1, 276:1}
@@ -52,13 +53,17 @@ PAC_TILES = {
 
 GHOST_TILES = ['b.ghost_d', 'b.ghost_l', 'b.ghost_u', 'b.ghost_r']
 
+MAP_OFS = Vector(96, 96)
+SPRITE_OFS = Vector(96, 448)
+
 
 class PacLevel:
 
-    def __init__(self, data, tmap):
-        self.tmap = tmap
-        self.tmap.set_map(str(data))
-        self.dots_left = data.count("*")
+    def __init__(self, tiles):
+        level = create_maze(*RANDOM_LEVEL_SIZE)
+        self.tmap = TiledMap(tiles, LEVEL, offset=MAP_OFS)
+        #self.tmap.set_map(str(data))
+        self.dots_left = LEVEL.count("*")
 
     def at(self, pos):
         return self.tmap.at(pos)
@@ -66,7 +71,7 @@ class PacLevel:
     def remove_dot(self, pos):
         tile = self.at(pos)
         if tile != '.':
-            self.tmap.set_tile(pos, '.')
+            self.tmap.set(pos, '.')
             if tile == '*':
                 self.dots_left -= 1
 
@@ -76,9 +81,9 @@ class PacLevel:
 
 class Ghost:
 
-    def __init__(self, game, pos, level):
-        self.sprite = Sprite(game, GHOST_TILES[0], pos, speed=2)
-        self.sprite.tile = AnimatedTile(GHOST_TILES, game.tile_factory, game.frame, pos, loop=True)
+    def __init__(self, tiles, pos, level):
+        self.sprite = TileSprite(tiles[GHOST_TILES[0]], pos, speed=2, offset=SPRITE_OFS)
+        #self.sprite.tile = AnimatedTile(GHOST_TILES, game.tile_factory, game.frame, pos, loop=True)
         self.level = level
         self.direction = RIGHT
         self.set_random_direction()
@@ -100,16 +105,12 @@ class Ghost:
         moves = self.get_possible_moves()
         self.direction = random.choice(moves)
 
-    def move(self):
+    def update(self):
         if self.sprite.finished:
             self.set_random_direction()
             self.sprite.add_move(self.direction)
         else:
-            self.sprite.tile.move()
-            self.sprite.move()
-
-    def update(self):
-        self.move()
+            self.sprite.update()
 
     def draw(self):
         self.sprite.draw()
@@ -117,10 +118,10 @@ class Ghost:
 
 class Pac:
 
-    def __init__(self, game, pos, level):
-        self.game = game
+    def __init__(self, tiles, pos, level):
+        self.tiles = tiles
         self.level = level
-        self.sprite = Sprite(game, 'b.pac_right', pos, speed=4)
+        self.sprite = TileSprite(tiles['b.pac_right'], pos, speed=4, offset=SPRITE_OFS)
         self.set_direction(RIGHT)
         self.eaten = None
         self.score = 0
@@ -128,8 +129,8 @@ class Pac:
 
     def set_direction(self, direction):
         tiles = PAC_TILES[direction]
-        tile = AnimatedTile(tiles, self.game.tile_factory, self.game.frame, self.sprite.pos, loop=True)
-        self.sprite.tile = tile
+        #tile = AnimatedTile(tiles, self.game.tile_factory, self.game.frame, self.sprite.pos, loop=True)
+        #self.sprite.tile = tile
         self.direction = direction
         self.move()
 
@@ -156,12 +157,12 @@ class Pac:
 
     def update(self):
         """Try eating dots and fruit"""
-        self.sprite.tile.move()
+        #self.sprite.update()
         if self.sprite.finished and not self.buffered_move is None:
             self.move(self.buffered_move)
             self.buffered_move = None
         if not self.sprite.finished:
-            self.sprite.move()
+            self.sprite.update()
         else:
             self.move()
 
@@ -178,40 +179,20 @@ class Pac:
         self.sprite.path = []
 
 
-class PacGame:
+class PacGame(Game):
 
     def __init__(self):
-        self.game = Game()
+        super().__init__()
+        self.level = PacLevel(self.tiles)
+        self.pac = Pac(self.tiles, PAC_START, self.level)
+        self.ghosts = [Ghost(self.tiles, pos, self.level) for pos in GHOST_POSITIONS]
 
-        self.level = None
-        self.pac = None
-        self.ghosts = []
-        self.status_box = None
-
-        self.create_level()
-        self.create_pac()
-        self.create_ghosts()
-        self.create_status_box()
-        frame = Frame(self.game.screen, Rect(660, 220, 200, 200))
-        self.lives = BarDisplay(frame, self.game, 3, 'p')
-
+        #self.status_box = None
+        #self.create_status_box()
+        #self.lives = BarDisplay(frame, self.game, 3, 'p')
         self.collided = False
-        self.mode = None
         self.update_mode = self.update_ingame
-
-    def create_level(self):
-        tmap = TiledMap(self.game)
-        level = create_maze(*RANDOM_LEVEL_SIZE)
-        self.level = PacLevel(level, tmap)
-
-    def create_pac(self):
-        self.pac = Pac(self.game, PAC_START, self.level)
-        self.pac.set_direction(RIGHT)
-
-    def create_ghosts(self):
-        self.ghosts = []
-        for pos in GHOST_POSITIONS:
-            self.ghosts.append(Ghost(self.game, pos, self.level))
+        self.mode = self.update_ingame
 
     def reset_level(self):
         self.pac.sprite.pos = Vector(PAC_START)
@@ -237,46 +218,44 @@ class PacGame:
             time.sleep(1)
             self.lives.decrease()
             if self.lives.value == 0:
-                self.game.exit()
+                self.exit()
             else:
                 self.reset_level()
-                self.game.events.empty_event_queue()
                 self.update_mode = self.update_ingame
 
     def update_level_complete(self):
         """finish movement"""
         if self.pac.sprite.finished:
-            time.sleep(1)
-            self.game.exit()
+            self.exit()
 
     def update_ingame(self):
         self.check_collision()
         if self.pac.eaten:
-            self.status_box.data['score'] = self.pac.score
+            #self.status_box.data['score'] = self.pac.score
             self.pac.eaten = None
             self.score = self.pac.score
         if self.level.dots_left == 0:
             self.update_mode = self.update_level_complete
 
-    def draw(self):
+    def update(self, *args):
         self.update_mode()
-        self.level.draw()
         self.pac.update()
-        self.pac.draw()
         for g in self.ghosts:
             g.update()
-            g.draw()
-        self.status_box.draw()
         self.check_collision()
 
-    def run(self):
-        self.mode = self.update_ingame
-        self.game.event_loop(figure_moves=self.pac.set_direction,
-            draw_func=self.draw)
+    def on_draw(self):
+        """called by arcade"""
+        self.level.draw()
+        self.pac.draw()
+        for g in self.ghosts:
+            g.draw()
+        #self.status_box.draw()
+
+    def move(self, vec):
+        self.pac.set_direction(vec)
 
 
 if __name__ == '__main__':
-    config.FRAME = Rect(10, 10, 640, 512)
     pac = PacGame()
-    pac.run()
-    pygame.quit()
+    arcade.run()
