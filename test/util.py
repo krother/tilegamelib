@@ -7,7 +7,7 @@ import time
 import pygame
 from pygame import Rect
 
-from tilegamelib import Frame, Game, Screen, TileFactory
+#from tilegamelib import Frame, Game, Screen, TileFactory
 from tilegamelib.basic_boxes import TextBox
 from tilegamelib.config import config
 

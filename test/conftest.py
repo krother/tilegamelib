@@ -2,9 +2,7 @@
 import pytest
 from pygame import Rect, image
 
-from tilegamelib import Frame, Sprite
 from tilegamelib.config import config
-from tilegamelib.tile_factory import TileFactory
 from util import TEST_GAME_CONTEXT
 
 
