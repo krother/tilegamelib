@@ -85,8 +85,6 @@ class TiledMap:
         self.map_pos = Vector(pos)
         self.offset = self.map_pos * config.TILE_SIZE
 
-
-
     def __str__(self):
         return self.get_map()
 
@@ -119,7 +117,7 @@ class TiledMap:
                 # reverse pixel y axis, because arcade starts counting at bot left
                 pxpos = self.pos_in_pixels(pos)
                 # UNKNOWN: does not work without loading dummy image
-                sprite = arcade.Sprite('stonesoup/dungeon/dry_fountain.png', 1) # "images/character.png", 1)
+                sprite = arcade.Sprite(config.DATA_PATH + '/fruit.xpm', 1) # "images/character.png", 1)
                 tile = self.tiles[self.map[pos.y][pos.x]]
                 sprite.append_texture(tile)
                 sprite.set_texture(1)
