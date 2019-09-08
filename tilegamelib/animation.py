@@ -3,33 +3,33 @@ class AnimatedTile:
     """
     Loop through a sequence of tiles.
     """
-    def __init__(self, tiles, tile_factory, frame, pos, delay=5, loop=False):
-        self.tiles = list(tiles)
-        self.tile_factory = tile_factory
-        self.frame = frame
-        self.pos = pos * 32
-        self.tile = None
+    def __init__(self, tile_sequence, tiles, delay=5, loop=False):
+        self.tile_sequence = tile_sequence
+        self.tiles = tiles
+        self._tile_gen = self._next_tile_gen(tile_sequence, loop)
         self.delay_max = delay
         self.delay = 0
-        self.loop = loop
-        self.move()
+        self.finished = False
+        self.update()
 
-    @property
-    def finished(self):
-        if self.tiles or self.delay > 0:
-            return False
-        return True
+    def _next_tile_gen(self, sequence, loop):
+        """Generates tiles"""
+        i = 0
+        while i < len(sequence):
+            yield self.tiles[sequence[i]]
+            i += 1
+            if loop and i >= len(sequence):
+                i = 0
+        self.finished = True
 
-    def move(self):
+    def update(self):
         if not self.finished:
             if self.delay == 0:
-                tile = self.tiles.pop(0)
-                self.tile = self.tile_factory.get(tile)
+                self.tile = next(self._tile_gen)
                 self.delay = self.delay_max
-                if self.loop:
-                    self.tiles.append(tile)
             else:
                 self.delay -= 1
 
-    def draw(self, frame=None, destrect=None):
-        self.tile.draw(frame or self.frame, destrect or self.pos)
+    def draw(self, *args):
+        self.update()
+        self.tile.draw(*args)

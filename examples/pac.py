@@ -2,7 +2,7 @@
 import random
 import time
 
-from tilegamelib import TiledMap #AnimatedTile
+from tilegamelib import TiledMap, AnimatedTile
 from tilegamelib.bar_display import BarDisplay
 #from tilegamelib.basic_boxes import DictBox
 from tilegamelib.config import config
@@ -60,7 +60,7 @@ class PacLevel:
     def __init__(self, tiles):
         level = create_maze(*RANDOM_LEVEL_SIZE)
         self.tmap = TiledMap(tiles, LEVEL, offset=MAP_OFS)
-        #self.tmap.set_map(str(data))
+        #self.tmap.set_map(str(level))
         self.dots_left = LEVEL.count("*")
 
     def at(self, pos):
@@ -81,7 +81,7 @@ class Ghost:
 
     def __init__(self, tiles, pos, level):
         self.sprite = TileSprite(tiles[GHOST_TILES[0]], pos, speed=2, offset=SPRITE_OFS)
-        #self.sprite.tile = AnimatedTile(GHOST_TILES, game.tile_factory, game.frame, pos, loop=True)
+        self.sprite.tile = AnimatedTile(GHOST_TILES, tiles, loop=True)
         self.level = level
         self.direction = RIGHT
         self.set_random_direction()
@@ -127,8 +127,8 @@ class Pac:
 
     def set_direction(self, direction):
         tiles = PAC_TILES[direction]
-        #tile = AnimatedTile(tiles, self.game.tile_factory, self.game.frame, self.sprite.pos, loop=True)
-        #self.sprite.tile = tile
+        tile = AnimatedTile(tiles, self.tiles, loop=True)
+        self.sprite.tile = tile
         self.direction = direction
         self.move()
 
@@ -155,7 +155,6 @@ class Pac:
 
     def update(self):
         """Try eating dots and fruit"""
-        #self.sprite.update()
         if self.sprite.finished and not self.buffered_move is None:
             self.move(self.buffered_move)
             self.buffered_move = None
