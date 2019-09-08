@@ -3,7 +3,7 @@ import random
 import time
 
 from tilegamelib import TiledMap #AnimatedTile
-#from tilegamelib.bar_display import BarDisplay
+from tilegamelib.bar_display import BarDisplay
 #from tilegamelib.basic_boxes import DictBox
 from tilegamelib.config import config
 from tilegamelib.game import Game
@@ -31,8 +31,6 @@ LEVEL = """####################
 ####################"""
 
 config.RESOLUTION = (850, 512)
-#     config.FRAME = Rect(10, 10, 640, 512)
-#         frame = Frame(self.game.screen, Rect(660, 220, 200, 200))
 config.TILE_FILE = 'fruit.csv'
 config.GAME_NAME = 'Pac'
 
@@ -185,18 +183,19 @@ class PacGame(Game):
         super().__init__()
         self.level = PacLevel(self.tiles)
         self.pac = Pac(self.tiles, PAC_START, self.level)
-        self.ghosts = [Ghost(self.tiles, pos, self.level) for pos in GHOST_POSITIONS]
+        self.ghosts = []
+        self.reset_level()
 
         #self.status_box = None
         #self.create_status_box()
-        #self.lives = BarDisplay(frame, self.game, 3, 'p')
+        self.lives = BarDisplay(self.tiles, 'p', 3, (100, 60))
         self.collided = False
         self.update_mode = self.update_ingame
         self.mode = self.update_ingame
 
     def reset_level(self):
         self.pac.sprite.pos = Vector(PAC_START)
-        self.create_ghosts()
+        self.ghosts = [Ghost(self.tiles, pos, self.level) for pos in GHOST_POSITIONS]
 
     def create_status_box(self):
         frame = Frame(self.game.screen, Rect(660, 20, 200, 200))
@@ -247,6 +246,7 @@ class PacGame(Game):
     def on_draw(self):
         """called by arcade"""
         self.level.draw()
+        self.lives.draw()
         self.pac.draw()
         for g in self.ghosts:
             g.draw()

@@ -94,12 +94,7 @@ class TiledMap:
 
     def set_map(self, data):
         """Creates a 2D map with tiles from a multiline string."""
-        rows = data.replace('\r', '').strip().split('\n')
-        self.size = Vector(len(rows[0]), len(rows))
-        self.fill_map('.')
-        for y, row in enumerate(rows):
-            for x, char in enumerate(row):
-                self.map[y][x] = char
+        self.map = data.replace('\r', '').strip().split('\n')
         self._cache_map()
 
     def fill_map(self, char, size=None):
