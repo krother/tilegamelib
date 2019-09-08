@@ -1,8 +1,6 @@
 
 import time
 
-import pygame
-
 from tilegamelib.animation import AnimatedTile
 from tilegamelib.config import config
 from tilegamelib.vector import Vector

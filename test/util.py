@@ -4,29 +4,10 @@ Helper functions for testing
 
 import time
 
-import pygame
-from pygame import Rect
-
 #from tilegamelib import Frame, Game, Screen, TileFactory
-from tilegamelib.basic_boxes import TextBox
+#from tilegamelib.basic_boxes import TextBox
 from tilegamelib.config import config
 
-
-class TestGameContext:
-
-    def __init__(self):
-        pygame.init()
-        self.screen = Screen()
-        self.tile_factory = TileFactory()
-        self.game = Game()
-
-
-TEST_GAME_CONTEXT = TestGameContext()
-
-
-def next_frame():
-    pygame.display.update()
-    time.sleep(config.DELAY)
 
 
 def showdoc(func):

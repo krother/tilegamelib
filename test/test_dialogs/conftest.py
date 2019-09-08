@@ -1,5 +1,4 @@
 
-from pygame import Rect
 from tilegamelib.config import config
 
 

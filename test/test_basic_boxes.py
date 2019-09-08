@@ -1,7 +1,5 @@
 #!/usr/bin/env python
 
-import pygame
-
 from tilegamelib.basic_boxes import DictBox, ImageBox, TextBox
 
 

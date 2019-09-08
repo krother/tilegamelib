@@ -1,7 +1,5 @@
 
-import pygame
 import pytest
-from pygame import Rect
 
 from tilegamelib.tile_factory import NoTileError, TileFactory
 from tilegamelib.tiles import Tile

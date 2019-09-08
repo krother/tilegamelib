@@ -1,9 +1,7 @@
 
 import pytest
-from pygame import Rect, image
 
 from tilegamelib.config import config
-from util import TEST_GAME_CONTEXT
 
 
 config.MUTE_SOUND = True

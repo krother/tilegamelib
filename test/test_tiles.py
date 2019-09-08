@@ -1,10 +1,6 @@
 
-import pygame
-from pygame import Rect
-
 from tilegamelib.tiles import Tile
 from tilegamelib.vector import Vector
-from util import TEST_GAME_CONTEXT
 
 
 class TestTiles:

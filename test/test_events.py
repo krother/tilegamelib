@@ -1,7 +1,4 @@
 
-import pygame
-from pygame import K_DELETE, K_RETURN
-
 from tilegamelib.event_listener import AnyKeyListener, EventListener, TextEnteringListener
 from tilegamelib.events import QUIT_EVENT, EventGenerator
 

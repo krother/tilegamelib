@@ -1,6 +1,4 @@
 
-from pygame import Rect
-
 from tilegamelib.config import config
 from tilegamelib.dialogs.game_over import GameOverBox
 from tilegamelib.frame import Frame

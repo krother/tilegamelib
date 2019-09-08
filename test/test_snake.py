@@ -2,9 +2,6 @@
 """
 import time
 
-import pygame
-from pygame.rect import Rect
-
 from tilegamelib import Game, TiledMap
 from tilegamelib.frame import Frame
 from tilegamelib.vector import DOWN, LEFT, RIGHT, UP, Vector

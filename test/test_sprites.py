@@ -2,8 +2,6 @@
 
 import time
 
-import pygame
-
 from tilegamelib.config import config
 from tilegamelib.sprite_list import SpriteList
 from tilegamelib.sprites import Sprite

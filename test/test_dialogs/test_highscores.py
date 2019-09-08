@@ -1,8 +1,5 @@
 
 import os
-
-from pygame import K_RETURN
-
 from conftest import TEST_DATA_PATH
 from tilegamelib.config import config
 from tilegamelib.dialogs.highscores import HighscoreBox, HighscoreList

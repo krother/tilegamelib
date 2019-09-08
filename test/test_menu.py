@@ -2,10 +2,7 @@
 
 import time
 
-import pygame
 import pytest
-from pygame.event import Event
-from pygame.locals import KEYDOWN
 
 from tilegamelib.config import config
 from tilegamelib.events import QUIT_EVENT, EventGenerator

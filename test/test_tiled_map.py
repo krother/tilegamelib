@@ -1,7 +1,5 @@
 
 import time
-
-import pygame
 import pytest
 
 from tilegamelib.config import config

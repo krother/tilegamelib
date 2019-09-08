@@ -1,8 +1,5 @@
 
 from unittest import TestCase, main
-
-from pygame import K_DOWN, K_RETURN, K_SPACE, K_UP
-
 from conftest import MENU_RECT, TITLE_IMAGE, TITLE_RECT
 from tilegamelib.dialogs.title_screen import TitleScreen
 from tilegamelib.events import QUIT_EVENT, EventGenerator

@@ -1,7 +1,4 @@
 
-import pygame
-from pygame import Rect
-
 from conftest import TEST_DATA_PATH
 from tilegamelib.config import config
 from tilegamelib.dialogs.game_paused import GamePausedBox

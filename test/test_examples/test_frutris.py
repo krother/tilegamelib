@@ -1,8 +1,6 @@
 
 import time
 
-import pygame
-
 from examples.frutris.frutris import FrutrisBox
 from tilegamelib import Vector
 from tilegamelib.config import config
