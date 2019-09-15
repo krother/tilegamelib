@@ -17,14 +17,15 @@ class Game(arcade.Window):
         super().__init__(config.RESOLUTION[0], config.RESOLUTION[1], config.GAME_NAME)
         arcade.set_background_color(config.BG_COLOR)
         self.tiles = load_tiles(config.TILE_FILE)
+        self.keymap = PLAYER_MOVES
 
     def exit(self):
         time.sleep(2)
         arcade.window_commands.close_window()
 
     def on_key_press(self, symbol, mod):
-        """Handle player movement"""
-        vec = PLAYER_MOVES.get(symbol)
+        """Handle player movementmap"""
+        vec = self.keymap.get(symbol)
         if vec:
             self.move(vec)
         elif symbol == ESCAPE:

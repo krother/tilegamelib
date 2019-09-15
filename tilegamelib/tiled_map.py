@@ -40,15 +40,15 @@ class TiledMap:
         pixelpos = Vector(pos.x * 32, (self.size.y - pos.y - 1) * 32)
         return pixelpos + self.offset
 
-    def is_on_screen(self, pos):
+    def is_on_map(self, pos):
         """
         Returns True if the referenced position is
-        in the visible part of the screen.
+        within the map
         """
         pos = Vector(pos)
         boundary = self.map_pos + self.win_size
-        return self.map_pos.x <= pos.x <= boundary.x and \
-               self.map_pos.y <= pos.y <= boundary.y
+        return 0 <= pos.x <= boundary.x and \
+               0 <= pos.y <= boundary.y
 
     def is_on_map(self, pos):
         """
@@ -73,9 +73,8 @@ class TiledMap:
         the given 2D vector.
         """
         newpos = self.map_pos + vector
-        boundary = self.size + self.win_size
-        return 0 <= newpos.x <= boundary.x and \
-               0 <= newpos.y <= boundary.y
+        return 0 <= newpos.x <= self.size.x and \
+               0 <= newpos.y <= self.size.y
 
     def zoom_to(self, pos):
         """
