@@ -19,7 +19,7 @@ class TiledMap:
     """
     def __init__(self, tiles, map_str, offset=ZERO_VECTOR):
         self.tiles = tiles
-        self.map = [list(row) for row in map_str.split('\n')]
+        self.map = [list(row) for row in map_str.strip().split('\n')]
         self.offset = Vector(offset)
         self.map_pos = ZERO_VECTOR
         self._sprites = arcade.SpriteList()

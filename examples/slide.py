@@ -9,32 +9,39 @@ from tilegamelib.sprites import TileSprite
 from tilegamelib.config import config
 from tilegamelib import PLAYER_MOVES
 from arcade.key import SPACE
+from slide_levels import LEVELS
 
-BOXMAP = """##########
-#..#...cd#
-#a.#.##dc#
-#..#.##..#
-##g....b.#
-#.g..a..b#
-#......c.#
-##########"""
-
-config.RESOLUTION = (450, 400)
+config.RESOLUTION = (1000, 800)
 config.TILE_FILE = 'fruit.csv'
 config.GAME_NAME = "Slider"
 
 PLAYER_MOVES[SPACE] = 'pickup'
 MOVABLE = 'abcdefg'
+MAP_OFFSET = Vector(96, 96)
 
 class Boxes(Game):
 
     def __init__(self):
         super().__init__()
-        self.tm = TiledMap(self.tiles, BOXMAP, offset=Vector(96, 96))
-        self.player = TileSprite(self.tiles['frame'], (4, 1), speed=4, offset=Vector(96, 320))
+        self.level = 0
+        self.tm = None
+        self.player = None
         self.moves = None
         self.block = None
         self.block_sprite = None
+        self.next_level()
+
+    @property
+    def sprite_offset(self):
+        return MAP_OFFSET + Vector(0, 32 * self.tm.size.y - 32)
+
+    def next_level(self):
+        self.tm = TiledMap(self.tiles, LEVELS[self.level], offset=MAP_OFFSET)
+        self.player = TileSprite(self.tiles['frame'], (1, 1), speed=4, offset=self.sprite_offset)
+        self.moves = None
+        self.block = None
+        self.block_sprite = None
+        self.level += 1
 
     def on_draw(self):
         self.tm.draw()
@@ -46,7 +53,7 @@ class Boxes(Game):
         block = self.tm.at(self.player.pos)
         if block in MOVABLE:
             self.block = block
-            self.block_sprite = TileSprite(self.tiles[block], self.player.pos, speed=4, offset=Vector(94, 318))
+            self.block_sprite = TileSprite(self.tiles[block], self.player.pos, speed=4, offset=self.sprite_offset)
             self.tm.set(self.player.pos, '.')
 
     def release_block(self):
@@ -108,7 +115,10 @@ class Boxes(Game):
     def check_complete(self):
         s = self.tm.get_map()
         if sum([s.count(m) for m in MOVABLE]) == 0:
-            self.exit()
+            if self.level == len(LEVELS):
+                self.exit()
+            else:
+                self.next_level()
 
 
 if __name__ == '__main__':
