@@ -35,6 +35,11 @@ if __name__ == '__main__':
         create_starmap(3, 'ffffff', 50, os.path.join(STAR_PATH, 'stars1.png'))
         create_starmap(2, 'cccccc', 100, os.path.join(STAR_PATH, 'stars2.png'))
         create_starmap(1, 'aaaaaa', 200, os.path.join(STAR_PATH, 'stars3.png'))
+    elif sys.argv[1] == 'big':
+        XSIZE, YSIZE = 1600, 1200
+        create_starmap(2, 'cccccc', 50, os.path.join(STAR_PATH, 'stars1b.png'))
+        create_starmap(1, 'bbbbbb', 100, os.path.join(STAR_PATH, 'stars2b.png'))
+        create_starmap(1, '999999', 200, os.path.join(STAR_PATH, 'stars3b.png'))
 
     else:
-        print("generate stars: python sterne.py <radius> <hex-farbe> <anzahl> <png_datei>")
+        print("generate stars: python create_stars.py <radius> <hex-color> <n_stars> <png_filename>")
