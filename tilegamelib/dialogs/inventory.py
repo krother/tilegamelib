@@ -5,10 +5,10 @@ from tilegamelib import Vector
 
 class Inventory(TiledMap):
 
-    def __init__(self, tiles, offset, rows=3, cols=4):
+    def __init__(self, tiles, offset, rows=3, cols=4, grid_tile='s'):
         self.n_slots = rows * cols
         self.cols = cols
-        slots = "\n".join(["s" * cols] * rows)
+        slots = "\n".join([grid_tile * cols] * rows)
         super().__init__(tiles, slots, offset=offset)
         self.items = []
 
