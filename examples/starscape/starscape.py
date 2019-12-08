@@ -1,53 +1,55 @@
 
 import os
-import time
 
-import pygame
-from pygame import image
-from pygame import Rect
+import arcade
+from arcade import load_texture
 
 from create_stars import STAR_PATH
-from tilegamelib import Frame
-from tilegamelib import Screen
-from tilegamelib import Vector
+from tilegamelib.game import Game
 from tilegamelib.config import config
 
 
 class StarScape:
     """Draws a parallax-scrolling background"""
-    def __init__(self, frame, path=STAR_PATH):
-        self.frame = frame
+    def __init__(self, path=STAR_PATH):
         self.stars = [
-            image.load(os.path.join(path, 'stars1.png')).convert_alpha(),
-            image.load(os.path.join(path, 'stars2.png')).convert_alpha(),
-            image.load(os.path.join(path, 'stars3.png')).convert_alpha()
+            load_texture(os.path.join(path, 'stars1.png'), 0, 0),
+            load_texture(os.path.join(path, 'stars2.png'), 0, 0),
+            load_texture(os.path.join(path, 'stars3.png'), 0, 0),
         ]
         self.offsets = [0, 0, 0]
         self.increments = [4, 2, 1]
 
-    def draw(self):
-        rsrc = Rect(0, 0, 800, 600)
-        for i in range(3):
-            rdest = Rect(self.offsets[i] - 800, 0, 800, 600)
-            self.frame.blit(self.stars[i], rsrc, rdest)
-            rdest = Rect(self.offsets[i], 0, 800, 600)
-            self.frame.blit(self.stars[i], rsrc, rdest)
-
-    def scroll(self):
+    def step(self):
         for i in range(3):
             self.offsets[i] += self.increments[i]
             if self.offsets[i] >= 800:
                 self.offsets[i] = 0
 
+    def draw(self):
+        for i in range(3):
+            self.stars[i].draw(self.offsets[i] - 400, 300, 800, 600)
+            self.stars[i].draw(self.offsets[i] + 400, 300, 800, 600)
+
+
+class StarscapeDemo(Game):
+
+    def __init__(self):
+        config.TILE_FILE = None
+        config.GAME_NAME = 'Starscape'
+        config.RESOLUTION = (800, 600)
+        super().__init__()
+        self.stars = StarScape()
+
+    def update(self, time_delta):
+        """called by arcade"""
+        self.stars.step()
+
+    def on_draw(self):
+        """called by arcade"""
+        arcade.start_render()
+        self.stars.draw()
 
 if __name__ == '__main__':
-    screen = Screen()
-    frame = Frame(screen, Rect(0, 0, 800, 600))
-    starscape = StarScape(frame)
-
-    while True:
-        screen.clear()
-        starscape.draw()
-        starscape.scroll()
-        pygame.display.update()
-        time.sleep(0.01)
+    starscape = StarscapeDemo()
+    arcade.run()
