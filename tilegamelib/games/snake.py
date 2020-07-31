@@ -12,7 +12,7 @@ from tilegamelib.vector import UP
 from tilegamelib.config import config
 from tilegamelib import Vector
 
-MOVE_DELAY = 15
+MOVE_DELAY = 25
 
 
 LEVEL = """####################

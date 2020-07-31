@@ -73,6 +73,10 @@ class Boxes(Game):
             self.exit()
 
 
-if __name__ == '__main__':
+def main():
     boxes = Boxes()
     arcade.run()
+
+
+if __name__ == '__main__':
+    main()

@@ -45,15 +45,13 @@ Alternatively, you can try a local installation using `pip`:
 
 ## Play example Games
 
-Run the programs in the `examples/` directory:
+Run the programs in the `tilegamelib.games` package. They have a command-line script:
 
-* `examples/sliding_puzzle.py`
-* `examples/collect_fruit.py`
-* `examples/boxes.py`
-* `examples/snake.py`
-* `examples/pac.py`
-* `examples/starscape/starscape.py`
-* `examples/frutris/frutris.py`
+    sliding_puzzle
+    collect_fruit
+    boxes
+    snake
+    pac
 
 
 ## Write your own mini-game

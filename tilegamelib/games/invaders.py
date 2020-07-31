@@ -2,18 +2,17 @@
 import random
 import time
 
-import pygame
-from pygame import K_SPACE, Rect, mask
-from pygame.sprite import Sprite, Group, groupcollide, collide_mask, spritecollideany
-
 from tilegamelib import AnimatedTile, TiledMap
 from tilegamelib.bar_display import BarDisplay
-from tilegamelib.basic_boxes import DictBox
+#from tilegamelib.basic_boxes import DictBox
 from tilegamelib.config import config
-from tilegamelib.frame import Frame
 from tilegamelib.game import Game
+from tilegamelib.sprite import TileSprite
 from tilegamelib.vector import DOWN, LEFT, RIGHT, UP, Vector
 
+config.RESOLUTION = (800, 550)
+config.TILE_FILE = 'fruit.csv'
+config.GAME_NAME = 'Snake'
 
 MIN_X = -8
 MAX_X = 772
@@ -23,10 +22,8 @@ ALIEN_SHOT_PROBABILITY = 0.002
 
 class Player(Sprite):
 
-    def __init__(self, game):
-        Sprite.__init__(self)
-        self.game = game
-        self.image = game.get_tile_surface('rot.hoch')
+    def __init__(self, tiles):
+        self.sprite = Sprite(tiles['rot.hoch'])
         self.mask = mask.from_surface(self.image)
         self.g = Group(self)
         self.pos = Vector(300, 510)
@@ -49,10 +46,10 @@ class Player(Sprite):
 
     def draw(self):
         self.rect = Rect(self.pos.x, self.pos.y, 32, 32)
-        self.g.draw(self.game.screen.display)
+        self.sprite.draw()
 
 
-class Alien(Sprite):
+class Alien(TileSprite):
 
     def __init__(self, game, pos, direction=RIGHT, speed=1, tile='b.ghost_d'):
         Sprite.__init__(self)
@@ -121,6 +118,7 @@ class InvadersGame:
         self.create_aliens()
         self.shots = Group()
         self.alien_shots = Group()
+        # K_SPACE: self.shoot
 
     def create_aliens(self):
         for i in range(4):
@@ -134,11 +132,10 @@ class InvadersGame:
         self.shots.add(shot)
 
     def draw(self):
-        self.game.screen.clear()
         self.player.draw()
-        self.shots.draw(self.game.screen.display)
-        self.alien_shots.draw(self.game.screen.display)
-        self.aliens.draw(self.game.screen.display)
+        self.shots.draw()
+        self.alien_shots.draw()
+        self.aliens.draw()
         self.floor.draw()
 
     def update(self):
@@ -157,13 +154,8 @@ class InvadersGame:
         if not self.aliens:
             self.game.exit()
 
-    def run(self):
-        self.game.event_loop(figure_moves=self.player.set_direction,
-            draw_func=self.update, keymap={K_SPACE: self.shoot}, delay=30)
 
 
 if __name__ == '__main__':
-    config.FRAME = Rect(10, 10, 640, 512)
     inv = InvadersGame()
-    inv.run()
-    pygame.quit()
+    arcade.run()

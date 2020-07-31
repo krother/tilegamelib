@@ -33,6 +33,7 @@ LEVEL = """####################
 config.RESOLUTION = (850, 512)
 config.TILE_FILE = 'fruit.csv'
 config.GAME_NAME = 'Pac'
+config.DELAY = 1.0
 
 config.KEY_REPEAT = {}
 config.GAME_KEY_REPEAT = { 273:1, 274:1, 275:1, 276:1}
