@@ -3,6 +3,8 @@ simple puzzle game:
 arrange the fruits in rows
 """
 import arcade
+import os
+
 from collections import Counter
 from tilegamelib import TiledMap
 from tilegamelib import MapMove
@@ -19,7 +21,8 @@ PUZZLEMAP = """######
 ######"""
 
 config.RESOLUTION = (350, 350)
-config.TILE_FILE = 'fruit.csv'
+config.BASE_PATH = os.path.split(__file__)[0] + os.sep
+config.TILE_FILE = config.BASE_PATH + 'fruit.csv'
 config.GAME_NAME = "Sliding Puzzle"
 
 
@@ -68,6 +71,10 @@ class SlidingPuzzle(Game):
                 self.check_complete()
 
 
-if __name__ == '__main__':
+def main():
     window = SlidingPuzzle()
     arcade.run()
+
+
+if __name__ == '__main__':
+    main()

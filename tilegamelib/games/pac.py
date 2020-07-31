@@ -1,6 +1,7 @@
 
 import random
 import time
+import os
 
 from tilegamelib import TiledMap, AnimatedTile
 from tilegamelib.bar_display import BarDisplay
@@ -10,7 +11,7 @@ from tilegamelib.game import Game
 from tilegamelib.sprites import TileSprite
 from tilegamelib.vector import DOWN, LEFT, RIGHT, UP, Vector
 
-from generate_maze import create_maze
+from tilegamelib.games.generate_maze import create_maze
 import arcade
 
 ONE_PLAYER_START_DELAY = 3000
@@ -31,7 +32,8 @@ LEVEL = """####################
 ####################"""
 
 config.RESOLUTION = (850, 512)
-config.TILE_FILE = 'fruit.csv'
+config.BASE_PATH = os.path.split(__file__)[0] + os.sep
+config.TILE_FILE = config.BASE_PATH + 'fruit.csv'
 config.GAME_NAME = 'Pac'
 config.DELAY = 1.0
 
@@ -255,7 +257,9 @@ class PacGame(Game):
     def move(self, vec):
         self.pac.set_direction(vec)
 
-
-if __name__ == '__main__':
+def main():
     pac = PacGame()
     arcade.run()
+
+if __name__ == '__main__':
+    main()

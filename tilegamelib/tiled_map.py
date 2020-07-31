@@ -8,6 +8,7 @@ from .config import config
 
 def load_tiles(filename):
     df = pd.read_csv(filename)
+    df['path'] = config.BASE_PATH + df['path']
     tiles = {name: load_texture(*cols) for name, *cols in df.values}
     return tiles
 
