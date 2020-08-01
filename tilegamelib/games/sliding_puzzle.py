@@ -21,8 +21,6 @@ PUZZLEMAP = """######
 ######"""
 
 config.RESOLUTION = (350, 350)
-config.BASE_PATH = os.path.split(__file__)[0] + os.sep
-config.TILE_FILE = config.BASE_PATH + 'fruit.csv'
 config.GAME_NAME = "Sliding Puzzle"
 
 

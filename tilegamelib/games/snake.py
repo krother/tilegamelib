@@ -43,8 +43,6 @@ HEAD_TILES = {
 EASY = False
 
 config.RESOLUTION = (800, 550)
-config.BASE_PATH = os.path.split(__file__)[0] + os.sep
-config.TILE_FILE = config.BASE_PATH + 'fruit.csv'
 config.GAME_NAME = 'Snake'
 
 START_POS = (5, 5)

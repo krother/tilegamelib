@@ -10,8 +10,7 @@ class BasicConfig:
     DATA_PATH = os.path.join(BASE_PATH, 'data') + os.sep
 
     # tiles
-    TILE_SET = DATA_PATH + 'tiles.xpm'
-    TILE_SPECS = DATA_PATH + 'tiles.conf'
+    TILE_FILE = DATA_PATH + 'tiles.csv'
 
     # fonts
     #FONT_FILE = os.path.join(DATA_PATH, 'LucidaSansDemiBold.ttf')
@@ -54,7 +53,7 @@ class BasicConfig:
 
     # pause box
     #PAUSE_BOX_RECT = Rect(200, 150, 400, 100)
-    PAUSE_IMAGE = DATA_PATH + '/frame_box.png'
+    PAUSE_IMAGE = DATA_PATH + 'frame_box.png'
     PAUSE_TEXT = "Game Paused - press any key to continue"
 
     def read_config(filename):
