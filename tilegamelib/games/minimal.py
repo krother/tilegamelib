@@ -1,7 +1,10 @@
 
+import arcade
+
 from tilegamelib import Game
 from tilegamelib import TiledMap
-from tilegamelib.sprites import Sprite
+from tilegamelib import Vector
+from tilegamelib.sprites import TileSprite
 
 MAZE = """##########
 #........#
@@ -15,23 +18,22 @@ MAZE = """##########
 ##########"""
 
 
-class MiniGame:
+class MiniGame(Game):
 
     def __init__(self):
-        self.game = Game()
+        super().__init__()
 
-        self.map = TiledMap(self.game)
-        self.map.fill_map('#', (10, 10))
-        self.map.set_map(MAZE)
-        self.map.set_tile((4,4), 'a')
-        self.game.frame.print_text("Hello World", (32, 330))
-        self.sprite = Sprite(self.game, 'b.pac_right', (1, 1), speed=4)
-        self.game.event_loop(figure_moves=self.move, draw_func=self.draw)
+        self.map = TiledMap(self.tiles, MAZE, offset=Vector(96, 96))
+        self.map.set((4,4), 'a')
+        #self.game.frame.print_text("Hello World", (32, 330))
+        self.sprite = TileSprite(self.tiles['b.pac_right'], (1, 2), speed=4, offset=Vector(96, 320))
 
-    def draw(self):
-        self.sprite.move()
+    def on_draw(self):
         self.map.draw()
         self.sprite.draw()
+
+    def update(self, time_delta):
+        self.sprite.update()
 
     def move(self, direction):
         self.sprite.add_move(direction)
@@ -39,3 +41,4 @@ class MiniGame:
 
 if __name__ == '__main__':
     minigame = MiniGame()
+    arcade.run()
