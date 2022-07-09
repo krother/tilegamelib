@@ -7,17 +7,14 @@ help:
 	@echo "release - release on pypi"
 
 tests:
-	py.test ${OPTS}
+	pytest ${OPTS}
 
 coverage:
-	py.test ${OPTS} --cov
+	pytest ${OPTS} --cov
 
 devinstall:
 	pip install -e .
 	pip install -e .[tests]
-
-lint:
-	coala --ci
 
 release:
 	pip install twine
