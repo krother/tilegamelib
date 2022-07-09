@@ -2,7 +2,7 @@
 import arcade
 from arcade import load_texture
 import pandas as pd
-from .vector import Vector, ZERO_VECTOR
+from tilegamelib import Vector, ZERO_VECTOR
 from .config import config
 
 
@@ -13,43 +13,23 @@ def load_tiles(filename):
     return tiles
 
 
-class TiledMap:
+class AsciiMap:
     """
-    A map consisting of 2D-tiles. The map can be scrolled
-    in a way that only a part of the map is displayed.
+    A 2D grid of ascii symbols
     """
-    def __init__(self, tiles, map_str, offset=ZERO_VECTOR):
-        self.tiles = tiles
+    def __init__(self, map_str):
         self.map = [list(row) for row in map_str.strip().split('\n')]
-        self.offset = Vector(offset)
-        self.map_pos = ZERO_VECTOR
-        self._sprites = arcade.SpriteList()
-        self._cache_map()
+
+    def __repr__(self):
+        return self.get_map()
+
+    def get_map(self):
+        rows = '\n'.join(''.join(row) for row in self.map)
+        return rows
 
     @property
     def size(self):
         return Vector(len(self.map[0]), len(self.map))
-
-    @property
-    def map_size_px(self):
-        """size of the map in pixels (x,y)."""
-        return self.size * config.TILE_SIZE
-
-    def pos_in_pixels(self, pos):
-        """Returns the position in pixels (x,y) of the given tile pos."""
-        #(pos - self.map_pos) * config.TILE_SIZE
-        pixelpos = Vector(pos.x * 32, (self.size.y - pos.y - 1) * 32)
-        return pixelpos + self.offset
-
-    def is_on_map(self, pos):
-        """
-        Returns True if the referenced position is
-        within the map
-        """
-        pos = Vector(pos)
-        boundary = self.map_pos + self.win_size
-        return 0 <= pos.x <= boundary.x and \
-               0 <= pos.y <= boundary.y
 
     def is_on_map(self, pos):
         """
@@ -63,6 +43,37 @@ class TiledMap:
         pos = Vector(pos)
         if self.is_on_map(pos):
             return self.map[pos.y][pos.x]
+
+    def set(self, pos, tile):
+        """Sets the symbol at the given position"""
+        pos = Vector(pos)
+        self.map[pos.y][pos.x] = tile
+
+
+
+class TiledMap(AsciiMap):
+    """
+    A map consisting of 2D-tiles. The map can be scrolled
+    in a way that only a part of the map is displayed.
+    """
+    def __init__(self, tiles, map_str, offset=ZERO_VECTOR):
+        super().__init__(map_str)
+        self.tiles = tiles
+        self.offset = Vector(offset)
+        self.map_pos = ZERO_VECTOR
+        self._sprites = arcade.SpriteList()
+        self._cache_map()
+
+    @property
+    def map_size_px(self):
+        """size of the map in pixels (x,y)."""
+        return self.size * config.TILE_SIZE
+
+    def pos_in_pixels(self, pos):
+        """Returns the position in pixels (x,y) of the given tile pos."""
+        #(pos - self.map_pos) * config.TILE_SIZE
+        pixelpos = Vector(pos.x * 32, (self.size.y - pos.y - 1) * 32)
+        return pixelpos + self.offset
 
     def get_tile(self, pos):
         """Returns texture at given position"""
@@ -84,13 +95,6 @@ class TiledMap:
         """
         self.map_pos = Vector(pos)
         self.offset = self.map_pos * config.TILE_SIZE
-
-    def __str__(self):
-        return self.get_map()
-
-    def get_map(self):
-        rows = '\n'.join(''.join(row) for row in self.map)
-        return rows
 
     def set_map(self, data):
         """Creates a 2D map with tiles from a multiline string."""
@@ -126,6 +130,5 @@ class TiledMap:
 
     def set(self, pos, tile):
         """Sets the symbol at the given position"""
-        pos = Vector(pos)
-        self.map[pos.y][pos.x] = tile
+        super().set(pos, tile)
         self._cache_map()

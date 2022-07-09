@@ -4,7 +4,6 @@ import time
 from pygame import Rect, image
 
 from .config import config
-from .frame import Frame
 
 
 class TextBox(object):

@@ -33,10 +33,6 @@ def screen():
     return TEST_GAME_CONTEXT.screen
 
 
-@pytest.fixture
-def frame(screen):
-    return Frame(screen, Rect(50, 50, 100, 100))
-
 
 @pytest.fixture
 def tile_factory():

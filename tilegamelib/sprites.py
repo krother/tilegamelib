@@ -1,6 +1,6 @@
 
 from .move import Move
-from .vector import Vector, INVERSE_Y
+from tilegamelib import Vector, INVERSE_Y
 
 
 class TileSprite:
