@@ -1,6 +1,6 @@
 
-from tilegamelib import RIGHT
-from tilegamelib.games.sliding_puzzle import SlidingPuzzle
+from tilegamelib import RIGHT, UP
+from tilegamelib.games.sliding_puzzle import SlidingPuzzle, SlidingPuzzleGame
 
 
 SOLVED = '''
@@ -61,3 +61,12 @@ def test_move():
     assert str(s) == TWO_DELETE.strip()
     mv.finish()
     assert str(s) == TWO_AWAY.strip()
+
+
+def test_game():
+    g = SlidingPuzzleGame(ONE_AWAY)
+    g.move(UP)
+    for _ in range(34):
+        g.update(0.01)
+    # TODO g.on_draw() requires arcade window or mock
+    assert g.puzzle.solved

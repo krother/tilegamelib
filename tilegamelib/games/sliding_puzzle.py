@@ -12,7 +12,6 @@ from tilegamelib.move import MapMove
 from tilegamelib import Move
 from tilegamelib import Vector
 from tilegamelib import Game
-from tilegamelib.tiles import Tile
 from tilegamelib.config import config
 
 
@@ -63,7 +62,6 @@ class SlidingPuzzle:
 
     def move(self, direction):
         source = self.gap - direction
-        print(source)
         if self.box.at(source) != '#':
             self.gap = source
             return MapMove(self.box, source, direction)
@@ -71,11 +69,11 @@ class SlidingPuzzle:
 
 class SlidingPuzzleGame(Game):
 
-    def __init__(self):
+    def __init__(self, map_str=PUZZLEMAP):
         """initialize everything"""
         super().__init__()
-        self.puzzle = SlidingPuzzle()
-        self.map = TiledMap(self.tiles, PUZZLEMAP, offset=Vector(100, 100))
+        self.puzzle = SlidingPuzzle(map_str)
+        self.map = TiledMap(self.tiles, map_str, offset=Vector(100, 100))
         self.moving = None
 
     def on_draw(self):
@@ -88,10 +86,8 @@ class SlidingPuzzleGame(Game):
     def move(self, vec):
         """starts a move"""
         move = self.puzzle.move(vec)
-        #TODO: refactor
-        texture = self.map.get_tile(move.start_pos)
-        tile = Tile(self.map.at[move.start_pos], )
-        self.moving = Move(tile, move=move)
+        sprite = self.map.get_sprite(move.start_pos)
+        self.moving = Move(sprite, move=move)
 
     def update(self, delta_time):
         """automatically called every frame"""

@@ -47,11 +47,11 @@ class MapMove(BasicMove):
 
 class Move:
     """
-    Moves a tile over a certain amount of steps in one direction.
+    Moves a sprite over a certain amount of steps in one direction.
     """
-    def __init__(self, tile=None, start=ZERO_VECTOR, direction=RIGHT,
+    def __init__(self, sprite=None, start=ZERO_VECTOR, direction=RIGHT,
                  speed=1, on_finish=None, move=None):
-        self.tile = tile
+        self.sprite = sprite
         self.pos = start
         self.speed = speed
         self.steps = config.TILE_SIZE
@@ -65,14 +65,15 @@ class Move:
         return self.steps <= 0
 
     def update(self):
-        if self.steps > 0:
+        print(self.steps)
+        if not self.finished:
             self.pos += self.move.direction * self.speed
             self.steps -= self.speed
-        if self.steps <= 0:
+        if self.finished:
             self.move.finish()
 
     def draw(self):
-        self.tile.draw(self.pos.x, self.pos.y, config.TILE_SIZE, config.TILE_SIZE)
+        self.sprite.draw()#self.pos.x, self.pos.y, config.TILE_SIZE, config.TILE_SIZE)
 
 
 # class MapMove:

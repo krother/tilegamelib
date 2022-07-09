@@ -108,20 +108,24 @@ class TiledMap(AsciiMap):
         self.map = [[char for x in range(self.size.x)] for y in range(self.size.y)]
         self._cache_map()
 
+    def get_sprite(self, pos):
+        # reverse pixel y axis, because arcade starts counting at bot left
+        pxpos = self.pos_in_pixels(pos)
+        # UNKNOWN: does not work without loading dummy image
+        sprite = arcade.Sprite(config.DATA_PATH + '/fruit.xpm', 1) # "images/character.png", 1)
+        tile = self.tiles[self.map[pos.y][pos.x]]
+        sprite.append_texture(tile)
+        sprite.set_texture(1)
+        sprite.center_x = pxpos.x
+        sprite.center_y = pxpos.y
+        return sprite
+
     def _cache_map(self):
         self._sprites = arcade.SpriteList()
         for x in range(self.size.x):
             for y in range(self.size.y):
                 pos = Vector(x, y)
-                # reverse pixel y axis, because arcade starts counting at bot left
-                pxpos = self.pos_in_pixels(pos)
-                # UNKNOWN: does not work without loading dummy image
-                sprite = arcade.Sprite(config.DATA_PATH + '/fruit.xpm', 1) # "images/character.png", 1)
-                tile = self.tiles[self.map[pos.y][pos.x]]
-                sprite.append_texture(tile)
-                sprite.set_texture(1)
-                sprite.center_x = pxpos.x
-                sprite.center_y = pxpos.y
+                sprite = self.get_sprite(pos)
                 self._sprites.append(sprite)
 
     def draw(self):

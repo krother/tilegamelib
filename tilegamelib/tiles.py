@@ -18,7 +18,7 @@ class Tile:
         self.size = Vector(size)
         self.image = image
         pixel_pos = Vector(index) * self.size
-        self.box = Rect(pixel_pos.x, pixel_pos.y, self.size.x, self.size.y)
+        self.box = (pixel_pos.x, pixel_pos.y, self.size.x, self.size.y)
 
     def draw(self, frame, pos):
         """Draws the tile on the given position into the bitmap."""
