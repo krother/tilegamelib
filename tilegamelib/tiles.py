@@ -1,7 +1,5 @@
 
-from pygame import Rect
-
-from .vector import Vector
+from tilegamelib import Vector
 
 
 class Tile:

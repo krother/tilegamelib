@@ -7,18 +7,23 @@ import os
 
 from collections import Counter
 from tilegamelib import TiledMap
-from tilegamelib import MapMove
+from tilegamelib.tiled_map import AsciiMap
+from tilegamelib.move import MapMove
+from tilegamelib import Move
 from tilegamelib import Vector
 from tilegamelib import Game
+from tilegamelib.tiles import Tile
 from tilegamelib.config import config
 
 
-PUZZLEMAP = """######
+PUZZLEMAP = """
+######
 #abce#
 #ecba#
 #abce#
 #acb.#
-######"""
+######
+"""
 
 config.RESOLUTION = (350, 350)
 config.BASE_PATH = os.path.split(__file__)[0] + os.sep
@@ -26,14 +31,24 @@ config.TILE_FILE = config.BASE_PATH + 'fruit.csv'
 config.GAME_NAME = "Sliding Puzzle"
 
 
-class SlidingPuzzle(Game):
-    """Sort equal items into rows"""
-    def __init__(self):
-        """initialize everything"""
-        super().__init__()
-        self.map = TiledMap(self.tiles, PUZZLEMAP, offset=Vector(100, 100))
-        self.gap = Vector(4, 4)
-        self.moving = None
+
+class SlidingPuzzle:
+    """
+    Sort equal items into rows
+    """
+    def __init__(self, box=PUZZLEMAP):
+        self.box = AsciiMap(box)
+        self.gap = self.find_gap()
+         
+    def __repr__(self):
+        return str(self.box)
+
+    def find_gap(self):
+        for x in range(self.box.size.x):
+            for y in range(self.box.size.y):
+                pos = Vector(x, y)
+                if self.box.at(pos) == '.':
+                    return pos
 
     @staticmethod
     def count_same(row):
@@ -41,11 +56,27 @@ class SlidingPuzzle(Game):
         counter = Counter(row)
         return counter.most_common(1)[0][1]
 
-    def check_complete(self):
-        """exit if all fruit sorted into rows"""
-        same = [self.count_same(row) for row in self.map.map[1:5]]
-        if sum(same) == 15:
-            self.exit()
+    @property
+    def solved(self):
+        same = [self.count_same(row) for row in self.box.map[1:-1]]
+        return sum(same) == 15
+
+    def move(self, direction):
+        source = self.gap - direction
+        print(source)
+        if self.box.at(source) != '#':
+            self.gap = source
+            return MapMove(self.box, source, direction)
+
+
+class SlidingPuzzleGame(Game):
+
+    def __init__(self):
+        """initialize everything"""
+        super().__init__()
+        self.puzzle = SlidingPuzzle()
+        self.map = TiledMap(self.tiles, PUZZLEMAP, offset=Vector(100, 100))
+        self.moving = None
 
     def on_draw(self):
         """automatically called to draw everything"""
@@ -56,11 +87,11 @@ class SlidingPuzzle(Game):
 
     def move(self, vec):
         """starts a move"""
-        source = self.gap - vec
-        if self.map.at(source) == '#' or self.moving:
-            return
-        self.moving = MapMove(self.map, source, vec)
-        self.gap = source
+        move = self.puzzle.move(vec)
+        #TODO: refactor
+        texture = self.map.get_tile(move.start_pos)
+        tile = Tile(self.map.at[move.start_pos], )
+        self.moving = Move(tile, move=move)
 
     def update(self, delta_time):
         """automatically called every frame"""
@@ -68,11 +99,12 @@ class SlidingPuzzle(Game):
             self.moving.update()
             if self.moving.finished:
                 self.moving = None
-                self.check_complete()
+                if self.puzzle.solved:
+                    self.exit()
 
 
 def main():
-    window = SlidingPuzzle()
+    window = SlidingPuzzleGame()
     arcade.run()
 
 

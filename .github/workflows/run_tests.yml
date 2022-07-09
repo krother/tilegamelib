@@ -24,3 +24,4 @@ jobs:
     - name: Test with pytest
       run: |
         pytest test/test_core
+        pytest test/test_games/test_sliding_puzzle.py

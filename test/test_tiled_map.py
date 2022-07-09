@@ -3,8 +3,8 @@ import time
 import pytest
 
 from tilegamelib.config import config
-from tilegamelib.map_move import MapMove
-from tilegamelib.move_group import MoveGroup
+from tilegamelib.move import MapMove
+from tilegamelib.move import MoveGroup
 from tilegamelib.tiled_map import TiledMap
 from tilegamelib.vector import DOWNLEFT, UP, Vector
 
@@ -76,11 +76,8 @@ class TestTiledMap:
         """Draws two 5x5 locations of a map with boxes."""
         tiled_map.set_map(sample_map)
         tiled_map.draw()
-        pygame.display.update()
-        time.sleep(config.DELAY)
         tiled_map.zoom_to(Vector(4, 4))
         tiled_map.draw()
-        pygame.display.update()
 
     def test_move_map_tile(self, tiled_map, game, sample_map):
         """Moves two tiles smoothly."""

@@ -4,9 +4,6 @@ import os
 
 from random import randint
 
-from pygame import Rect
-
-from tilegamelib import Frame
 from tilegamelib import Game
 from tilegamelib.basic_boxes import DictBox
 from tilegamelib.config import config
