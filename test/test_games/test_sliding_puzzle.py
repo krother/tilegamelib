@@ -1,4 +1,6 @@
 
+from unittest.mock import MagicMock, patch
+
 from tilegamelib import RIGHT, UP
 from tilegamelib.games.sliding_puzzle import SlidingPuzzle, SlidingPuzzleGame
 
@@ -63,10 +65,11 @@ def test_move():
     assert str(s) == TWO_AWAY.strip()
 
 
+#@patch('time.sleep', MagicMock())
 def test_game():
     g = SlidingPuzzleGame(ONE_AWAY)
     g.move(UP)
+    g.on_draw()
     for _ in range(34):
         g.update(0.01)
-    # TODO g.on_draw() requires arcade window or mock
     assert g.puzzle.solved

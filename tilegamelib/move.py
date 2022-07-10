@@ -28,19 +28,19 @@ class MapMove(BasicMove):
     First removes the tile, moves it and puts it back in a new position.
     Note that the tile does not exist on the map while moving.
     """
-    def __init__(self, ascii_map, pos, direction,
+    def __init__(self, charmap, pos, direction,
                  floor_tile='.', insert_tile=None,
                  on_finish=None):
-        self.map = ascii_map
-        self.tile_char = insert_tile or self.map.at(pos)
+        self.charmap = charmap
+        self.tile_char = insert_tile or charmap.at(pos)
 
-        super().__init__(self.map.at(pos),
+        super().__init__(self.charmap.at(pos),
                          pos, direction,
                          on_finish=on_finish)
-        self.map.set(pos, floor_tile)
+        self.charmap.set(pos, floor_tile)
 
     def finish(self):
-        self.map.set(self.end_pos, self.tile_char)
+        self.charmap.set(self.end_pos, self.tile_char)
         super().finish()
 
 
@@ -52,7 +52,6 @@ class Move:
     def __init__(self, sprite=None, start=ZERO_VECTOR, direction=RIGHT,
                  speed=1, on_finish=None, move=None):
         self.sprite = sprite
-        self.pos = start
         self.speed = speed
         self.steps = config.TILE_SIZE
         if move:
@@ -65,39 +64,16 @@ class Move:
         return self.steps <= 0
 
     def update(self):
-        print(self.steps)
         if not self.finished:
-            self.pos += self.move.direction * self.speed
+            delta = self.move.direction * self.speed
+            self.sprite.center_x += delta.x
+            self.sprite.center_y += delta.y
             self.steps -= self.speed
         if self.finished:
             self.move.finish()
 
     def draw(self):
-        self.sprite.draw()#self.pos.x, self.pos.y, config.TILE_SIZE, config.TILE_SIZE)
-
-
-# class MapMove:
-#     """
-#     Moves a tile on a map.
-#     First removes the tile, moves it and puts it back in a new position.
-#     Note that the tile does not exist on the map while moving.
-#     """
-#     def __init__(self, tmap, pos, direction, speed=2,
-#                  floor_tile='.', insert_tile=None,
-#                  on_finish=None):
-#         self.map = tmap
-#         self.end_pos = pos + direction
-#         self.tile_char = insert_tile or tmap.at(pos)
-
-#         super().__init__(self.map.get_tile(pos),
-#                          tmap.pos_in_pixels(pos), direction * INVERSE_Y,
-#                          speed=speed,
-#                          on_finish=on_finish)
-#         self.map.set(pos, floor_tile)
-
-#     def finish_move(self):
-#         self.map.set(self.end_pos, self.tile_char)
-#         super().finish_move()
+        self.sprite.draw()
 
 
 class MoveGroup:

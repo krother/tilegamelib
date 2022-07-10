@@ -7,7 +7,7 @@ import os
 
 from collections import Counter
 from tilegamelib import TiledMap
-from tilegamelib.tiled_map import AsciiMap
+from tilegamelib.tiled_map import AsciiMap, create_sprite
 from tilegamelib.move import MapMove
 from tilegamelib import Move
 from tilegamelib import Vector
@@ -73,7 +73,7 @@ class SlidingPuzzleGame(Game):
         """initialize everything"""
         super().__init__()
         self.puzzle = SlidingPuzzle(map_str)
-        self.map = TiledMap(self.tiles, map_str, offset=Vector(100, 100))
+        self.map = TiledMap(self.tiles, self.puzzle.box, offset=Vector(100, 100))
         self.moving = None
 
     def on_draw(self):
@@ -85,9 +85,17 @@ class SlidingPuzzleGame(Game):
 
     def move(self, vec):
         """starts a move"""
+        if self.moving:
+            return
         move = self.puzzle.move(vec)
-        sprite = self.map.get_sprite(move.start_pos)
-        self.moving = Move(sprite, move=move)
+        self.map._cache_map()
+        if move:
+            sprite = create_sprite(
+                self.tiles,
+                move.char,
+                self.map.pos_in_pixels(move.start_pos)
+            )
+            self.moving = Move(sprite, move=move)
 
     def update(self, delta_time):
         """automatically called every frame"""
@@ -95,6 +103,7 @@ class SlidingPuzzleGame(Game):
             self.moving.update()
             if self.moving.finished:
                 self.moving = None
+                self.map._cache_map()
                 if self.puzzle.solved:
                     self.exit()
 

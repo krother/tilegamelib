@@ -13,6 +13,17 @@ def load_tiles(filename):
     return tiles
 
 
+def create_sprite(tiles, char, pxpos):
+    # UNKNOWN: does not work without loading dummy image
+    sprite = arcade.Sprite(config.DATA_PATH + '/fruit.xpm', 1) # "images/character.png", 1)
+    tile = tiles[char]
+    sprite.append_texture(tile)
+    sprite.set_texture(1)
+    sprite.center_x = pxpos.x
+    sprite.center_y = pxpos.y
+    return sprite
+
+
 class AsciiMap:
     """
     A 2D grid of ascii symbols
@@ -49,16 +60,18 @@ class AsciiMap:
         pos = Vector(pos)
         self.map[pos.y][pos.x] = tile
 
+    def set_map(self, data):
+        self.map = data.replace('\r', '').strip().split('\n')
 
 
-class TiledMap(AsciiMap):
+class TiledMap:
     """
     A map consisting of 2D-tiles. The map can be scrolled
     in a way that only a part of the map is displayed.
     """
-    def __init__(self, tiles, map_str, offset=ZERO_VECTOR):
-        super().__init__(map_str)
+    def __init__(self, tiles, charmap, offset=ZERO_VECTOR):
         self.tiles = tiles
+        self.charmap = charmap
         self.offset = Vector(offset)
         self.map_pos = ZERO_VECTOR
         self._sprites = arcade.SpriteList()
@@ -71,13 +84,13 @@ class TiledMap(AsciiMap):
 
     def pos_in_pixels(self, pos):
         """Returns the position in pixels (x,y) of the given tile pos."""
-        #(pos - self.map_pos) * config.TILE_SIZE
-        pixelpos = Vector(pos.x * 32, (self.size.y - pos.y - 1) * 32)
+        # reverse pixel y axis, because arcade starts counting at bot left
+        pixelpos = Vector(pos.x * config.TILE_SIZE, (self.charmap.size.y - pos.y - 1) * config.TILE_SIZE)
         return pixelpos + self.offset
 
     def get_tile(self, pos):
         """Returns texture at given position"""
-        return self.tiles[self.at(pos)]
+        return self.tiles[self.charmap.at(pos)]
 
     def check_move(self, vector):
         """
@@ -85,8 +98,8 @@ class TiledMap(AsciiMap):
         the given 2D vector.
         """
         newpos = self.map_pos + vector
-        return 0 <= newpos.x <= self.size.x and \
-               0 <= newpos.y <= self.size.y
+        return 0 <= newpos.x <= self.charmap.size.x and \
+               0 <= newpos.y <= self.charmap.size.y
 
     def zoom_to(self, pos):
         """
@@ -98,32 +111,20 @@ class TiledMap(AsciiMap):
 
     def set_map(self, data):
         """Creates a 2D map with tiles from a multiline string."""
-        self.map = data.replace('\r', '').strip().split('\n')
-        self._cache_map()
-
-    def fill_map(self, char, size=None):
-        """Creates an empty map filled with a single character."""
-        if size is not None:
-            self.size = Vector(size)
-        self.map = [[char for x in range(self.size.x)] for y in range(self.size.y)]
+        self.charmap.set_map(data)
         self._cache_map()
 
     def get_sprite(self, pos):
-        # reverse pixel y axis, because arcade starts counting at bot left
-        pxpos = self.pos_in_pixels(pos)
-        # UNKNOWN: does not work without loading dummy image
-        sprite = arcade.Sprite(config.DATA_PATH + '/fruit.xpm', 1) # "images/character.png", 1)
-        tile = self.tiles[self.map[pos.y][pos.x]]
-        sprite.append_texture(tile)
-        sprite.set_texture(1)
-        sprite.center_x = pxpos.x
-        sprite.center_y = pxpos.y
-        return sprite
+        return create_sprite(
+            self.tiles,
+            self.charmap.at(pos),
+            self.pos_in_pixels(pos)            
+        )
 
     def _cache_map(self):
         self._sprites = arcade.SpriteList()
-        for x in range(self.size.x):
-            for y in range(self.size.y):
+        for x in range(self.charmap.size.x):
+            for y in range(self.charmap.size.y):
                 pos = Vector(x, y)
                 sprite = self.get_sprite(pos)
                 self._sprites.append(sprite)
@@ -134,5 +135,5 @@ class TiledMap(AsciiMap):
 
     def set(self, pos, tile):
         """Sets the symbol at the given position"""
-        super().set(pos, tile)
+        self.charmap.set(pos, tile)
         self._cache_map()
