@@ -95,7 +95,7 @@ class SlidingPuzzleGame(Game):
                 move.char,
                 self.map.pos_in_pixels(move.start_pos)
             )
-            self.moving = Move(sprite, move=move)
+            self.moving = Move(sprite, speed=2, move=move)
 
     def update(self, delta_time):
         """automatically called every frame"""

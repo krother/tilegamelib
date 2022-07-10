@@ -1,5 +1,5 @@
 
-from tilegamelib import RIGHT, ZERO_VECTOR, INVERSE_Y, Vector
+from tilegamelib import RIGHT, ZERO_VECTOR, INVERSE_Y
 from .config import config
 
 
@@ -65,7 +65,7 @@ class Move:
 
     def update(self):
         if not self.finished:
-            delta = self.move.direction * self.speed
+            delta = self.move.direction * self.speed * INVERSE_Y
             self.sprite.center_x += delta.x
             self.sprite.center_y += delta.y
             self.steps -= self.speed

@@ -60,15 +60,17 @@ def test_not_solved():
 def test_move():
     s = SlidingPuzzle(ONE_AWAY)
     mv = s.move(RIGHT)
+    assert mv.char == 'c'
     assert str(s) == TWO_DELETE.strip()
     mv.finish()
     assert str(s) == TWO_AWAY.strip()
 
 
-#@patch('time.sleep', MagicMock())
+@patch('time.sleep', MagicMock())
 def test_game():
     g = SlidingPuzzleGame(ONE_AWAY)
     g.move(UP)
+    assert g.moving.sprite.texture is g.tiles['c']
     g.on_draw()
     for _ in range(34):
         g.update(0.01)
