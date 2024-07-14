@@ -12,7 +12,6 @@ from arcade.key import SPACE
 from slide_levels import LEVELS
 
 config.RESOLUTION = (1000, 800)
-config.TILE_FILE = 'fruit.csv'
 config.GAME_NAME = "Slider"
 
 PLAYER_MOVES[SPACE] = 'pickup'
