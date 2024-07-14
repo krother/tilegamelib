@@ -1,5 +1,5 @@
 
-from tilegamelib.vector import Vector
+from tilegamelib import Vector
 
 
 class TestVector:

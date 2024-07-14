@@ -3,7 +3,7 @@
 
 A Python library for games based on square tiles.
 
-[![Build Status](https://travis-ci.org/krother/tilegamelib.svg?branch=master)](https://travis-ci.org/krother/tilegamelib)
+![pytest](https://github.com/krother/tilegamelib/workflows/Test/badge.svg)
 
 ![](screenshot.png)
 

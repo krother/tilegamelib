@@ -1,6 +1,6 @@
 
 from arcade.key import MOTION_UP, MOTION_DOWN, MOTION_LEFT, MOTION_RIGHT
-from .vector import Vector
+from tilegamelib import Vector
 
 PLAYER_MOVES = {
         MOTION_UP: Vector(0, -1),

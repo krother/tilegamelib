@@ -1,7 +1,7 @@
 
 import time
 
-from examples.frutris.frutris import FrutrisBox
+from tilegamelib.games.frutris.frutris import FrutrisBox
 from tilegamelib import Vector
 from tilegamelib.config import config
 from tilegamelib.vector import LEFT, RIGHT
@@ -11,7 +11,7 @@ def wait(box):
     while not box.moving_blocks.finished:
         box.moving_blocks.move()
         box.draw()
-        pygame.display.update()
+        #pygame.display.update()
         time.sleep(config.SHORT_DELAY)
 
 
@@ -63,7 +63,7 @@ def test_frutris(game):
     wait(frutris)
 
     # move stuff
-    for i in range(4):
+    for _ in range(4):
         frutris.moving_blocks.shift(LEFT)
         wait(frutris)
     for i in range(4):

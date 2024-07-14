@@ -21,6 +21,7 @@ class Game(arcade.Window):
         self.keymap = PLAYER_MOVES
 
     def exit(self):
+        self.on_draw()
         time.sleep(2)
         arcade.window_commands.close_window()
 
